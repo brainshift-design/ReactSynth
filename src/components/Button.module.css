@@ -1,0 +1,28 @@
+.button
+{
+    display:          flex;
+    align-items:      center;
+    justify-content:  center;
+
+    color:            var(--color-text);
+    background-color: var(--color-control);
+
+    width:            var(--size-normal);
+    height:           var(--size-normal);
+
+    border:           none;
+    box-shadow:       0 0 0 1px #0002 inset;
+    border-radius:    var(--corner-m);
+}
+
+
+.button:hover
+{
+    background-color: var(--color-highlight);
+}
+
+
+.button:active
+{
+    background-color: var(--color-active);
+}

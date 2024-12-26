@@ -1,0 +1,13 @@
+.parameter
+{
+    width:      100%;
+    /* box-shadow: 0 0 0 1px orange inset; */
+}
+
+.parameter h2
+{
+    font-size:   1.5ex;
+    font-weight: 500;
+    
+    margin:      0;
+}

@@ -1,0 +1,25 @@
+:root
+{
+    --color-bg:               #eee;
+    --color-control:          #ccc;
+    --color-active:           #ccc;
+    --color-secondary:        #ddd;
+    --color-highlight:        #ddd;
+    --color-text:             #000;
+
+    --size-normal:            5ex;
+    
+    --gap-xs:                 0.6ex;
+    --gap-s:                  1ex;
+    --gap-m:                  2ex;
+
+    --corner-m:               1ex;
+    --min-toolbar-width:      5ex;
+
+
+    --color-node-header-bg :  #08f;
+    --color-node-header-text: #fff;
+    --color-node-bg:          #fff;
+    --color-node-border:      #0004;
+    --color-node-text:        #000;
+}
