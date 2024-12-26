@@ -1,6 +1,6 @@
 import { useCallback, useContext, useState } from 'react';
 import { EdgeChange, type Node, Edge, NodeChange, applyEdgeChanges, applyNodeChanges, Connection, addEdge } from 'reactflow';
-import { updateAudioNode, removeAudioNode, connectAudioNodes, disconnectAudioNodes } from '../audio/audio';
+import { updateAudioNode, removeAudioNode, connectAudioNodes, disconnectAudioNodes, createAudioNode } from '../audio/audio';
 import { createId } from '../util';
 import { NodeContext } from '../nodes/NodeContext';
 
@@ -62,6 +62,7 @@ export function useFlowState()
 
     const addNode = useCallback((node: Node) => 
     {
+        createAudioNode(node.type!, node.id, node.data);
         setNodes(nodes => [...nodes, node]);
     },
     []);
