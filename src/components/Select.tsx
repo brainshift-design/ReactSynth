@@ -37,7 +37,6 @@ export default function Select({ label, options, value, onChange }: SelectProps)
                     ))
                 }
             </select>
-            <span>{value}</span>
         </label>
     );
 }

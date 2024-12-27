@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState, Dispatch, SetStateAction } from 'react';
+import { createContext, ReactNode, useState, Dispatch, SetStateAction, useContext } from 'react';
 import { Edge, Node } from 'reactflow';
 
 
@@ -34,7 +34,7 @@ export const NodeProvider = ({ children }: { children: ReactNode }) =>
 
 export const useNodeContext = () =>
 {
-    const nodeContext = createContext(NodeContext);
+    const nodeContext = useContext(NodeContext);
 
     if (nodeContext === undefined)
         throw new Error('useNodeContext must be used within a NodeProvider');

@@ -24,7 +24,7 @@ export interface FlowStateProps
 
 export function useFlowState()
 {
-    const [isRunning, setIsRunning] = useState<boolean>(false);
+    const [isRunning] = useState<boolean>(false);
     
     const nodeContext = useContext(NodeContext);
     //const { setNodes, setEdges } = nodeContext!;
@@ -35,7 +35,7 @@ export function useFlowState()
         if (nodeContext)
             nodeContext.setNodes((oldNodes: Node[]) => applyNodeChanges(changes, oldNodes));
     }, 
-    [nodeContext, nodeContext?.setNodes]);
+    [nodeContext?.nodes]);
 
 
 
@@ -44,7 +44,7 @@ export function useFlowState()
         if (nodeContext)
             nodeContext.setEdges((oldEdges: Edge[]) => applyEdgeChanges(changes, oldEdges));
     }, 
-    [nodeContext, nodeContext?.setEdges]);
+    [nodeContext?.edges]);
 
 
 
@@ -59,7 +59,7 @@ export function useFlowState()
             nodeContext.setEdges((oldEdges: Edge[]) => addEdge(newEdge, oldEdges));
          }
      }, 
-    []);
+    [nodeContext?.edges]);
 
 
 
@@ -67,7 +67,7 @@ export function useFlowState()
     {
         if (   type == '_output'
             && nodeContext?.nodes.some(n => n.type == type))
-            return null; // singleton nodes
+            return null; // don't create more than once
 
 
         let node: Node | undefined = undefined;
@@ -92,7 +92,7 @@ export function useFlowState()
 
         return node;
     },
-    []);
+    [nodeContext?.nodes]);
 
 
 
@@ -111,7 +111,7 @@ export function useFlowState()
             );
         }
     },
-    []);
+    [nodeContext?.nodes]);
 
 
 
@@ -120,7 +120,7 @@ export function useFlowState()
         for (const { id } of nodes)
             removeAudioNode(id);
     },
-    []);
+    [nodeContext?.nodes]);
 
     
 
@@ -129,7 +129,7 @@ export function useFlowState()
         for (const { sourceHandle, targetHandle } of edges)
             disconnectAudioNodes(sourceHandle!, targetHandle!);
     },
-    []);
+    [nodeContext?.edges]);
 
 
 
