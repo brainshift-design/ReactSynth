@@ -5,6 +5,7 @@ import { AudioOutputContext } from '../audio/AudioOutputContext';
 import { useContext, useEffect } from 'react';
 import { audioContext, audioIsRunning, audioNodes, createAudioContext } from '../audio/audio';
 import { createId } from '../util';
+import Button from '../components/Button';
 
 
 
@@ -52,7 +53,7 @@ export default function OutputUiNode({ id }: OutputUiNodeProps)
             <h1>Output</h1>
 
             <div className={styles.nodeContent}>
-                <button 
+                <Button
                     style   = {{ margin: 'auto'}}
                     onClick = {() => toggleAudio()}>
                     { 
@@ -60,7 +61,7 @@ export default function OutputUiNode({ id }: OutputUiNodeProps)
                             ? (<span role='img' aria-label='mute'  ><span className='material-symbols-outlined'>volume_up</span></span>) 
                             : (<span role='img' aria-label='unmute'><span className='material-symbols-outlined'>no_sound </span></span>)
                     }                
-                </button>
+                </Button>
             </div>
         </div>
     );
