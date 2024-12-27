@@ -46,9 +46,12 @@ export default function GainUiNode({ id, data }: GainUiNodeProps)
         {
             const node = audioNodes.get(id) as GainNode;
             
-            node.disconnect();
+            if (node)
+            {
+                node.disconnect();
 
-            audioNodes.delete(id);
+                audioNodes.delete(id);
+            }
         };
     },
     []);
