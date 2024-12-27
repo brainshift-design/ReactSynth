@@ -4,6 +4,8 @@
     align-items:      center;
     justify-content:  center;
 
+    overflow:         hidden;
+
     color:            var(--color-text);
     background-color: var(--color-control);
 
