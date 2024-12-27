@@ -6,6 +6,8 @@ import { NodeContext } from '../nodes/NodeContext';
 import OscillatorUiNode from '../nodes/OscillatorUiNode';
 import GainUiNode from '../nodes/GainUiNode';
 import OutputUiNode from '../nodes/OutputUiNode';
+import { nodeTypes } from '../nodes/nodeTypes';
+import DelayUiNode from '../nodes/DelayUiNode';
 
 
 
@@ -76,6 +78,7 @@ export function useFlowState()
         {
             case 'oscillator': node = OscillatorUiNode.create(); break;
             case 'gain':       node = GainUiNode      .create(); break;
+            case 'delay':      node = DelayUiNode     .create(); break;
             case '_output':    node = OutputUiNode    .create(); break;
         }
 
