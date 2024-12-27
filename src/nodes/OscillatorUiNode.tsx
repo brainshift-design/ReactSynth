@@ -1,13 +1,16 @@
-import { Handle, Position } from 'reactflow';
+import { Handle, Node, Position } from 'reactflow';
 import Range from '../components/Range';
 import Select from '../components/Select';
 import { useFlowState } from '../hooks/useFlowState';
 
 import styles from './Node.module.css';
+import { useEffect } from 'react';
+import { audioContext, audioNodes, createAudioContext } from '../audio/audio';
+import { createId } from '../util';
 
 
 
-interface OscillatorNodeProps 
+interface OscillatorUiNodeProps 
 {
     id:   string;
     data: 
@@ -19,10 +22,42 @@ interface OscillatorNodeProps
 
 
 
-export default function OscillatorNode({ id, data }: OscillatorNodeProps)
+export default function OscillatorUiNode({ id, data }: OscillatorUiNodeProps)
 {
     const { updateNode }      = useFlowState();
     const { frequency, type } = data;
+
+
+    useEffect(() =>
+    {
+        // constructor
+        createAudioContext();
+
+        const node = audioContext?.createOscillator();
+
+        if (node)
+        {
+            node.frequency.value = frequency;
+            node.type            = type as OscillatorType;
+
+            node.start();
+
+            audioNodes.set(id, node);
+        }
+
+
+        // destructor
+        return () =>
+        {
+            const node = audioNodes.get(id) as OscillatorNode;
+            
+            node.stop();
+            node.disconnect();
+
+            audioNodes.delete(id);
+        };
+    },
+    []);
 
 
     return (
@@ -58,3 +93,18 @@ export default function OscillatorNode({ id, data }: OscillatorNodeProps)
         </div>
     );
 }
+
+
+
+OscillatorUiNode.create = function()
+{
+    const node: Node =
+    {
+        id:       createId(),
+        type:     'oscillator',
+        data:     { frequency: 440, type: 'sine' },
+        position: { x: 0, y: 0 }
+    };
+   
+    return node;
+};

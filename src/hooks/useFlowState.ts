@@ -1,8 +1,11 @@
 import { useCallback, useContext, useState } from 'react';
 import { EdgeChange, type Node, Edge, NodeChange, applyEdgeChanges, applyNodeChanges, Connection, addEdge } from 'reactflow';
-import { updateAudioNode, removeAudioNode, connectAudioNodes, disconnectAudioNodes, createAudioNode } from '../audio/audio';
+import { updateAudioNode, removeAudioNode, connectAudioNodes, disconnectAudioNodes } from '../audio/audio';
 import { createId } from '../util';
 import { NodeContext } from '../nodes/NodeContext';
+import OscillatorUiNode from '../nodes/OscillatorUiNode';
+import GainUiNode from '../nodes/GainUiNode';
+import OutputUiNode from '../nodes/OutputUiNode';
 
 
 
@@ -24,24 +27,24 @@ export function useFlowState()
     const [isRunning, setIsRunning] = useState<boolean>(false);
     
     const nodeContext = useContext(NodeContext);
-    const { setNodes, setEdges } = nodeContext!;
+    //const { setNodes, setEdges } = nodeContext!;
 
 
     const onNodesChange = useCallback((changes: NodeChange[]) =>
     {
         if (nodeContext)
-            setNodes((oldNodes: Node[]) => applyNodeChanges(changes, oldNodes));
+            nodeContext.setNodes((oldNodes: Node[]) => applyNodeChanges(changes, oldNodes));
     }, 
-    [nodeContext, setNodes]);
+    [nodeContext, nodeContext?.setNodes]);
 
 
 
     const onEdgesChange = useCallback((changes: EdgeChange[]) =>
     {
         if (nodeContext)
-            setEdges((oldEdges: Edge[]) => applyEdgeChanges(changes, oldEdges));
+            nodeContext.setEdges((oldEdges: Edge[]) => applyEdgeChanges(changes, oldEdges));
     }, 
-    [nodeContext, setEdges]);
+    [nodeContext, nodeContext?.setEdges]);
 
 
 
@@ -52,18 +55,42 @@ export function useFlowState()
 
         if (nodeContext)
         {
-            setEdges((oldEdges: Edge[]) => addEdge(newEdge, oldEdges));
             connectAudioNodes(connection.source!, connection.target!);
+            nodeContext.setEdges((oldEdges: Edge[]) => addEdge(newEdge, oldEdges));
          }
      }, 
     []);
 
 
 
-    const addNode = useCallback((node: Node) => 
+    const createNode = useCallback((type: string) => 
     {
-        createAudioNode(node.type!, node.id, node.data);
-        setNodes(nodes => [...nodes, node]);
+        if (   type == '_output'
+            && nodeContext?.nodes.some(n => n.type == type))
+            return null; // singleton nodes
+
+
+        let node: Node | undefined = undefined;
+        
+        switch (type)
+        {
+            case 'oscillator': node = OscillatorUiNode.create(); break;
+            case 'gain':       node = GainUiNode      .create(); break;
+            case '_output':    node = OutputUiNode    .create(); break;
+        }
+
+        if (!node)
+            throw new Error(`Invalid node type '${type}'`);
+        
+        
+        if (nodeContext)
+            nodeContext.setNodes(nodes => [...nodes, node]);
+
+        
+        node.position = { x: 0, y: 0 };
+
+
+        return node;
     },
     []);
 
@@ -71,15 +98,18 @@ export function useFlowState()
 
     const updateNode = useCallback((id: string, data: {}) =>
     {
-        setNodes(nodes =>
-            nodes.map(node =>
-                node.id == id
-                    ? { ...node, data: { ...node.data, ...data } }
-                    : node
-            )
-        );
-
         updateAudioNode(id, data);
+
+        if (nodeContext)
+        {
+            nodeContext.setNodes(nodes =>
+                nodes.map(node =>
+                    node.id == id
+                        ? { ...node, data: { ...node.data, ...data } }
+                        : node
+                )
+            );
+        }
     },
     []);
 
@@ -103,26 +133,16 @@ export function useFlowState()
 
 
 
-    const toggleAudio = useCallback(() =>
-    {
-        setIsRunning(!isRunning);
-    },
-    []);
-
-
-
     return {
         onNodesChange,
         onEdgesChange,
         onConnect,
 
-        addNode,
+        createNode,
         updateNode,
         removeNodes,
         removeEdges,
 
-        toggleAudio,
-        
         isRunning
     };
 }

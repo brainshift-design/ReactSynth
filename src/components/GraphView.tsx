@@ -11,7 +11,9 @@ import styles from './GraphView.module.css';
 
 export default function GraphView()
 {
-    const { nodes, edges } = useContext(NodeContext)!;
+    const nodeContext = useContext(NodeContext);
+    
+
     const { onNodesChange, onEdgesChange, onConnect, removeNodes, removeEdges } = useFlowState();
 
 
@@ -19,8 +21,8 @@ export default function GraphView()
         <div className={styles.graphView}>
             <ReactFlow 
                 nodeTypes     = {nodeTypes}
-                nodes         = {nodes}
-                edges         = {edges}
+                nodes         = {nodeContext?.nodes}
+                edges         = {nodeContext?.edges}
                 deleteKeyCode = {['Delete', 'Backspace']}
                 onNodesChange = {onNodesChange}
                 onNodesDelete = {removeNodes}

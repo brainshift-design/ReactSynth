@@ -1,13 +1,13 @@
 import { NodeTypes } from 'reactflow';
-import OscillatorNode from './OscillatorNode';
-import GainNode from './GainNode';
-import OutputNode from './OutputNode'
+import OscillatorUiNode from './OscillatorUiNode';
+import GainUiNode from './GainUiNode';
+import OutputUiNode from './OutputUiNode'
 
 
 
 export const nodeTypes: NodeTypes = 
 {
-    oscillator:  OscillatorNode,
-    gain:        GainNode,
-   _output:      OutputNode // 'output' is reserved by ReactFlow
+    oscillator: OscillatorUiNode,
+    gain:       GainUiNode,
+   _output:     OutputUiNode // 'output' is reserved by ReactFlow
 };

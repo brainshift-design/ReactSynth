@@ -1,45 +1,52 @@
-let audioContext: AudioContext | null = null;
+export let audioContext: AudioContext | null = null;
 
-const nodes = new Map<string, AudioNode>();
+export const audioNodes = new Map<string, AudioNode>();
+
+
+
+export function createAudioContext()
+{
+    if (!audioContext)
+    {
+        audioContext = new AudioContext();
+        audioContext?.suspend();
+    }
+}
 
 
 
 export function createAudioNode(type: string, id: string, data: { [key: string]: any })
 {
-    if (!audioContext)
-        audioContext = new AudioContext();
-
-
     switch (type)
     {
         case 'oscillator':
         {
-            const node = audioContext.createOscillator();
+            const node = audioContext?.createOscillator()!;
 
             node.frequency.value = data.frequency;
             node.type            = data.type;
 
             node.start();
 
-            nodes.set(id, node);
+            audioNodes.set(id, node);
             break;
         }
 
         case 'gain':
         {
-            const node = audioContext.createGain();
+            const node = audioContext?.createGain()!;
             
             node.gain.value = data.gain;
 
-            nodes.set(id, node);
+            audioNodes.set(id, node);
             break;
         }    
 
         case '_output':
         {
-            const node = audioContext.destination;
+            const node = audioContext?.destination!;
 
-            nodes.set(id, node);
+            audioNodes.set(id, node);
             break;
         }
     }
@@ -49,7 +56,7 @@ export function createAudioNode(type: string, id: string, data: { [key: string]:
 
 export function updateAudioNode(id: string, data: { [key: string]: any })
 {
-    const node = nodes.get(id);
+    const node = getAudioNode(id);
     if (!node) return;
 
 
@@ -68,7 +75,7 @@ export function updateAudioNode(id: string, data: { [key: string]: any })
 
 export function removeAudioNode(id: string)
 {
-    const node = nodes.get(id)!;
+    const node = getAudioNode(id)!;
 
     node.disconnect();
 
@@ -76,15 +83,15 @@ export function removeAudioNode(id: string)
         && typeof node.stop == 'function')
         node.stop();
 
-    nodes.delete(id);
+    audioNodes.delete(id);
 }
 
 
 
 export function connectAudioNodes(sourceId: string, targetId: string)
 {
-    const source = nodes.get(sourceId);
-    const target = nodes.get(targetId);
+    const source = getAudioNode(sourceId);
+    const target = getAudioNode(targetId);
 
     if (!source || !target) return;
 
@@ -95,8 +102,8 @@ export function connectAudioNodes(sourceId: string, targetId: string)
 
 export function disconnectAudioNodes(sourceId: string, targetId: string)
 {
-    const source = nodes.get(sourceId);
-    const target = nodes.get(targetId);
+    const source = getAudioNode(sourceId);
+    const target = getAudioNode(targetId);
 
     if (!source || !target) return;
 
@@ -112,9 +119,10 @@ export function audioIsRunning()
 
 
 
-export function toggleAudio()
+export function getAudioNode(id: string)
 {
-    return audioIsRunning() 
-        ? audioContext?.suspend() 
-        : audioContext?.resume();
+    if (id == '_output')
+        return audioContext?.destination;
+    else
+        return audioNodes.get(id);
 }
