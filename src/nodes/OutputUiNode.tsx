@@ -30,17 +30,22 @@ export default function OutputUiNode({ id }: OutputUiNodeProps)
         const node = audioContext?.destination;
 
         if (node)
+        {
             audioNodes.set(id, node);
+        }
 
         
         // destructor
         return () =>
         {
-            const node_ = audioNodes.get(id) as AudioDestinationNode;
+            const node = audioNodes.get(id) as AudioDestinationNode;
             
-            node_?.disconnect();
-            
-            audioNodes.delete(id);
+            if (node)
+            {
+                node?.disconnect();
+                
+                audioNodes.delete(id);
+            }
         };
     },
     []);

@@ -51,10 +51,13 @@ export default function OscillatorUiNode({ id, data }: OscillatorUiNodeProps)
         {
             const node = audioNodes.get(id) as OscillatorNode;
             
-            node.stop();
-            node.disconnect();
-
-            audioNodes.delete(id);
+            if (node)
+            {
+                node.stop();
+                node.disconnect();
+            
+                audioNodes.delete(id);
+            }
         };
     },
     []);
