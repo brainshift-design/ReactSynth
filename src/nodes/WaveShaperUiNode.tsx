@@ -7,41 +7,40 @@ import styles from './Node.module.css';
 import { useEffect } from 'react';
 import { audioContext, audioNodes, createAudioContext } from '../audio/audio';
 import { createId } from '../util';
+import { createDistortionCurve } from './util';
 
 
 
-interface OscillatorUiNodeProps 
+interface WaveShaperUiNodeProps 
 {
     id: string;
     data: 
     {
-        frequency: number;
-        type:      string;
+        amount:     number;
+        oversample: string;
     },
     selected: boolean
 }
 
 
 
-export default function OscillatorUiNode({ id, data, selected }: OscillatorUiNodeProps)
+export default function WaveShaperUiNode({ id, data, selected }: WaveShaperUiNodeProps)
 {
-    const { updateNode }      = useFlowState();
-    const { frequency, type } = data;
+    const { updateNode }         = useFlowState();
+    const { amount, oversample } = data;
 
-
+    
     useEffect(() =>
     {
         // constructor
         createAudioContext();
 
-        const audioNode = audioContext?.createOscillator();
+        const audioNode = audioContext?.createWaveShaper();
 
         if (audioNode)
         {
-            audioNode.frequency.value = frequency;
-            audioNode.type            = type as OscillatorType;
-
-            audioNode.start();
+            audioNode.curve      = createDistortionCurve(amount);
+            audioNode.oversample = oversample as OverSampleType;
 
             audioNodes.set(id, audioNode);
         }
@@ -50,11 +49,10 @@ export default function OscillatorUiNode({ id, data, selected }: OscillatorUiNod
         // destructor
         return () =>
         {
-            const audioNode = audioNodes.get(id) as OscillatorNode;
+            const audioNode = audioNodes.get(id) as WaveShaperNode;
             
             if (audioNode)
             {
-                audioNode.stop();
                 audioNode.disconnect();
             
                 audioNodes.delete(id);
@@ -70,30 +68,30 @@ export default function OscillatorUiNode({ id, data, selected }: OscillatorUiNod
             style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
             >
             
-            <h1>Oscillator</h1>
+            <Handle type='target' position={Position.Left} />
+
+            <h1>Wave Shaper</h1>
 
             <div className = {styles.nodeContent}>
 
                 <Range 
-                    label    = 'Frequency'
-                    min      = {10}
+                    label    = 'Amount'
+                    min      = {0}
                     max      = {1000}
-                    value    = {frequency}
-                    suffix   = 'Hz'
-                    onChange = {(e) => updateNode(id, { frequency: e.target.value })}
+                    value    = {amount}
+                    onChange = {(e) => updateNode(id, { amount: Number(e.target.value), curve: createDistortionCurve(Number(e.target.value)) })}
                     />
 
                 <Select
-                    label   = 'Waveform'
+                    label   = 'Oversample'
                     options =
                     {[
-                        { value: 'sine',     label: 'Sine'     },
-                        { value: 'triangle', label: 'Triangle' },
-                        { value: 'sawtooth', label: 'Sawtooth' },
-                        { value: 'square',   label: 'Square'   }
+                        { value: 'none', label: 'None' },
+                        { value: '2x',   label: '2x'   },
+                        { value: '4x',   label: '4x'   }
                     ]}
-                    value    = {type}
-                    onChange = {(e) => updateNode(id, { type: e.target.value })}
+                    value    = {oversample}
+                    onChange = {(e) => updateNode(id, { oversample: e.target.value })}
                     />
 
             </div>
@@ -106,16 +104,16 @@ export default function OscillatorUiNode({ id, data, selected }: OscillatorUiNod
 
 
 
-OscillatorUiNode.create = function()
+WaveShaperUiNode.create = function()
 {
     const node: Node =
     {
         id:    createId(),
-        type: 'oscillator',
+        type: 'waveShaper',
         data:     
         { 
-            frequency: 440, 
-            type:     'sine' 
+            amount:      400,
+            oversample: 'none' 
         },
         position: { x: 0, y: 0 }
     };

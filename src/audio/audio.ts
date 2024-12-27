@@ -15,45 +15,6 @@ export function createAudioContext()
 
 
 
-export function createAudioNode(type: string, id: string, data: { [key: string]: any })
-{
-    switch (type)
-    {
-        case 'oscillator':
-        {
-            const node = audioContext?.createOscillator()!;
-
-            node.frequency.value = data.frequency;
-            node.type            = data.type;
-
-            node.start();
-
-            audioNodes.set(id, node);
-            break;
-        }
-
-        case 'gain':
-        {
-            const node = audioContext?.createGain()!;
-            
-            node.gain.value = data.gain;
-
-            audioNodes.set(id, node);
-            break;
-        }    
-
-        case '_output':
-        {
-            const node = audioContext?.destination!;
-
-            audioNodes.set(id, node);
-            break;
-        }
-    }
-}
-
-
-
 export function updateAudioNode(id: string, data: { [key: string]: any })
 {
     const node = getAudioNode(id);

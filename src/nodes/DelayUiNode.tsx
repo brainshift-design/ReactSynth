@@ -32,24 +32,24 @@ export default function DelayUiNode({ id, data, selected }: DelayUiNodeProps)
         // constructor
         createAudioContext();
   
-        const node = audioContext?.createDelay();
+        const audioNode = audioContext?.createDelay();
 
-        if (node)
+        if (audioNode)
         {
-            node.delayTime.value = delayTime;
+            audioNode.delayTime.value = delayTime;
 
-            audioNodes.set(id, node);
+            audioNodes.set(id, audioNode);
         }
 
 
         // destructor
         return () =>
         {
-            const node = audioNodes.get(id) as DelayNode;
+            const audioNode = audioNodes.get(id) as DelayNode;
             
-            if (node)
+            if (audioNode)
             {
-                node.disconnect();
+                audioNode.disconnect();
 
                 audioNodes.delete(id);
             }

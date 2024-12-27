@@ -1,3 +1,7 @@
+export const Tau = Math.PI * 2;
+
+
+
 export function createId(nChars = 6)
 {
     let id = '';

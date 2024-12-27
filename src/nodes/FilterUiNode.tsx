@@ -37,24 +37,24 @@ export default function FilterUiNode({ id, data, selected }: FilterUiNodeProps)
         // constructor
         createAudioContext();
   
-        const node = audioContext?.createBiquadFilter();
+        const audioNode = audioContext?.createBiquadFilter();
 
-        if (node)
+        if (audioNode)
         {
-            node.type = type as BiquadFilterType;
+            audioNode.type = type as BiquadFilterType;
 
-            audioNodes.set(id, node);
+            audioNodes.set(id, audioNode);
         }
 
 
         // destructor
         return () =>
         {
-            const node = audioNodes.get(id) as BiquadFilterNode;
+            const audioNode = audioNodes.get(id) as BiquadFilterNode;
             
-            if (node)
+            if (audioNode)
             {
-                node.disconnect();
+                audioNode.disconnect();
 
                 audioNodes.delete(id);
             }

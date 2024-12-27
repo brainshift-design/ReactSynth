@@ -8,6 +8,7 @@ import GainUiNode from '../nodes/GainUiNode';
 import OutputUiNode from '../nodes/OutputUiNode';
 import DelayUiNode from '../nodes/DelayUiNode';
 import FilterUiNode from '../nodes/FilterUiNode';
+import WaveShaperUiNode from '../nodes/WaveShaperUiNode';
 
 
 
@@ -80,6 +81,7 @@ export function useFlowState()
             case 'gain':       node = GainUiNode      .create(); break;
             case 'delay':      node = DelayUiNode     .create(); break;
             case 'filter':     node = FilterUiNode    .create(); break;
+            case 'waveShaper': node = WaveShaperUiNode.create(); break;
             case '_output':    node = OutputUiNode    .create(); break;
         }
 

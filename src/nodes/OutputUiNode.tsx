@@ -28,22 +28,22 @@ export default function OutputUiNode({ id, selected }: OutputUiNodeProps)
         // constructor
         createAudioContext(); // must be started after user gesture
 
-        const node = audioContext?.destination;
+        const audioNode = audioContext?.destination;
 
-        if (node)
+        if (audioNode)
         {
-            audioNodes.set(id, node);
+            audioNodes.set(id, audioNode);
         }
 
         
         // destructor
         return () =>
         {
-            const node = audioNodes.get(id) as AudioDestinationNode;
+            const audioNode = audioNodes.get(id) as AudioDestinationNode;
             
-            if (node)
+            if (audioNode)
             {
-                node?.disconnect();
+                audioNode?.disconnect();
                 
                 audioNodes.delete(id);
             }
