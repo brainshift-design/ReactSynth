@@ -17,7 +17,7 @@ interface FilterUiNodeProps
     {
         frequency: number;
         detune:    number;
-        quality:   number;
+        Q:         number;
         gain:      number;
         type:      string
     },
@@ -29,7 +29,7 @@ interface FilterUiNodeProps
 export default function FilterUiNode({ id, data, selected }: FilterUiNodeProps)
 {
     const { updateNode } = useFlowState();
-    const { frequency, detune, quality, gain, type }       = data;
+    const { frequency, detune, Q, gain, type }       = data;
 
 
     useEffect(() =>
@@ -96,17 +96,17 @@ export default function FilterUiNode({ id, data, selected }: FilterUiNodeProps)
                 <Range 
                     label    = 'Quality'
                     min      = {0}
-                    max      = {100}
-                    value    = {quality * 100}
-                    onChange = {(e) => updateNode(id, { quality: Number(e.target.value) / 100 })}
+                    max      = {30}
+                    value    = {Q}
+                    onChange = {(e) => updateNode(id, { Q: Number(e.target.value) })}
                     />
 
                 <Range 
                     label    = 'Gain'
                     min      = {0}
-                    max      = {200}
-                    value    = {gain * 100}
-                    onChange = {(e) => updateNode(id, { gain: Number(e.target.value) / 100 })}
+                    max      = {100}
+                    value    = {gain}
+                    onChange = {(e) => updateNode(id, { gain: Number(e.target.value) })}
                     />
 
                 <Select
@@ -146,7 +146,7 @@ FilterUiNode.create = function()
         { 
             frequency: 220,
             detune:    0,
-            quality:   1,
+            Q:         1,
             gain:      1,
             type:     'lowpass' 
         },
