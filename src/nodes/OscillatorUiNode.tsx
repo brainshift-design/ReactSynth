@@ -78,7 +78,8 @@ export default function OscillatorUiNode({ id, data, selected }: OscillatorUiNod
                     label    = 'Frequency'
                     min      = {10}
                     max      = {1000}
-                    value    = {frequency} 
+                    value    = {frequency}
+                    suffix   = 'Hz'
                     onChange = {(e) => updateNode(id, { frequency: e.target.value })}
                     />
 

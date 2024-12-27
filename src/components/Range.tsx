@@ -11,12 +11,13 @@ interface RangeProps
     min:       number;
     max:       number;
     value:     number;
+    suffix?:   string;
     onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
 
 
-export default function Range({ label, min, max, value, onChange }: RangeProps)
+export default function Range({ label, min, max, value, suffix = '', onChange }: RangeProps)
 {
     return (
         <label className={`${paramStyles.parameter} ${rangeStyles.range}`}>
@@ -29,7 +30,7 @@ export default function Range({ label, min, max, value, onChange }: RangeProps)
                 value     = {value}
                 onChange  = {onChange}
                 />
-            <span>{value}</span>
+            <span>{value + (suffix && ' ') + suffix}</span>
         </label>
     );
 }
