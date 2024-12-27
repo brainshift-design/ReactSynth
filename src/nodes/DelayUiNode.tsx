@@ -93,9 +93,12 @@ DelayUiNode.create = function()
 {
     const node: Node =
     {
-        id:       createId(),
-        type:     'delay',
-        data:     { delayTime: 1 },
+        id:    createId(),
+        type: 'delay',
+        data:     
+        { 
+            delayTime: 1 
+        },
         position: { x: 0, y: 0 }
     };
    

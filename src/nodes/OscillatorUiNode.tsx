@@ -110,9 +110,13 @@ OscillatorUiNode.create = function()
 {
     const node: Node =
     {
-        id:       createId(),
-        type:     'oscillator',
-        data:     { frequency: 440, type: 'sine' },
+        id:    createId(),
+        type: 'oscillator',
+        data:     
+        { 
+            frequency: 440, 
+            type:     'sine' 
+        },
         position: { x: 0, y: 0 }
     };
    

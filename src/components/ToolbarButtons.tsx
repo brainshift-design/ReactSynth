@@ -20,6 +20,7 @@ export default function ToolbarButtons(): ReactElement
             <Button onClick={() => createNode('oscillator')}>Osc</Button>
             <Button onClick={() => createNode('gain'      )}>Gain</Button>
             <Button onClick={() => createNode('delay'     )}>Del</Button>
+            <Button onClick={() => createNode('filter'    )}>Flt</Button>
             <Button onClick={() => createNode('_output'   )}>Out</Button>
         </>
     );

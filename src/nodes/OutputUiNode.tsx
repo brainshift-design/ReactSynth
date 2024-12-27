@@ -85,7 +85,7 @@ OutputUiNode.create = function()
     const node: Node =
     {
         id:       createId(),
-        type:     '_output',
+        type:    '_output',
         data:     { },
         position: { x: 0, y: 0 }
     };
