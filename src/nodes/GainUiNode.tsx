@@ -32,24 +32,24 @@ export default function GainUiNode({ id, data, selected }: GainUiNodeProps)
         // constructor
         createAudioContext();
   
-        const node = audioContext?.createGain();
+        const audioNode = audioContext?.createGain();
 
-        if (node)
+        if (audioNode)
         {
-            node.gain.value = gain;
+            audioNode.gain.value = gain;
 
-            audioNodes.set(id, node);
+            audioNodes.set(id, audioNode);
         }
 
 
         // destructor
         return () =>
         {
-            const node = audioNodes.get(id) as GainNode;
+            const audioNode = audioNodes.get(id) as GainNode;
             
-            if (node)
+            if (audioNode)
             {
-                node.disconnect();
+                audioNode.disconnect();
 
                 audioNodes.delete(id);
             }
