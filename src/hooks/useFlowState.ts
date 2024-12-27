@@ -126,8 +126,8 @@ export function useFlowState()
 
     const removeEdges = useCallback((edges: Edge[]) =>
     {
-        for (const { sourceHandle, targetHandle } of edges)
-            disconnectAudioNodes(sourceHandle!, targetHandle!);
+        for (const { source, target } of edges)
+            disconnectAudioNodes(source!, target!);
     },
     [nodeContext?.edges]);
 
