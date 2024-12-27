@@ -21,4 +21,7 @@
     --color-node-bg:          #fff;
     --color-node-border:      #0004;
     --color-node-text:        #000;
+
+
+    --node-outline-style:      2px solid var(--color-node-header-text);
 }

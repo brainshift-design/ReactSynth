@@ -11,12 +11,13 @@ import Button from '../components/Button';
 
 interface OutputUiNodeProps 
 {
-    id: string;
+    id:       string;
+    selected: boolean;
 }
 
 
 
-export default function OutputUiNode({ id }: OutputUiNodeProps)
+export default function OutputUiNode({ id, selected }: OutputUiNodeProps)
 {
     const audioOutputContext = useContext(AudioOutputContext);
     const { toggleAudio } = audioOutputContext!
@@ -52,7 +53,11 @@ export default function OutputUiNode({ id }: OutputUiNodeProps)
 
 
     return (
-        <div className={styles.node}>
+        <div 
+            className = {styles.node}
+            style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
+            >
+
             <Handle type='target' position={Position.Left} />
 
             <h1>Output</h1>
@@ -68,6 +73,7 @@ export default function OutputUiNode({ id }: OutputUiNodeProps)
                     }                
                 </Button>
             </div>
+
         </div>
     );
 }
@@ -78,10 +84,10 @@ OutputUiNode.create = function()
 {
     const node: Node =
     {
-        id:        createId(),
-        type:      '_output',
-        data:      { },
-        position:  { x: 0, y: 0 }
+        id:       createId(),
+        type:     '_output',
+        data:     { },
+        position: { x: 0, y: 0 }
     };
    
     return node;

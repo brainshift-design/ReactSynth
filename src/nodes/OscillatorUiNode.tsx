@@ -12,17 +12,18 @@ import { createId } from '../util';
 
 interface OscillatorUiNodeProps 
 {
-    id:   string;
+    id: string;
     data: 
     {
         frequency: number;
         type:      string;
-    }
+    },
+    selected: boolean
 }
 
 
 
-export default function OscillatorUiNode({ id, data }: OscillatorUiNodeProps)
+export default function OscillatorUiNode({ id, data, selected }: OscillatorUiNodeProps)
 {
     const { updateNode }      = useFlowState();
     const { frequency, type } = data;
@@ -64,10 +65,14 @@ export default function OscillatorUiNode({ id, data }: OscillatorUiNodeProps)
 
 
     return (
-        <div className={styles.node}>
+        <div 
+            className = {styles.node}
+            style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
+            >
+            
             <h1>Oscillator</h1>
 
-            <div className={styles.nodeContent}>
+            <div className = {styles.nodeContent}>
 
                 <Range 
                     label    = 'Frequency'
@@ -93,6 +98,7 @@ export default function OscillatorUiNode({ id, data }: OscillatorUiNodeProps)
             </div>
 
             <Handle type='source' position={Position.Right} />
+
         </div>
     );
 }

@@ -15,12 +15,13 @@ interface GainUiNodeProps
     data: 
     {
         gain: number;
-    }
+    },
+    selected: boolean
 }
 
 
 
-export default function GainUiNode({ id, data }: GainUiNodeProps)
+export default function GainUiNode({ id, data, selected }: GainUiNodeProps)
 {
     const { updateNode } = useFlowState();
     const { gain }       = data;
@@ -58,7 +59,11 @@ export default function GainUiNode({ id, data }: GainUiNodeProps)
 
 
     return (
-        <div className={styles.node}>
+        <div 
+            className = {styles.node}
+            style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
+            >
+
             <Handle type='target' position={Position.Left} />
 
             <h1>Gain</h1>
@@ -76,6 +81,7 @@ export default function GainUiNode({ id, data }: GainUiNodeProps)
             </div>
 
             <Handle type='source' position={Position.Right} />
+
         </div>
     );
 }
