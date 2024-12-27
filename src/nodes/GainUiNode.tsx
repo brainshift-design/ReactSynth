@@ -92,9 +92,12 @@ GainUiNode.create = function()
 {
     const node: Node =
     {
-        id:       createId(),
-        type:     'gain',
-        data:     { gain: 1 },
+        id:    createId(),
+        type: 'gain',
+        data:     
+        { 
+            gain: 1 
+        },
         position: { x: 0, y: 0 }
     };
    
