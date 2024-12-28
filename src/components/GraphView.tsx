@@ -20,7 +20,7 @@ export default function GraphView()
     return (
         <div className={styles.graphView}>
             <ReactFlow 
-                nodeTypes     = {nodeTypes}
+                //nodeTypes     = {nodeTypes}
                 nodes         = {nodeContext?.nodes}
                 edges         = {nodeContext?.edges}
                 deleteKeyCode = {['Delete', 'Backspace']}

@@ -109,7 +109,7 @@ WaveShaperUiNode.create = function()
     const node: Node =
     {
         id:    createId(),
-        type: 'waveShaper',
+        type: 'wave-shaper',
         data:     
         { 
             amount:      400,

@@ -3,12 +3,13 @@ import { EdgeChange, type Node, Edge, NodeChange, applyEdgeChanges, applyNodeCha
 import { updateAudioNode, removeAudioNode, connectAudioNodes, disconnectAudioNodes } from '../audio/audio';
 import { createId } from '../util';
 import { NodeContext } from '../nodes/NodeContext';
-import OscillatorUiNode from '../nodes/OscillatorUiNode';
-import GainUiNode from '../nodes/GainUiNode';
-import OutputUiNode from '../nodes/OutputUiNode';
-import DelayUiNode from '../nodes/DelayUiNode';
-import FilterUiNode from '../nodes/FilterUiNode';
-import WaveShaperUiNode from '../nodes/WaveShaperUiNode';
+// import OscillatorUiNode from '../nodes/OscillatorUiNode';
+// import GainUiNode from '../nodes/GainUiNode';
+// import OutputUiNode from '../nodes/OutputUiNode';
+// import DelayNode from '../nodes/DelayNode';
+// import FilterUiNode from '../nodes/FilterUiNode';
+// import WaveShaperUiNode from '../nodes/WaveShaperUiNode';
+import { nodeTypes } from '../nodes/nodeTypes';
 
 
 
@@ -73,30 +74,34 @@ export function useFlowState()
             return null; // don't create more than once
 
 
-        let node: Node | undefined = undefined;
-        
-        switch (type)
-        {
-            case 'oscillator': node = OscillatorUiNode.create(); break;
-            case 'gain':       node = GainUiNode      .create(); break;
-            case 'delay':      node = DelayUiNode     .create(); break;
-            case 'filter':     node = FilterUiNode    .create(); break;
-            case 'waveShaper': node = WaveShaperUiNode.create(); break;
-            case '_output':    node = OutputUiNode    .create(); break;
-        }
+        console.log('nodeTypes =', nodeTypes);
+        console.log('type =', type);
+        // const node = nodeTypes[type].create();
 
-        if (!node)
-            throw new Error(`Invalid node type '${type}'`);
+        // let node: Node | undefined = undefined;
+        
+        // switch (type)
+        // {
+        //     case 'oscillator':  node = OscillatorUiNode.create(); break;
+        //     case 'gain':        node = GainUiNode      .create(); break;
+        //     case 'delay':       node = DelayUiNode     .create(); break;
+        //     case 'filter':      node = FilterUiNode    .create(); break;
+        //     case 'wave-shaper': node = WaveShaperUiNode.create(); break;
+        //     case '_output':     node = OutputUiNode    .create(); break;
+        // }
+
+        // if (!node)
+        //     throw new Error(`Invalid node type '${type}'`);
         
         
-        if (nodeContext)
-            nodeContext.setNodes(nodes => [...nodes, node]);
+        // if (nodeContext)
+        //     nodeContext.setNodes(nodes => [...nodes, node]);
 
         
-        node.position = { x: 0, y: 0 };
+        // node.position = { x: 0, y: 0 };
 
 
-        return node;
+        return null;//node;
     },
     [nodeContext?.nodes]);
 

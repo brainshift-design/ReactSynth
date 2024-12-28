@@ -16,3 +16,18 @@ export function createDistortionCurve(amount: number)
 
     return curve;
 }
+
+
+
+export function toCapitalCase(str: string)
+{
+    let capitalCase = '';
+
+    if (str.length > 0)
+        capitalCase += str[0].toUpperCase();
+
+    if (str.length > 1)
+        capitalCase += str.substring(1).toLowerCase();
+
+    return capitalCase;
+}

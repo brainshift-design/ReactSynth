@@ -1,124 +1,124 @@
-import { Handle, Node, Position } from 'reactflow';
-import Range from '../components/Range';
-import Select from '../components/Select';
-import { useFlowState } from '../hooks/useFlowState';
+// import { Handle, Node, Position } from 'reactflow';
+// import Range from '../components/Range';
+// import Select from '../components/Select';
+// import { useFlowState } from '../hooks/useFlowState';
 
-import styles from './Node.module.css';
-import { useEffect } from 'react';
-import { audioContext, audioNodes, createAudioContext } from '../audio/audio';
-import { createId } from '../util';
-
-
-
-interface OscillatorUiNodeProps 
-{
-    id: string;
-    data: 
-    {
-        frequency: number;
-        type:      string;
-    },
-    selected: boolean
-}
+// import styles from './Node.module.css';
+// import { useEffect } from 'react';
+// import { audioContext, audioNodes, createAudioContext } from '../audio/audio';
+// import { createId } from '../util';
 
 
 
-export default function OscillatorUiNode({ id, data, selected }: OscillatorUiNodeProps)
-{
-    const { updateNode }      = useFlowState();
-    const { frequency, type } = data;
+// interface OscillatorUiNodeProps 
+// {
+//     id: string;
+//     data: 
+//     {
+//         frequency: number;
+//         type:      string;
+//     },
+//     selected: boolean
+// }
 
 
-    useEffect(() =>
-    {
-        // constructor
-        createAudioContext();
 
-        const audioNode = audioContext?.createOscillator();
-
-        if (audioNode)
-        {
-            audioNode.frequency.value = frequency;
-            audioNode.type            = type as OscillatorType;
-
-            audioNode.start();
-
-            audioNodes.set(id, audioNode);
-        }
+// export default function OscillatorUiNode({ id, data, selected }: OscillatorUiNodeProps)
+// {
+//     const { updateNode }      = useFlowState();
+//     const { frequency, type } = data;
 
 
-        // destructor
-        return () =>
-        {
-            const audioNode = audioNodes.get(id) as OscillatorNode;
+//     useEffect(() =>
+//     {
+//         // constructor
+//         createAudioContext();
+
+//         const audioNode = audioContext?.createOscillator();
+
+//         if (audioNode)
+//         {
+//             audioNode.frequency.value = frequency;
+//             audioNode.type            = type as OscillatorType;
+
+//             audioNode.start();
+
+//             audioNodes.set(id, audioNode);
+//         }
+
+
+//         // destructor
+//         return () =>
+//         {
+//             const audioNode = audioNodes.get(id) as OscillatorNode;
             
-            if (audioNode)
-            {
-                audioNode.stop();
-                audioNode.disconnect();
+//             if (audioNode)
+//             {
+//                 audioNode.stop();
+//                 audioNode.disconnect();
             
-                audioNodes.delete(id);
-            }
-        };
-    },
-    []);
+//                 audioNodes.delete(id);
+//             }
+//         };
+//     },
+//     []);
 
 
-    return (
-        <div 
-            className = {styles.node}
-            style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
-            >
+//     return (
+//         <div 
+//             className = {styles.node}
+//             style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
+//             >
             
-            <h1>Oscillator</h1>
+//             <h1>Oscillator</h1>
 
-            <div className = {styles.nodeContent}>
+//             <div className = {styles.nodeContent}>
 
-                <Range 
-                    label    = 'Frequency'
-                    min      = {10}
-                    max      = {1000}
-                    value    = {frequency}
-                    suffix   = 'Hz'
-                    onChange = {(e) => updateNode(id, { frequency: e.target.value })}
-                    />
+//                 <Range 
+//                     label    = 'Frequency'
+//                     min      = {10}
+//                     max      = {1000}
+//                     value    = {frequency}
+//                     suffix   = 'Hz'
+//                     onChange = {(e) => updateNode(id, { frequency: e.target.value })}
+//                     />
 
-                <Select
-                    label   = 'Waveform'
-                    options =
-                    {[
-                        { value: 'sine',     label: 'Sine'     },
-                        { value: 'triangle', label: 'Triangle' },
-                        { value: 'sawtooth', label: 'Sawtooth' },
-                        { value: 'square',   label: 'Square'   }
-                    ]}
-                    value    = {type}
-                    onChange = {(e) => updateNode(id, { type: e.target.value })}
-                    />
+//                 <Select
+//                     label   = 'Waveform'
+//                     options =
+//                     {[
+//                         { value: 'sine',     label: 'Sine'     },
+//                         { value: 'triangle', label: 'Triangle' },
+//                         { value: 'sawtooth', label: 'Sawtooth' },
+//                         { value: 'square',   label: 'Square'   }
+//                     ]}
+//                     value    = {type}
+//                     onChange = {(e) => updateNode(id, { type: e.target.value })}
+//                     />
 
-            </div>
+//             </div>
 
-            <Handle type='source' position={Position.Right} />
+//             <Handle type='source' position={Position.Right} />
 
-        </div>
-    );
-}
+//         </div>
+//     );
+// }
 
 
 
-OscillatorUiNode.create = function()
-{
-    const node: Node =
-    {
-        id:    createId(),
-        type: 'oscillator',
-        data:     
-        { 
-            frequency: 440, 
-            type:     'sine' 
-        },
-        position: { x: 0, y: 0 }
-    };
+// OscillatorUiNode.create = function()
+// {
+//     const node: Node =
+//     {
+//         id:    createId(),
+//         type: 'oscillator',
+//         data:     
+//         { 
+//             frequency: 440, 
+//             type:     'sine' 
+//         },
+//         position: { x: 0, y: 0 }
+//     };
    
-    return node;
-};
+//     return node;
+// };

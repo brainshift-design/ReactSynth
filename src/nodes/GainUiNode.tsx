@@ -1,105 +1,105 @@
-import { Handle, Node, Position } from 'reactflow';
-import { useFlowState } from '../hooks/useFlowState';
-import Range from '../components/Range';
+// import { Handle, Node, Position } from 'reactflow';
+// import { useFlowState } from '../hooks/useFlowState';
+// import Range from '../components/Range';
 
-import styles from './Node.module.css';
-import { audioContext, audioNodes, createAudioContext } from '../audio/audio';
-import { useEffect } from 'react';
-import { createId } from '../util';
-
-
-
-interface GainUiNodeProps 
-{
-    id:   string;
-    data: 
-    {
-        gain: number;
-    },
-    selected: boolean
-}
+// import styles from './Node.module.css';
+// import { audioContext, audioNodes, createAudioContext } from '../audio/audio';
+// import { useEffect } from 'react';
+// import { createId } from '../util';
 
 
 
-export default function GainUiNode({ id, data, selected }: GainUiNodeProps)
-{
-    const { updateNode } = useFlowState();
-    const { gain }       = data;
+// interface GainUiNodeProps 
+// {
+//     id:   string;
+//     data: 
+//     {
+//         gain: number;
+//     },
+//     selected: boolean
+// }
 
 
-    useEffect(() =>
-    {
-        // constructor
-        createAudioContext();
+
+// export default function GainUiNode({ id, data, selected }: GainUiNodeProps)
+// {
+//     const { updateNode } = useFlowState();
+//     const { gain }       = data;
+
+
+//     useEffect(() =>
+//     {
+//         // constructor
+//         createAudioContext();
   
-        const audioNode = audioContext?.createGain();
+//         const audioNode = audioContext?.createGain();
 
-        if (audioNode)
-        {
-            audioNode.gain.value = gain;
+//         if (audioNode)
+//         {
+//             audioNode.gain.value = gain;
 
-            audioNodes.set(id, audioNode);
-        }
+//             audioNodes.set(id, audioNode);
+//         }
 
 
-        // destructor
-        return () =>
-        {
-            const audioNode = audioNodes.get(id) as GainNode;
+//         // destructor
+//         return () =>
+//         {
+//             const audioNode = audioNodes.get(id) as GainNode;
             
-            if (audioNode)
-            {
-                audioNode.disconnect();
+//             if (audioNode)
+//             {
+//                 audioNode.disconnect();
 
-                audioNodes.delete(id);
-            }
-        };
-    },
-    []);
-
-
-    return (
-        <div 
-            className = {styles.node}
-            style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
-            >
-
-            <Handle type='target' position={Position.Left} />
-
-            <h1>Gain</h1>
-
-            <div className={styles.nodeContent}>
-
-                <Range 
-                    label    = 'Gain'
-                    min      = {0}
-                    max      = {200}
-                    value    = {gain * 100} 
-                    onChange = {(e) => updateNode(id, { gain: Number(e.target.value) / 100 })}
-                    />
-
-            </div>
-
-            <Handle type='source' position={Position.Right} />
-
-        </div>
-    );
-}
+//                 audioNodes.delete(id);
+//             }
+//         };
+//     },
+//     []);
 
 
+//     return (
+//         <div 
+//             className = {styles.node}
+//             style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
+//             >
 
-GainUiNode.create = function()
-{
-    const node: Node =
-    {
-        id:    createId(),
-        type: 'gain',
-        data:     
-        { 
-            gain: 1 
-        },
-        position: { x: 0, y: 0 }
-    };
+//             <Handle type='target' position={Position.Left} />
+
+//             <h1>Gain</h1>
+
+//             <div className={styles.nodeContent}>
+
+//                 <Range 
+//                     label    = 'Gain'
+//                     min      = {0}
+//                     max      = {200}
+//                     value    = {gain * 100} 
+//                     onChange = {(e) => updateNode(id, { gain: Number(e.target.value) / 100 })}
+//                     />
+
+//             </div>
+
+//             <Handle type='source' position={Position.Right} />
+
+//         </div>
+//     );
+// }
+
+
+
+// GainUiNode.create = function()
+// {
+//     const node: Node =
+//     {
+//         id:    createId(),
+//         type: 'gain',
+//         data:     
+//         { 
+//             gain: 1 
+//         },
+//         position: { x: 0, y: 0 }
+//     };
    
-    return node;
-};
+//     return node;
+// };

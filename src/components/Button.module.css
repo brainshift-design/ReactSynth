@@ -7,6 +7,9 @@
     overflow:         hidden;
 
     color:            var(--color-text);
+    font-family:      Roboto;
+    font-weight:      600;
+
     background-color: var(--color-control);
 
     width:            var(--size-normal);
