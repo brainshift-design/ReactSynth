@@ -31,8 +31,7 @@ export default class OscillatorNode extends Component<OscillatorNodeProps, Oscil
     declare context: ContextType<typeof NodeContext>;
 
 
-
-    static create()
+    static createReactFlowNode()
     {
         const node: Node =
         {
@@ -82,7 +81,7 @@ export default class OscillatorNode extends Component<OscillatorNodeProps, Oscil
             audioNode.stop();
             audioNode.disconnect();
         
-            audioNodes.delete(this.props.id);
+            audioNodes.delete(id);
         }
     }
 

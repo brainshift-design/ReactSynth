@@ -36,7 +36,7 @@ export default class FilterNode extends Component<FilterNodeProps, FilterNodeSta
 
 
 
-    static create()
+    static createReactFlowNode()
     {
         const node: Node =
         {

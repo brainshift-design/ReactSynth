@@ -27,7 +27,7 @@ export default class GainNode extends Component<GainNodeProps, GainNodeState>
 
 
 
-    static create()
+    static createReactFlowNode()
     {
         const node: Node =
         {

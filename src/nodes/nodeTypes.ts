@@ -26,7 +26,7 @@ export const reactNodeTypes: NodeTypes = Object.fromEntries(
         type,
         (props) =>
         {
-            const node = NodeClass.create();
+            const node = NodeClass.createReactFlowNode();
             return createElement(NodeClass as any, {...props, node });
         }
     ])

@@ -27,7 +27,7 @@ export default class DelayNode extends Component<DelayNodeProps, DelayNodeState>
 
 
 
-    static create()
+    static createReactFlowNode()
     {
         const node: Node =
         {

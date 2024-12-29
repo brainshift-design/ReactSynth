@@ -1,4 +1,7 @@
 import { Tau } from "../util";
+import { nodeTypes } from "./nodeTypes";
+
+
 
 export function createDistortionCurve(amount: number) 
 {
@@ -15,4 +18,12 @@ export function createDistortionCurve(amount: number)
     }
 
     return curve;
+}
+
+
+
+export function getTypeName(NodeType: Function): string
+{
+    return Object.entries(nodeTypes)
+        .find(([_, NodeClass]) => NodeClass.prototype instanceof NodeType)?.[0] as string;
 }

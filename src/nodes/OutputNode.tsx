@@ -1,86 +1,41 @@
-import { Handle, Node, Position } from 'reactflow';
-
-import styles from './Node.module.css';
+import Node, { NodeProps } from './Node';
+import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import { AudioOutputContext } from '../audio/AudioOutputContext';
-import { Component, ContextType } from 'react';
-import { audioContext, audioIsRunning, audioNodes, createAudioContext } from '../audio/audio';
-import { createId } from '../util';
+import { ContextType } from 'react';
+import { audioContext, audioIsRunning } from '../audio/audio';
 import Button from '../components/Button';
 
-
-
-interface OutputNodeProps 
-{
-    id:       string;
-    selected: boolean;
-}
-
-interface OutputNodeState {}
+import styles from './Node.module.css';
 
 
 
-export default class OutputNode extends Component<OutputNodeProps, OutputNodeState>
+export default class OutputNode extends Node<NodeProps, typeof AudioOutputContext>
 {
     static contextType = AudioOutputContext;
     declare context: ContextType<typeof AudioOutputContext>;
 
 
 
-    static create()
+    protected createAudioNode(): AudioNode
     {
-        const node: Node =
-        {
-            id:       createId(),
-            type:    '_output',
-            data:     { },
-            position: { x: 0, y: 0 }
-        };
-       
-        return node;
-    }
-    
-    
-    
-    componentDidMount()
-    {
-        const { id } = this.props;
-
-        createAudioContext();
-        const audioNode = audioContext?.destination;
-
-        if (audioNode)
-            audioNodes.set(id, audioNode);
-    }
-
-    
-
-    componentWillUnmount()
-    {
-        const { id } = this.props;
-
-        const audioNode = audioNodes.get(id) as AudioDestinationNode;
-        
-        if (audioNode)
-        {
-            audioNode?.disconnect();
-            audioNodes.delete(id);
-        }
+        return audioContext?.destination as AudioNode;
     }
 
 
 
-    render()
+    static createReactFlowNode(): ReactFlowNode 
     {
-        const { selected } = this.props;
+        return { ...super.createReactFlowNode() };
+    }
+
+
+
+    protected renderContent()
+    {
         const { toggleAudio } = this.context!;
 
-
         return (
-            <div 
-                className = {styles.node}
-                style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
-                >
-
+            <>
                 <Handle type='target' position={Position.Left} />
 
                 <h1>Output</h1>
@@ -96,8 +51,7 @@ export default class OutputNode extends Component<OutputNodeProps, OutputNodeSta
                         }                
                     </Button>
                 </div>
-
-            </div>
+            </>
         );
     }
 }

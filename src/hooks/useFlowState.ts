@@ -9,6 +9,7 @@ import DelayNode from '../nodes/DelayNode';
 import FilterNode from '../nodes/FilterNode';
 import OutputNode from '../nodes/OutputNode';
 import WaveShaperNode from '../nodes/WaveShaperNode';
+import { nodeTypes } from '../nodes/nodeTypes';
 
 
 
@@ -65,24 +66,15 @@ export function useFlowState()
 
 
 
-    const createNode = useCallback((type: string) => 
+    const createReactFlowNode = useCallback((type: string) => 
     {
         if (   type == '_output'
             && nodeContext?.nodes.some(n => n.type == type))
             return null; // don't create more than once
 
 
-        let node: Node | undefined = undefined;
-        
-        switch (type)
-        {
-            case 'oscillator': node = OscillatorNode.create(); break;
-            case 'gain':       node = GainNode      .create(); break;
-            case 'delay':      node = DelayNode     .create(); break;
-            case 'filter':     node = FilterNode    .create(); break;
-            case 'waveShaper': node = WaveShaperNode.create(); break;
-            case '_output':    node = OutputNode    .create(); break;
-        }
+        const NodeClass = Object.getOwnPropertyDescriptor(nodeTypes, type)?.value;
+        const node      = NodeClass.createReactFlowNode();
 
         if (!node)
             throw new Error(`Invalid node type '${type}'`);
@@ -90,9 +82,6 @@ export function useFlowState()
         
         if (nodeContext)
             nodeContext.setNodes(nodes => [...nodes, node]);
-
-        
-        node.position = { x: 0, y: 0 };
 
 
         return node;
@@ -143,7 +132,7 @@ export function useFlowState()
         onEdgesChange,
         onConnect,
 
-        createNode,
+        createNode: createReactFlowNode,
         updateNode,
         removeNodes,
         removeEdges,

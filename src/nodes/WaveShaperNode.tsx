@@ -33,7 +33,7 @@ export default class WaveShaperNode extends Component<WaveShaperNodeProps, WaveS
 
 
     
-    static create()
+    static createReactFlowNode()
     {
         const node: Node =
         {
