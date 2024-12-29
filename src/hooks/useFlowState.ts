@@ -2,13 +2,8 @@ import { useCallback, useContext, useState } from 'react';
 import { EdgeChange, type Node, Edge, NodeChange, applyEdgeChanges, applyNodeChanges, Connection, addEdge } from 'reactflow';
 import { updateAudioNode, removeAudioNode, connectAudioNodes, disconnectAudioNodes } from '../audio/audio';
 import { createId } from '../util';
-import { NodeContext } from '../nodes/NodeContext';
-import OscillatorUiNode from '../nodes/OscillatorUiNode';
-import GainUiNode from '../nodes/GainUiNode';
-import OutputUiNode from '../nodes/OutputUiNode';
-import DelayUiNode from '../nodes/DelayUiNode';
-import FilterUiNode from '../nodes/FilterUiNode';
-import WaveShaperUiNode from '../nodes/WaveShaperUiNode';
+import { ClassContext } from '../nodes/ClassContext';
+import { nodeTypes } from '../nodes';
 
 
 
@@ -29,8 +24,7 @@ export function useFlowState()
 {
     const [isRunning] = useState<boolean>(false);
     
-    const nodeContext = useContext(NodeContext);
-    //const { setNodes, setEdges } = nodeContext!;
+    const nodeContext = useContext(ClassContext);
 
 
     const onNodesChange = useCallback((changes: NodeChange[]) =>
@@ -66,34 +60,22 @@ export function useFlowState()
 
 
 
-    const createNode = useCallback((type: string) => 
+    const createReactFlowNode = useCallback((type: string) => 
     {
         if (   type == '_output'
             && nodeContext?.nodes.some(n => n.type == type))
             return null; // don't create more than once
 
 
-        let node: Node | undefined = undefined;
-        
-        switch (type)
-        {
-            case 'oscillator': node = OscillatorUiNode.create(); break;
-            case 'gain':       node = GainUiNode      .create(); break;
-            case 'delay':      node = DelayUiNode     .create(); break;
-            case 'filter':     node = FilterUiNode    .create(); break;
-            case 'waveShaper': node = WaveShaperUiNode.create(); break;
-            case '_output':    node = OutputUiNode    .create(); break;
-        }
+        const NodeClass = Object.getOwnPropertyDescriptor(nodeTypes, type)?.value;
+        const node      = NodeClass.createReactFlowNode();
 
         if (!node)
             throw new Error(`Invalid node type '${type}'`);
         
-        
+
         if (nodeContext)
             nodeContext.setNodes(nodes => [...nodes, node]);
-
-        
-        node.position = { x: 0, y: 0 };
 
 
         return node;
@@ -144,7 +126,7 @@ export function useFlowState()
         onEdgesChange,
         onConnect,
 
-        createNode,
+        createNode: createReactFlowNode,
         updateNode,
         removeNodes,
         removeEdges,

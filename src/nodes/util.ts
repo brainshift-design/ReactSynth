@@ -1,4 +1,7 @@
 import { Tau } from "../util";
+import { nodeTypes } from ".";
+
+
 
 export function createDistortionCurve(amount: number) 
 {
@@ -15,4 +18,14 @@ export function createDistortionCurve(amount: number)
     }
 
     return curve;
+}
+
+
+
+export function getTypeName(NodeClass: Function): string
+{
+    const found = Object.entries(nodeTypes)
+        .find(([_, _NodeClass]) => _NodeClass == NodeClass)?.[0];
+
+    return found as string;
 }
