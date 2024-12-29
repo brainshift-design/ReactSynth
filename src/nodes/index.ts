@@ -20,6 +20,7 @@ export const nodeTypes =
 };
 
 
+
 export const reactNodeTypes: NodeTypes = Object.fromEntries(
     Object.entries(nodeTypes).map(([type, NodeClass]) =>
     [

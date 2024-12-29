@@ -1,15 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
-import { NodeProvider } from './nodes/NodeContext.tsx';
-import { AudioOutputProvider } from './audio/AudioOutputContext.tsx';
+import { ClassProvider } from './nodes/ClassContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <AudioOutputProvider>
-            <NodeProvider>
-                <App />
-            </NodeProvider>
-        </AudioOutputProvider>
+        <ClassProvider>
+            <App />
+        </ClassProvider>
     </StrictMode>
 );

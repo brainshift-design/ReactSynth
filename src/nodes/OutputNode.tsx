@@ -1,7 +1,5 @@
 import Node, { NodeProps } from './Node';
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
-import { AudioOutputContext } from '../audio/AudioOutputContext';
-import { ContextType } from 'react';
 import { audioContext, audioIsRunning } from '../audio/audio';
 import Button from '../components/Button';
 
@@ -9,17 +7,16 @@ import styles from './Node.module.css';
 
 
 
-export default class OutputNode extends Node<NodeProps, typeof AudioOutputContext>
+export default class OutputNode extends Node<NodeProps>
 {
-    static contextType = AudioOutputContext;
-    declare context: ContextType<typeof AudioOutputContext>;
-
-
-
     protected createAudioNode(): AudioNode
     {
         return audioContext?.destination as AudioNode;
     }
+
+
+
+    protected initAudioNode() {}
 
 
 
@@ -32,7 +29,7 @@ export default class OutputNode extends Node<NodeProps, typeof AudioOutputContex
 
     protected renderContent()
     {
-        const { toggleAudio } = this.context!;
+        const { toggleAudio } = this.context;
 
         return (
             <>

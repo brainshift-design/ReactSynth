@@ -1,18 +1,14 @@
-import { Handle, Node, Position } from 'reactflow';
+import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import Range from '../components/Range';
-
 import styles from './Node.module.css';
-import { audioContext, audioNodes, createAudioContext } from '../audio/audio';
-import { Component, ContextType } from 'react';
-import { createId } from '../util';
+import { audioContext } from '../audio/audio';
 import Select from '../components/Select';
-import { NodeContext } from './NodeContext';
+import Node, { NodeProps } from './Node';
 
 
 
-interface FilterNodeProps 
+interface FilterNodeProps extends NodeProps
 {
-    id: string;
     data: 
     {
         frequency: number;
@@ -20,28 +16,42 @@ interface FilterNodeProps
         Q:         number;
         gain:      number;
         type:      string
-    },
-    selected: boolean
+    }
 }
 
-interface FilterNodeState {}
 
 
-
-export default class FilterNode extends Component<FilterNodeProps, FilterNodeState>
+export default class FilterNode extends Node<FilterNodeProps>
 {
-    static contextType = NodeContext;
-    declare context: ContextType<typeof NodeContext>;
-
-
-
-
-    static createReactFlowNode()
+    protected createAudioNode()
     {
-        const node: Node =
+        return audioContext?.createBiquadFilter() as AudioNode;
+    }
+
+
+
+    protected initAudioNode()
+    {
+        const { data: { frequency, detune, Q, gain, type } } = this.props;
+
+        const node = this.audioNode as globalThis.BiquadFilterNode;
+
+        if (node)
         {
-            id:    createId(),
-            type: 'filter',
+            node.frequency.value = frequency;
+            node.detune   .value = detune;
+            node.Q        .value = Q;
+            node.gain     .value = gain;
+            node.type            = type as BiquadFilterType;
+        }
+    }
+
+
+
+    static createReactFlowNode(): ReactFlowNode
+    {
+        return { 
+            ...super.createReactFlowNode(),
             data:     
             { 
                 frequency: 220,
@@ -50,67 +60,19 @@ export default class FilterNode extends Component<FilterNodeProps, FilterNodeSta
                 gain:      1,
                 type:     'lowpass' 
             },
-            position: { x: 0, y: 0 }
         };
-       
-        return node;
     }
     
     
     
-    componentDidMount()
+    renderContent()
     {
-        const { id, data: { type } } = this.props;
-        
-        createAudioContext();
-        const audioNode = audioContext?.createBiquadFilter();
-
-        if (audioNode)
-        {
-            audioNode.type = type as BiquadFilterType;
-            audioNodes.set(id, audioNode);
-        }
-    }
-
-
-
-    componentWillUnmount()
-    {
-        const { id } = this.props;
-
-        const audioNode = audioNodes.get(id) as BiquadFilterNode;
-        
-        if (audioNode)
-        {
-            audioNode.disconnect();
-            audioNodes.delete(id);
-        }
-    }
-
-
-
-    // handleChange = (e: ChangeEvent<HTMLInputElement>) =>
-    // {
-    //     const { id } = this.props;
-    //     const { updateNode } = this.context!;
-
-    //     updateNode(id, { gain: Number(e.target.value) / 100 })
-    // };
-
-
-
-    render()
-    {
-        const { id, selected, data: { frequency, detune, Q, gain, type } } = this.props;
+        const { id, data: { frequency, detune, Q, gain, type } } = this.props;
         const { updateNode } = this.context!;
 
 
         return (
-            <div 
-                className = {styles.node}
-                style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
-                >
-
+            <>
                 <Handle type='target' position={Position.Left} />
 
                 <h1>Filter</h1>
@@ -172,7 +134,7 @@ export default class FilterNode extends Component<FilterNodeProps, FilterNodeSta
 
                 <Handle type='source' position={Position.Right} />
 
-            </div>
+            </>
         );
     }
 }

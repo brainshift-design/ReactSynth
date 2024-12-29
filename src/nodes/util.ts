@@ -1,5 +1,5 @@
 import { Tau } from "../util";
-import { nodeTypes } from "./nodeTypes";
+import { nodeTypes } from ".";
 
 
 
@@ -22,8 +22,10 @@ export function createDistortionCurve(amount: number)
 
 
 
-export function getTypeName(NodeType: Function): string
+export function getTypeName(NodeClass: Function): string
 {
-    return Object.entries(nodeTypes)
-        .find(([_, NodeClass]) => NodeClass.prototype instanceof NodeType)?.[0] as string;
+    const found = Object.entries(nodeTypes)
+        .find(([_, _NodeClass]) => _NodeClass == NodeClass)?.[0];
+
+    return found as string;
 }

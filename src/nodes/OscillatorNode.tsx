@@ -1,119 +1,71 @@
-import { Handle, Node, Position } from 'reactflow';
+import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import Range from '../components/Range';
 import Select from '../components/Select';
-
 import styles from './Node.module.css';
-import { Component, ContextType } from 'react';
-import { audioContext, audioNodes, createAudioContext } from '../audio/audio';
-import { createId } from '../util';
-import { NodeContext } from './NodeContext';
+import { audioContext } from '../audio/audio';
+import Node, { NodeProps } from './Node';
 
 
 
-interface OscillatorNodeProps 
+interface OscillatorNodeProps extends NodeProps
 {
-    id: string;
     data: 
     {
         frequency: number;
         type:      string;
-    },
-    selected: boolean
+    }
 }
 
-interface OscillatorNodeState {}
 
 
-
-export default class OscillatorNode extends Component<OscillatorNodeProps, OscillatorNodeState>
+export default class OscillatorNode extends Node<OscillatorNodeProps>
 {
-    static contextType = NodeContext;
-    declare context: ContextType<typeof NodeContext>;
-
-
-    static createReactFlowNode()
+    protected createAudioNode()
     {
-        const node: Node =
+        return audioContext?.createOscillator() as AudioNode;
+    }
+
+
+
+    protected initAudioNode()
+    {
+        const { data: { frequency, type } } = this.props;
+
+        const node = this.audioNode as globalThis.OscillatorNode;
+
+        if (node)
         {
-            id:    createId(),
-            type: 'oscillator',
+            node.frequency.value = frequency;
+            node.type            = type as OscillatorType;
+
+            node.start();
+        }
+    }
+
+
+
+    static createReactFlowNode(): ReactFlowNode
+    {
+        return { 
+            ...super.createReactFlowNode(),
             data:     
             { 
                 frequency: 440, 
                 type:     'sine' 
             },
-            position: { x: 0, y: 0 }
         };
-       
-        return node;
     }
     
     
     
-    componentDidMount()
+    renderContent()
     {
         const { id, data: { frequency, type } } = this.props;
-
-        createAudioContext();
-        const audioNode = audioContext?.createOscillator();
-
-        if (audioNode)
-        {
-            audioNode.frequency.value = frequency;
-            audioNode.type            = type as OscillatorType;
-
-            audioNode.start();
-
-            audioNodes.set(id, audioNode);
-        }
-    }
-
-
-
-    componentWillUnmount()
-    {
-        const { id } = this.props;
-
-        const audioNode = audioNodes.get(id) as globalThis.OscillatorNode;
-        
-        if (audioNode)
-        {
-            audioNode.stop();
-            audioNode.disconnect();
-        
-            audioNodes.delete(id);
-        }
-    }
-
-
-
-    // handleChange = (e: ChangeEvent<HTMLInputElement>) =>
-    // {
-    //     const { name, value } = e.target;
-    //     const { id }          = this.props;
-    //     const { updateNode }  = this.context
-
-    //     switch (name)
-    //     {
-    //         case 'frequency'
-    //     }
-    //     updateNode(id, { [name]: Number(e.target.value) / 100 })
-    // };
-
-
-    
-    render()
-    {
-        const { id, selected, data: { frequency, type } } = this.props;
-        const { updateNode } = this.context!;
+        const { updateNode } = this.context;
         
         
         return (
-            <div 
-                className = {styles.node}
-                style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
-                >
-                
+            <>
                 <h1>Oscillator</h1>
 
                 <div className = {styles.nodeContent}>
@@ -124,7 +76,7 @@ export default class OscillatorNode extends Component<OscillatorNodeProps, Oscil
                         max      = {1000}
                         value    = {frequency}
                         suffix   = 'Hz'
-                        onChange = {(e) => updateNode(id, { frequency: e.target.value })}
+                        onChange = {(e) => updateNode(id, { frequency: Number(e.target.value) })}
                         />
 
                     <Select
@@ -143,8 +95,7 @@ export default class OscillatorNode extends Component<OscillatorNodeProps, Oscil
                 </div>
 
                 <Handle type='source' position={Position.Right} />
-
-            </div>
+            </>
         );
     }
 }

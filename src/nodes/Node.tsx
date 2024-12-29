@@ -1,7 +1,6 @@
-import { Component, Context, ContextType } from "react";
-import { NodeContext } from "./NodeContext";
+import { Component } from "react";
+import { ClassContext, ClassContextProps } from "./ClassContext";
 import { audioNodes, createAudioContext } from "../audio/audio";
-
 import styles from './Node.module.css';
 import { Node as ReactFlowNode } from "reactflow";
 import { createId } from "../util";
@@ -17,17 +16,17 @@ export interface NodeProps
 
 
 
-export default abstract class Node<
-    T extends NodeProps    = NodeProps, 
-    C extends Context<any> = typeof NodeContext> 
-    extends Component<T>
+export default abstract class Node<T extends NodeProps = NodeProps> 
+extends Component<T>
 {
-    static  contextType?: Context<any>;
-    declare context:      ContextType<C>;
+    static  contextType = ClassContext;
+    declare context: ClassContextProps;
 
     protected audioNode: AudioNode | null = null;
 
     protected abstract createAudioNode(): AudioNode | null;
+    protected abstract initAudioNode(): void;
+
     protected abstract renderContent(): JSX.Element;
 
 
@@ -52,7 +51,10 @@ export default abstract class Node<
         this.audioNode = this.createAudioNode();
 
         if (this.audioNode)
+        {
+            this.initAudioNode();
             audioNodes.set(id, this.audioNode);
+        }
     }
 
 
@@ -71,7 +73,7 @@ export default abstract class Node<
         this.audioNode.disconnect();
         audioNodes.delete(id);
     }
-    
+
 
 
     render()
