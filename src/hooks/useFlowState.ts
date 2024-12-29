@@ -48,7 +48,7 @@ export function useFlowState()
     const onConnect = useCallback((connection: Connection) =>
     {
         const id      = createId();
-        const newEdge = { id, ...connection };
+        const newEdge = { id, type: 'wire', ...connection };
 
         if (nodeContext)
         {

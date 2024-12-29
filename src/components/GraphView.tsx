@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import ReactFlow, { Background } from 'reactflow';
 import { useFlowState } from '../hooks/useFlowState';
-import { reactNodeTypes } from '../nodes';
+import { reactEdgeTypes, reactNodeTypes } from '../nodes';
 import { ClassContext } from '../nodes/ClassContext';
 
 import 'reactflow/dist/style.css';
@@ -21,6 +21,7 @@ export default function GraphView()
         <div className={styles.graphView}>
             <ReactFlow 
                 nodeTypes     = {reactNodeTypes}
+                edgeTypes     = {reactEdgeTypes}
                 nodes         = {nodeContext?.nodes}
                 edges         = {nodeContext?.edges}
                 deleteKeyCode = {['Delete', 'Backspace']}
@@ -28,7 +29,9 @@ export default function GraphView()
                 onNodesDelete = {removeNodes}
                 onEdgesChange = {onEdgesChange}
                 onEdgesDelete = {removeEdges}
-                onConnect     = {onConnect}>
+                onConnect     = {onConnect}
+                maxZoom       = {8}
+                >
                 <Background />
             </ReactFlow>
         </div>

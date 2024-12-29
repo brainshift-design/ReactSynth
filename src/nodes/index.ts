@@ -6,6 +6,7 @@ import { createElement } from 'react';
 import DelayNode from './DelayNode';
 import FilterNode from './FilterNode';
 import OutputNode from './OutputNode';
+import Wire from '../components/Wire';
 
 
 
@@ -32,3 +33,7 @@ export const reactNodeTypes: NodeTypes = Object.fromEntries(
         }
     ])
 );
+
+
+
+export const reactEdgeTypes = { wire: Wire }
