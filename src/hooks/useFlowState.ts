@@ -3,12 +3,12 @@ import { EdgeChange, type Node, Edge, NodeChange, applyEdgeChanges, applyNodeCha
 import { updateAudioNode, removeAudioNode, connectAudioNodes, disconnectAudioNodes } from '../audio/audio';
 import { createId } from '../util';
 import { NodeContext } from '../nodes/NodeContext';
-import OscillatorUiNode from '../nodes/OscillatorUiNode';
-import OutputUiNode from '../nodes/OutputUiNode';
-import DelayUiNode from '../nodes/DelayUiNode';
-import FilterUiNode from '../nodes/FilterUiNode';
-import WaveShaperUiNode from '../nodes/WaveShaperUiNode';
 import GainNode from '../nodes/GainNode';
+import OscillatorNode from '../nodes/OscillatorNode';
+import DelayNode from '../nodes/DelayNode';
+import FilterNode from '../nodes/FilterNode';
+import OutputNode from '../nodes/OutputNode';
+import WaveShaperNode from '../nodes/WaveShaperNode';
 
 
 
@@ -30,7 +30,6 @@ export function useFlowState()
     const [isRunning] = useState<boolean>(false);
     
     const nodeContext = useContext(NodeContext);
-    //const { setNodes, setEdges } = nodeContext!;
 
 
     const onNodesChange = useCallback((changes: NodeChange[]) =>
@@ -77,12 +76,12 @@ export function useFlowState()
         
         switch (type)
         {
-            case 'oscillator': node = OscillatorUiNode.create(); break;
-            case 'gain':       node = GainNode        .create(); break;
-            case 'delay':      node = DelayUiNode     .create(); break;
-            case 'filter':     node = FilterUiNode    .create(); break;
-            case 'waveShaper': node = WaveShaperUiNode.create(); break;
-            case '_output':    node = OutputUiNode    .create(); break;
+            case 'oscillator': node = OscillatorNode.create(); break;
+            case 'gain':       node = GainNode      .create(); break;
+            case 'delay':      node = DelayNode     .create(); break;
+            case 'filter':     node = FilterNode    .create(); break;
+            case 'waveShaper': node = WaveShaperNode.create(); break;
+            case '_output':    node = OutputNode    .create(); break;
         }
 
         if (!node)

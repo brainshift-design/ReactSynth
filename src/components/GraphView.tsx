@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import ReactFlow, { Background } from 'reactflow';
 import { useFlowState } from '../hooks/useFlowState';
-import { nodeTypes } from '../nodes/nodeTypes';
+import { reactNodeTypes } from '../nodes/nodeTypes';
 import { NodeContext } from '../nodes/NodeContext';
 
 import 'reactflow/dist/style.css';
@@ -20,7 +20,7 @@ export default function GraphView()
     return (
         <div className={styles.graphView}>
             <ReactFlow 
-                nodeTypes     = {nodeTypes}
+                nodeTypes     = {reactNodeTypes}
                 nodes         = {nodeContext?.nodes}
                 edges         = {nodeContext?.edges}
                 deleteKeyCode = {['Delete', 'Backspace']}

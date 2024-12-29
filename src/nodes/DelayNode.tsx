@@ -1,26 +1,26 @@
 import { Handle, Node, Position } from 'reactflow';
 import Range from '../components/Range';
+
+import styles from './Node.module.css';
 import { audioContext, audioNodes, createAudioContext } from '../audio/audio';
-import { Component, ContextType } from 'react';
+import { ChangeEvent, Component, ContextType } from 'react';
 import { createId } from '../util';
 import { NodeContext } from './NodeContext';
 
-import styles from './Node.module.css';
 
 
-
-interface GainNodeProps 
+interface DelayNodeProps 
 {
     id:   string;
-    data: { gain: number },
+    data: { delayTime: number },
     selected: boolean
 }
 
-interface GainNodeState {}
+interface DelayNodeState {}
 
 
 
-export default class GainNode extends Component<GainNodeProps, GainNodeState>
+export default class DelayNode extends Component<DelayNodeProps, DelayNodeState>
 {
     static contextType = NodeContext;
     declare context: ContextType<typeof NodeContext>;
@@ -32,8 +32,8 @@ export default class GainNode extends Component<GainNodeProps, GainNodeState>
         const node: Node =
         {
             id:       createId(),
-            type:     'gain',
-            data:     { gain: 1 },
+            type:     'delay',
+            data:     { delayTime: 1 },
             position: { x: 0, y: 0 }
         };
        
@@ -42,17 +42,15 @@ export default class GainNode extends Component<GainNodeProps, GainNodeState>
     
     
     
-    componentDidMount() 
+    componentDidMount()
     {
-        const { id, data: { gain } } = this.props;
-
         createAudioContext();
-        const audioNode = audioContext?.createGain();
+        const audioNode = audioContext?.createDelay();
 
         if (audioNode)
         {
-            audioNode.gain.value = gain;
-            audioNodes.set(id, audioNode);
+            audioNode.delayTime.value = this.props.data.delayTime;
+            audioNodes.set(this.props.id, audioNode);
         }
     }
 
@@ -60,25 +58,31 @@ export default class GainNode extends Component<GainNodeProps, GainNodeState>
 
     componentWillUnmount()
     {
-        const { id } = this.props;
-
-        const audioNode = audioNodes.get(id) as globalThis.GainNode;
+        const audioNode = audioNodes.get(this.props.id) as globalThis.DelayNode;
         
         if (audioNode)
         {
             audioNode.disconnect();
-            audioNodes.delete(id);
+            audioNodes.delete(this.props.id);
         }
     }
 
 
 
+    handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+    {
+        const { updateNode } = this.context!;
+        updateNode(this.props.id, { gain: Number(e.target.value) / 100 })
+    };
+
+
+
     render()
     {
-        const { id, selected, data: { gain } } = this.props;
+        const { selected }   = this.props;
         const { updateNode } = this.context!;
-        
-        
+
+
         return (
             <div 
                 className = {styles.node}
@@ -87,16 +91,17 @@ export default class GainNode extends Component<GainNodeProps, GainNodeState>
 
                 <Handle type='target' position={Position.Left} />
 
-                <h1>Gain</h1>
+                <h1>Delay</h1>
 
                 <div className={styles.nodeContent}>
 
                     <Range 
-                        label    = 'Gain'
+                        label    = 'Time'
                         min      = {0}
-                        max      = {200}
-                        value    = {gain * 100} 
-                        onChange = {(e) => updateNode(id, { gain: Number(e.target.value) / 100 })}
+                        max      = {1000}
+                        value    = {this.props.data.delayTime * 1000} 
+                        suffix   = 'ms'
+                        onChange = {(e) => updateNode(this.props.id, { delayTime: Number(e.target.value) / 1000 })}
                         />
 
                 </div>

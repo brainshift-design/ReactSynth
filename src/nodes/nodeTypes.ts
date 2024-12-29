@@ -1,19 +1,33 @@
 import { NodeTypes } from 'reactflow';
-import OscillatorUiNode from './OscillatorUiNode';
+import WaveShaperNode from './WaveShaperNode';
+import OscillatorNode from './OscillatorNode';
 import GainNode from './GainNode';
-import DelayUiNode from './DelayUiNode';
-import OutputUiNode from './OutputUiNode'
-import FilterUiNode from './FilterUiNode'
-import WaveShaperUiNode from './WaveShaperUiNode';
+import { createElement } from 'react';
+import DelayNode from './DelayNode';
+import FilterNode from './FilterNode';
+import OutputNode from './OutputNode';
 
 
 
-export const nodeTypes: NodeTypes = 
+export const nodeTypes = 
 {
-    oscillator: OscillatorUiNode,
+    oscillator: OscillatorNode,
     gain:       GainNode,
-   _output:     OutputUiNode, // 'output' is reserved by ReactFlow
-    delay:      DelayUiNode,
-    waveShaper: WaveShaperUiNode,
-    filter:     FilterUiNode
+   _output:     OutputNode, // 'output' is reserved by ReactFlow
+    delay:      DelayNode,
+    waveShaper: WaveShaperNode,
+    filter:     FilterNode
 };
+
+
+export const reactNodeTypes: NodeTypes = Object.fromEntries(
+    Object.entries(nodeTypes).map(([type, NodeClass]) =>
+    [
+        type,
+        (props) =>
+        {
+            const node = NodeClass.create();
+            return createElement(NodeClass as any, {...props, node });
+        }
+    ])
+);
