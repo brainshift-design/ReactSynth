@@ -4,11 +4,11 @@ import { updateAudioNode, removeAudioNode, connectAudioNodes, disconnectAudioNod
 import { createId } from '../util';
 import { NodeContext } from '../nodes/NodeContext';
 import OscillatorUiNode from '../nodes/OscillatorUiNode';
-import GainUiNode from '../nodes/GainUiNode';
 import OutputUiNode from '../nodes/OutputUiNode';
 import DelayUiNode from '../nodes/DelayUiNode';
 import FilterUiNode from '../nodes/FilterUiNode';
 import WaveShaperUiNode from '../nodes/WaveShaperUiNode';
+import GainNode from '../nodes/GainNode';
 
 
 
@@ -78,7 +78,7 @@ export function useFlowState()
         switch (type)
         {
             case 'oscillator': node = OscillatorUiNode.create(); break;
-            case 'gain':       node = GainUiNode      .create(); break;
+            case 'gain':       node = GainNode        .create(); break;
             case 'delay':      node = DelayUiNode     .create(); break;
             case 'filter':     node = FilterUiNode    .create(); break;
             case 'waveShaper': node = WaveShaperUiNode.create(); break;
