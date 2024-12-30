@@ -68,22 +68,22 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
             <>
                 <h1>OSC</h1>
 
-                * add value marks with configurable number of ticks from min to max<br/>
                 * make frequency knob logarighmic, at least on a power curve
 
                 <div className = {styles.nodeContent}>
 
                     <NumberKnob 
-                        label    = 'FREQ'
-                        min      = {20}
-                        max      = {20000}
-                        value    = {frequency}
-                        padding  = {5}
-                        onChange = {(e) => 
-                        {
-                            console.log('e =', e);
-                            updateNode(id, { frequency: Number(e.target.value) });
-                        }}
+                        label           = 'FREQ'
+                        min             = {20}
+                        max             = {20000}
+                        value           = {frequency}
+                        padding         = {5}
+                        ticks           = {19}
+                        tickSize        = {3}
+                        tickDistance    = {27}
+                        adjustTickX     = {-1}
+                        adjustTickAngle = {0.05}
+                        onChange        = {(e) => updateNode(id, { frequency: Number(e.target.value) })}
                         />
 
                     <Select

@@ -21,7 +21,7 @@
     --color-node-bg:          #f8f8f8;
     --color-node-border:      #0004;
     --color-node-text:        #444;
-    --color-node-value:       #888;
+    --color-node-value:       #666;
 
 
     --node-selected-style:      3px solid var(--color-node-header-text);

@@ -10,7 +10,7 @@
     flex-direction: column;
     align-items:    center;
     position:       relative;
-    gap:            var(--gap-xs);
+    gap:            0;
     width:          fit-content;
     /* box-shadow:     0 0 0 1px red inset; */
 }
@@ -26,10 +26,11 @@
     font-size:        21px;
     color:            #303509;
     text-shadow:      0 1.5px 1px #30350944;
-    border:           1px solid #0003;
-    box-shadow:       0 2px 2px #0002 inset;
+    border:           1px solid #00000016;
+    box-shadow:       0 2px 3px #0002 inset;
     text-align:       center;
     border-radius:    2px;
+    margin-bottom:    2px;
 }
 
 
@@ -45,12 +46,26 @@
     margin:   0;
 }
 
+
+.knobContainer .infoContainer
+{
+    width:      60px;
+    height:     53px;
+    position:   relative;
+    margin-top: calc(var(--gap-xs) + 4px);
+}
+
+
 .knobContainer .inputContainer
 {
     width:      var(--knob-size);
     height:     var(--knob-size);
-    position:   relative;
-}
+    position:   absolute;
+    left:       50%;
+    top:        50%;
+    transform:  translateX(-50%)
+                translateY(-50%);
+            }
 
 
 .knobContainer input[type='range']
@@ -63,6 +78,7 @@
     position:         relative;
     pointer-events:   all;
     clip-path:        circle(6% at center);
+    
 }
 
 
@@ -99,4 +115,16 @@
     background:    var(--color-node-value);
     transform:     translate(-50%, -135%);
     border-radius: 2px;
+}
+
+
+.knobContainer .knobTick
+{
+    position:         absolute;
+    width:            2px;
+    left:             50%;
+    bottom:           50%;
+    background-color: #888;
+    transform:        translate(-50%, -25px);
+    transform-origin: bottom center;
 }
