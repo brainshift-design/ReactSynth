@@ -1,0 +1,102 @@
+:root
+{
+    --knob-size: 45px;
+}
+
+
+.knobContainer
+{
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    position:       relative;
+    gap:            var(--gap-xs);
+    width:          fit-content;
+    /* box-shadow:     0 0 0 1px red inset; */
+}
+
+
+.knobContainer .display
+{
+    width:            45px;
+    overflow:         hidden;
+    padding:          3px;
+    background-color: #bdcf54;
+    font-family:      VT323;
+    font-size:        21px;
+    color:            #303509;
+    text-shadow:      0 1.5px 1px #30350944;
+    border:           1px solid #0003;
+    box-shadow:       0 2px 2px #0002 inset;
+    text-align:       center;
+    border-radius:    2px;
+}
+
+
+.knobContainer input[type='range'],
+.knobContainer .knob,
+.knobContainer .knobValue
+{
+    position: relative;
+    top:      0;
+    left:     0;
+    width:    var(--knob-size);
+    height:   var(--knob-size);
+    margin:   0;
+}
+
+.knobContainer .inputContainer
+{
+    width:      var(--knob-size);
+    height:     var(--knob-size);
+    position:   relative;
+}
+
+
+.knobContainer input[type='range']
+{
+    opacity:          0;
+    cursor:           pointer;
+    z-index:          2;
+    transform:        scale(8);
+    transform-origin: center;
+    position:         relative;
+    pointer-events:   all;
+    clip-path:        circle(6% at center);
+}
+
+
+.knobContainer .knob
+{
+    position:      absolute;
+    border-radius: 50%;
+    background:    #f0f4f5;
+    box-shadow:    0px 0px 4px 0px rgba(0, 0, 0, 0.11), 
+                   0px 1px 0.5px 0px #FFF inset, 
+                   1px 2.5px 2.5px 0px rgba(0, 0, 0, 0.03) inset, 
+                   2px 4px 4.8px 0px rgba(255, 255, 255, 0.68) inset, 0px 1px 2.8px 0px rgba(0, 0, 0, 0.13), 0px 3px 5.6px 0px rgba(0, 0, 0, 0.11), 0px 14px 19.9px 0px rgba(0, 0, 0, 0.15), 0px 0px 3.9px 0px rgba(0, 0, 0, 0.16) inset, 
+                   0px -1px 1px -1px #000 inset;
+    user-select:   none;
+    touch-action:  none;
+}
+
+
+.knobContainer .knobValue
+{
+    position:      absolute;
+    border-radius: 50%;
+}
+
+
+.knobContainer .knobValue::after 
+{
+    content:       '';
+    position:      absolute;
+    top:           50%;
+    left:          50%;
+    width:         3px;
+    height:        40%;
+    background:    var(--color-node-value);
+    transform:     translate(-50%, -135%);
+    border-radius: 2px;
+}

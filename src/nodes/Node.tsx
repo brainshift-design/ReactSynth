@@ -83,7 +83,7 @@ extends Component<T>
         return (
             <div 
                 className = {styles.node}
-                style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
+                style     = {{ outline: selected ? 'var(--node-selected-style)' : 'none' }}
                 >
 
                 { this.renderContent() }

@@ -6,14 +6,17 @@
 
     overflow:         hidden;
 
-    color:            var(--color-text);
-    background-color: var(--color-control);
+    color:            var(--color-node-header-text);
+    font-weight:      700;
+    font-size:        11px;
+
+    background-color: var(--color-node-bg);
 
     width:            var(--size-normal);
     height:           var(--size-normal);
 
     border:           none;
-    box-shadow:       0 0 0 1px #0002 inset;
+    box-shadow:       0 0 0 1px #0004 inset;
     border-radius:    var(--corner-m);
 }
 

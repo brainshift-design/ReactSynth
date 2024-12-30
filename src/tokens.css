@@ -7,7 +7,7 @@
     --color-highlight:        #ddd;
     --color-text:             #000;
 
-    --size-normal:            5ex;
+    --size-normal:            36px;
     
     --gap-xs:                 0.6ex;
     --gap-s:                  1ex;
@@ -18,10 +18,11 @@
 
 
     --color-node-header-text: #08f;
-    --color-node-bg:          #fff;
+    --color-node-bg:          #f8f8f8;
     --color-node-border:      #0004;
-    --color-node-text:        #000;
+    --color-node-text:        #444;
+    --color-node-value:       #888;
 
 
-    --node-outline-style:      2px solid var(--color-node-header-text);
+    --node-selected-style:      3px solid var(--color-node-header-text);
 }

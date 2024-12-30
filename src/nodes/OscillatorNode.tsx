@@ -1,9 +1,9 @@
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
-import Range from '../components/Range';
 import Select from '../components/Select';
 import styles from './Node.module.css';
 import { audioContext } from '../audio/audio';
 import Node, { NodeProps } from './Node';
+import NumberKnob from '../components/NumberKnob';
 
 
 
@@ -66,21 +66,28 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
         
         return (
             <>
-                <h1>Oscillator</h1>
+                <h1>OSC</h1>
+
+                * add value marks with configurable number of ticks from min to max<br/>
+                * make frequency knob logarighmic, at least on a power curve
 
                 <div className = {styles.nodeContent}>
 
-                    <Range 
-                        label    = 'Frequency'
-                        min      = {10}
-                        max      = {1000}
+                    <NumberKnob 
+                        label    = 'FREQ'
+                        min      = {20}
+                        max      = {20000}
                         value    = {frequency}
-                        suffix   = 'Hz'
-                        onChange = {(e) => updateNode(id, { frequency: Number(e.target.value) })}
+                        padding  = {5}
+                        onChange = {(e) => 
+                        {
+                            console.log('e =', e);
+                            updateNode(id, { frequency: Number(e.target.value) });
+                        }}
                         />
 
                     <Select
-                        label   = 'Waveform'
+                        label   = 'FORM'
                         options =
                         {[
                             { value: 'sine',     label: 'Sine'     },
