@@ -1,8 +1,8 @@
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
-import Range from '../components/Range';
 import { audioContext } from '../audio/audio';
 import Node, { NodeProps } from './Node';
 import styles from './Node.module.css';
+import NumberKnob from '../components/NumberKnob';
 
 
 
@@ -38,7 +38,7 @@ export default class DelayNode extends Node<DelayNodeProps>
     {
         return { 
             ...super.createReactFlowNode(),
-            data: { delayTime: 1 } 
+            data: { delayTime: 0.5 } 
         };
     }
     
@@ -56,13 +56,15 @@ export default class DelayNode extends Node<DelayNodeProps>
 
                 <div className={styles.nodeContent}>
 
-                    <Range 
-                        label    = 'Time'
+                    <NumberKnob 
+                        label    = 'sec'
                         min      = {0}
-                        max      = {1000}
-                        value    = {this.props.data.delayTime * 1000} 
-                        suffix   = 'ms'
-                        onChange = {(e) => updateNode(this.props.id, { delayTime: Number(e.target.value) / 1000 })}
+                        max      = {1}
+                        value    = {this.props.data.delayTime}
+                        decimals = {2}
+                        padding  = {4}
+                        ticks    = {11}
+                        onChange = {(e) => updateNode(this.props.id, { delayTime: Number(e.target.value) })}
                         />
 
                 </div>

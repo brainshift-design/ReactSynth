@@ -1,11 +1,10 @@
-import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
-import Range from '../components/Range';
-import Select from '../components/Select';
-
 import styles from './Node.module.css';
+import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import { audioContext } from '../audio/audio';
 import { createDistortionCurve } from './util';
 import Node, { NodeProps } from './Node';
+import NumberKnob from '../components/NumberKnob';
+import SelectKnob from '../components/SelectKnob';
 
 
 
@@ -67,20 +66,22 @@ export default class WaveShaperNode extends Node<WaveShaperNodeProps>
             <>
                 <Handle type='target' position={Position.Left} />
 
-                <h1>Wave Shaper</h1>
+                <h1>Shaper</h1>
 
                 <div className = {styles.nodeContent}>
 
-                    <Range 
-                        label    = 'Amount'
+                    <NumberKnob 
+                        label    = 'Amt'
                         min      = {0}
                         max      = {1000}
                         value    = {amount}
+                        padding  = {3}
+                        ticks    = {11}
                         onChange = {(e) => updateNode(id, { amount: Number(e.target.value), curve: createDistortionCurve(Number(e.target.value)) })}
                         />
 
-                    <Select
-                        label   = 'Oversample'
+                    <SelectKnob
+                        label   = 'Over'
                         options =
                         {[
                             { value: 'none', label: 'None' },

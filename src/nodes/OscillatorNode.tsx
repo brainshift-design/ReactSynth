@@ -1,9 +1,10 @@
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
-import Select from '../components/Select';
 import styles from './Node.module.css';
 import { audioContext } from '../audio/audio';
 import Node, { NodeProps } from './Node';
 import NumberKnob from '../components/NumberKnob';
+import { freqCurvePower, getFreqCurve } from './util';
+import SelectKnob from '../components/SelectKnob';
 
 
 
@@ -20,6 +21,11 @@ interface OscillatorNodeProps extends NodeProps
 
 export default class OscillatorNode extends Node<OscillatorNodeProps>
 {
+    static readonly minFreq = 20;
+    static readonly maxFreq = 20000;
+
+
+
     protected createAudioNode()
     {
         return audioContext?.createOscillator() as AudioNode;
@@ -50,7 +56,7 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
             ...super.createReactFlowNode(),
             data:     
             { 
-                frequency: 440, 
+                frequency: getFreqCurve(440, OscillatorNode.minFreq, OscillatorNode.maxFreq, 1/freqCurvePower), 
                 type:     'sine' 
             },
         };
@@ -62,38 +68,36 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
     {
         const { id, data: { frequency, type } } = this.props;
         const { updateNode } = this.context;
-        
+
         
         return (
             <>
-                <h1>OSC</h1>
-
-                * make frequency knob logarighmic, at least on a power curve
+                <h1>Osc</h1>
 
                 <div className = {styles.nodeContent}>
 
                     <NumberKnob 
-                        label           = 'FREQ'
-                        min             = {20}
-                        max             = {20000}
+                        label           = 'Hz'
+                        min             = {OscillatorNode.minFreq}
+                        max             = {OscillatorNode.maxFreq}
                         value           = {frequency}
-                        padding         = {5}
-                        ticks           = {19}
-                        tickSize        = {3}
-                        tickDistance    = {27}
-                        adjustTickX     = {-1}
-                        adjustTickAngle = {0.05}
-                        onChange        = {(e) => updateNode(id, { frequency: Number(e.target.value) })}
+                        getCurvedValue  = {(val) => getFreqCurve(val, OscillatorNode.minFreq, OscillatorNode.maxFreq, 6, v => v)}
+                        getCurvedTick   = {(val) => getFreqCurve(val, 0, 1, 6, v => 1-v)}
+                        ticks           = {35}
+                        onChange        = {(e) => (
+                            console.log('e.target.value =', e.target.value),
+                            updateNode(id, { frequency: Number(e.target.value) })
+                        )}
                         />
 
-                    <Select
-                        label   = 'FORM'
+                    <SelectKnob
+                        label   = 'Form'
                         options =
                         {[
-                            { value: 'sine',     label: 'Sine'     },
-                            { value: 'triangle', label: 'Triangle' },
-                            { value: 'sawtooth', label: 'Sawtooth' },
-                            { value: 'square',   label: 'Square'   }
+                            { value: 'sine',     label: 'SIN'     },
+                            { value: 'triangle', label: 'TRI' },
+                            { value: 'sawtooth', label: 'SAW' },
+                            { value: 'square',   label: 'SQR'   }
                         ]}
                         value    = {type}
                         onChange = {(e) => updateNode(id, { type: e.target.value })}

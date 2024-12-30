@@ -17,12 +17,12 @@ export default function ToolbarButtons(): ReactElement
 
             <Separator />            
 
-            <Button onClick={() => createNode('oscillator')}>OSC</Button>
-            <Button onClick={() => createNode('gain'      )}>GAIN</Button>
-            <Button onClick={() => createNode('delay'     )}>DEL</Button>
-            <Button onClick={() => createNode('filter'    )}>FLT</Button>
-            <Button onClick={() => createNode('waveShaper')}>SHP</Button>
-            <Button onClick={() => createNode('_output'   )}>OUT</Button>
+            <Button onClick={() => createNode('oscillator')}>Osc</Button>
+            <Button onClick={() => createNode('gain'      )}>Gain</Button>
+            <Button onClick={() => createNode('delay'     )}>Del</Button>
+            <Button onClick={() => createNode('filter'    )}>Flt</Button>
+            <Button onClick={() => createNode('waveShaper')}>Shp</Button>
+            <Button onClick={() => createNode('_output'   )}>Out</Button>
         </>
     );
 }

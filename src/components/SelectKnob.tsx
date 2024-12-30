@@ -5,19 +5,11 @@ import { Tau } from '../util';
 
 
 
-interface NumberKnobProps
+interface SelectKnobProps
 {
     label:            string;
-    min:              number;
-    max:              number;
-    value:            number;
-    getCurvedValue?:  (val: number, min: number, max: number) => number,
-    getCurvedTick?:   (val: number, min: number, max: number) => number,
-    decimals?:        number;
-    padding?:         number;
-    padChar?:         string;
-    suffix?:          string;
-    ticks?:           number;
+    value:            string;
+    options:          { value: string, label: string }[];
     tickSize?:        number;
     tickDistance?:    number;
     adjustTickX?:     number;
@@ -28,28 +20,19 @@ interface NumberKnobProps
 
 
 
-export default function NumberKnob({ 
+export default function SelectKnob({ 
     label, 
-    min, 
-    max, 
     value, 
-    getCurvedValue  = (val, _1, _2) => val,
-    getCurvedTick   = (val, _1, _2) => val,
-    decimals        = 0, 
-    padding         = 0, 
-    padChar         = ' ', 
-    suffix          = '', 
-    ticks           = 15, 
+    options,
     tickSize        = 3, 
     tickDistance    = 27,
-    adjustTickX     = -1, // these are for manual
-    adjustTickY     = 0, // adjustment of ticks
+    adjustTickX     = -1,   // these are for manual
+    adjustTickY     = 0,    // adjustment of ticks
     adjustTickAngle = 0.05, // because of CSS pixel grid issues
     onChange 
-}: NumberKnobProps)
+}: SelectKnobProps)
 {
-    const linearInputRef = useRef<HTMLInputElement>(null);
-    const curvedInputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const dragState = useRef(
     {
@@ -59,18 +42,14 @@ export default function NumberKnob({
     });
 
 
-    const minRef      = useRef(min);
-    const maxRef      = useRef(max);
     const onChangeRef = useRef(onChange);
 
 
     useEffect(() =>
     {
-        minRef.current = min;
-        maxRef.current = max;
         onChangeRef.current = onChange;
     },
-    [min, max, onChange]);
+    [onChange]);
 
 
     const onPointerMove = useCallback((e: globalThis.PointerEvent) => 
@@ -79,24 +58,18 @@ export default function NumberKnob({
 
         const delta = (e.clientX - dragState.current.startX) * 0.01;
 
-        const newLinearValue = Math.min(Math.max(
-            minRef.current,
-            dragState.current.startValue + delta * (maxRef.current - minRef.current)),
-            maxRef.current);
+        const newValue = Math.min(Math.max(
+            0,
+            dragState.current.startValue + delta * options.length),
+            options.length);
             
-        if (linearInputRef.current)
-            linearInputRef.current.value = newLinearValue.toString();
-
-        if (curvedInputRef.current) 
-        {
-            const newCurvedValue = getCurvedValue(newLinearValue, minRef.current, maxRef.current);
-            curvedInputRef.current.value = newCurvedValue.toString();
-        }
+        if (inputRef.current)
+            inputRef.current.value = newValue.toString();
 
         if (onChangeRef.current)
         {
             onChangeRef.current({
-                target: { value: newLinearValue.toString() }
+                target: { value: options[Math.round(newValue)].label }
             } as ChangeEvent<HTMLInputElement>);
         }
     },
@@ -110,7 +83,7 @@ export default function NumberKnob({
         globalThis.removeEventListener('pointermove', onPointerMove);
         globalThis.removeEventListener('pointerup',   onPointerUp);
 
-        linearInputRef.current?.releasePointerCapture(e.pointerId);
+        inputRef.current?.releasePointerCapture(e.pointerId);
     },
     []);
 
@@ -126,13 +99,13 @@ export default function NumberKnob({
         {
             isDragging: true,
             startX:     e.clientX,
-            startValue: value
+            startValue: options.findIndex(i => i.value == value)
         }
 
         globalThis.addEventListener('pointermove', onPointerMove);
         globalThis.addEventListener('pointerup',   onPointerUp);
 
-        linearInputRef.current?.setPointerCapture(e.pointerId);
+        inputRef.current?.setPointerCapture(e.pointerId);
     },
     [value, onPointerMove, onPointerUp]);
 
@@ -143,36 +116,16 @@ export default function NumberKnob({
     const angleMin = Tau * -3/8;
     const angleMax = Tau *  3/8;
 
-    const linearValue = parseFloat(linearInputRef.current?.value || value.toString());
-    const curvedValue = getCurvedValue(linearValue, minRef.current, maxRef.current);
+    const _value = parseFloat(inputRef.current?.value || value.toString());
     
-    const valueAngle = angleMin + (linearValue - min) / (max - min) * (angleMax - angleMin);
+    const valueAngle = angleMin + _value / options.length * (angleMax - angleMin);
+
+    const nTicks = options.length;
 
     const tickAngle = (index: number) => 
           angleMin
-        + getCurvedTick(index / (ticks-1), 0, 1) * (angleMax - angleMin)
+        + index / (nTicks-1) * (angleMax - angleMin)
         + adjustTickAngle;
-
-
-    const handleLinearChange = (e: ChangeEvent<HTMLInputElement>) => 
-    {
-        const newLinearValue = parseFloat(e.target.value);
-        const newCurvedValue = getCurvedValue(newLinearValue, minRef.current, maxRef.current);
-
-        if (curvedInputRef.current) 
-        {
-            curvedInputRef.current.value = newCurvedValue.toString();
-
-            const event = new Event('input', { bubbles: true });
-            curvedInputRef.current.dispatchEvent(event);
-        }
-    };
-
-
-    const finalCurvedValue = curvedValue.toFixed(decimals);
-    const strValue         = finalCurvedValue.toString().padStart(padding, padChar.replace(' ', ' ')) + (suffix && ' ') + suffix;
-
-    const inputStep = 1 / Math.round(Math.pow(10, decimals));
 
 
     return (
@@ -182,12 +135,12 @@ export default function NumberKnob({
                 className = {knobStyles.display}
                 style     = {{ color: 'var(--color-node-text)' }}
                 >
-                {strValue}
+                {value}
             </h2>
 
             <div className={knobStyles.infoContainer}>
 
-                {Array.from({ length: ticks }).map((_, index) => (
+                {Array.from({ length: nTicks }).map((_, index) => (
                     <div 
                         key       = {index} 
                         className = {knobStyles.knobTick}
@@ -205,25 +158,13 @@ export default function NumberKnob({
                     <input 
                         className     = 'nodrag'
                         type          = 'range'
-                        min           = {min}
-                        max           = {max}
-                        step          = {inputStep}
-                        value         = {value} // this should reflect the linear value
-                        ref           = {linearInputRef}
-                        onChange      = {handleLinearChange}
+                        min           = {0}
+                        max           = {options.length-1}
+                        value         = {options.findIndex(i => i.value == value)} // this should reflect the linear value
+                        ref           = {inputRef}
+                        onChange      = {onChange}
                         onPointerDown = {onPointerDown}
                         onClick       = {onClick}
-                        style         = {{ touchAction: 'none' }}
-                        />
-
-                    <input 
-                        className     = 'nodrag'
-                        type          = 'range'
-                        min           = {min}
-                        max           = {max}
-                        value         = {finalCurvedValue}
-                        ref           = {curvedInputRef}
-                        onChange      = {onChange}
                         style         = {{ touchAction: 'none' }}
                         />
 

@@ -1,9 +1,10 @@
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
-import Range from '../components/Range';
+import NumberKnob from '../components/NumberKnob';
 import styles from './Node.module.css';
 import { audioContext } from '../audio/audio';
-import Select from '../components/Select';
 import Node, { NodeProps } from './Node';
+import { getFreqCurve } from './util';
+import SelectKnob from '../components/SelectKnob';
 
 
 
@@ -23,6 +24,11 @@ interface FilterNodeProps extends NodeProps
 
 export default class FilterNode extends Node<FilterNodeProps>
 {
+    static readonly minFreq = 20;
+    static readonly maxFreq = 20000;
+
+
+
     protected createAudioNode()
     {
         return audioContext?.createBiquadFilter() as AudioNode;
@@ -79,52 +85,59 @@ export default class FilterNode extends Node<FilterNodeProps>
 
                 <div className={styles.nodeContent}>
 
-                    <Range 
-                        label    = 'Frequency'
-                        min      = {10}
-                        max      = {20000}
-                        value    = {frequency}
-                        suffix   = 'Hz'
-                        onChange = {(e) => updateNode(id, { frequency: e.target.value })}
+                    <NumberKnob 
+                        label           = 'Hz'
+                        min             = {FilterNode.minFreq}
+                        max             = {FilterNode.maxFreq}
+                        value           = {frequency}
+                        getCurvedValue  = {(val) => getFreqCurve(val, FilterNode.minFreq, FilterNode.maxFreq, 6, v => v)}
+                        getCurvedTick   = {(val) => getFreqCurve(val, 0, 1, 6, v => 1-v)}
+                        ticks           = {35}
+                        onChange        = {(e) => (
+                            console.log('e.target.value =', e.target.value),
+                            updateNode(id, { frequency: Number(e.target.value) })
+                        )}
                         />
 
-                    <Range 
-                        label    = 'Detune'
+                    <NumberKnob 
+                        label    = 'Det ¢'
                         min      = {-100}
                         max      = { 100}
                         value    = {detune}
-                        suffix   = '¢'
+                        ticks    = {11}
                         onChange = {(e) => updateNode(id, { detune: e.target.value })}
                         />
 
-                    <Range 
-                        label    = 'Quality'
+                    <NumberKnob 
+                        label    = 'Q'
                         min      = {0}
                         max      = {30}
                         value    = {Q}
+                        ticks    = {11}
                         onChange = {(e) => updateNode(id, { Q: Number(e.target.value) })}
                         />
 
-                    <Range 
-                        label    = 'Gain'
+                    <NumberKnob 
+                        label    = 'Gain %'
                         min      = {0}
                         max      = {100}
-                        value    = {gain}
-                        onChange = {(e) => updateNode(id, { gain: Number(e.target.value) })}
+                        value    = {gain * 100}
+                        ticks    = {11}
+                        onChange = {(e) => updateNode(id, { gain: Number(e.target.value) / 100 })}
                         />
 
-                    <Select
+                    <SelectKnob
                         label   = 'Type'
                         options =
                         {[
-                            { value: 'lowpass',   label: 'Low Pass'   },
-                            { value: 'highpass',  label: 'High Pass'  },
-                            { value: 'bandpass',  label: 'Band Pass'  },
-                            { value: 'lowshelf',  label: 'Low Shelf'  },
-                            { value: 'highshelf', label: 'High Shelf' },
-                            { value: 'peaking',   label: 'Peaking'    },
-                            { value: 'notch',     label: 'Notch'      },
-                            { value: 'allpass',   label: 'All Pass'   }
+                            { value: 'lowpass',   label: 'LoPs' },
+                            { value: 'highpass',  label: 'HiPs' },
+                            { value: 'bandpass',  label: 'BnPs' },
+                            { value: 'lowshelf',  label: 'LoSh' },
+                            { value: 'highshelf', label: 'HiSh' },
+                            { value: 'peaking',   label: 'Peak' },
+                            { value: 'notch',     label: 'Ntch' },
+                            { value: 'allpass',   label: 'AlPs' }
                         ]}
                         value    = {type}
                         onChange = {(e) => updateNode(id, { type: e.target.value })}

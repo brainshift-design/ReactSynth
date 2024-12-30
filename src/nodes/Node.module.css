@@ -30,7 +30,7 @@
 {
     padding:        var(--gap-s);
     padding-bottom: calc(var(--gap-s) + var(--gap-xs));
-    gap:            var(--gap-xs);
+    gap:            var(--gap-m);
     
     display:        flex;
     flex-direction: column;

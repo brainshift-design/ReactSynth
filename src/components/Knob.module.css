@@ -30,7 +30,6 @@
     box-shadow:       0 2px 3px #0002 inset;
     text-align:       center;
     border-radius:    2px;
-    margin-bottom:    2px;
 }
 
 
@@ -73,11 +72,11 @@
     opacity:          0;
     cursor:           pointer;
     z-index:          2;
-    transform:        scale(8);
+    transform:        scale(24);
     transform-origin: center;
     position:         relative;
     pointer-events:   all;
-    clip-path:        circle(6% at center);
+    clip-path:        circle(3% at center);
     
 }
 
@@ -127,4 +126,12 @@
     background-color: #888;
     transform:        translate(-50%, -25px);
     transform-origin: bottom center;
+}
+
+
+.knobContainer .label
+{
+    color:       var(--color-node-text);
+    font-weight: 700;
+    margin-top:  1px;
 }

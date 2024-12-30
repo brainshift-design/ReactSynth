@@ -29,3 +29,12 @@ export function getTypeName(NodeClass: Function): string
 
     return found as string;
 }
+
+
+
+export const freqCurvePower = 5.6; // picked to make 440 be at the top
+
+export function getFreqCurve(val: number, min: number, max: number, power: number, prep: (v: number) => number = (_v: number) => _v)
+{
+    return min + prep(((val-min)/(max-min)) ** power) * (max-min);
+}

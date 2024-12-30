@@ -1,8 +1,8 @@
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
-import Range from '../components/Range';
 import { audioContext } from '../audio/audio';
 import Node, { NodeProps } from './Node';
 import styles from './Node.module.css';
+import NumberKnob from '../components/NumberKnob';
 
 
 
@@ -59,11 +59,17 @@ export default class GainNode extends Node<GainNodeProps>
 
                 <div className={styles.nodeContent}>
 
-                    <Range 
-                        label    = 'Gain'
-                        min      = {0}
-                        max      = {200}
-                        value    = {gain * 100} 
+                    <NumberKnob 
+                        label           = '%'
+                        min             = {0}
+                        max             = {200}
+                        value           = {gain * 100}
+                        padding         = {3}
+                        ticks           = {9}
+                        tickSize        = {3}
+                        tickDistance    = {27}
+                        adjustTickX     = {-1}
+                        adjustTickAngle = {0.05}
                         onChange = {(e) => updateNode(id, { gain: Number(e.target.value) / 100 })}
                         />
 

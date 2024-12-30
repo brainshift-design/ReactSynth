@@ -24,5 +24,5 @@
     --color-node-value:       #666;
 
 
-    --node-selected-style:      3px solid var(--color-node-header-text);
+    --node-selected-style:      2px solid var(--color-node-header-text);
 }
