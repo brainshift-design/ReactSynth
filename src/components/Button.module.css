@@ -6,9 +6,10 @@
 
     overflow:         hidden;
 
-    color:            var(--color-node-header-text);
-    font-weight:      800;
+    color:            var(--color-text);
+    font-weight:      700;
     font-size:        11px;
+    letter-spacing:   0.15ex;
 
     background-color: var(--color-node-bg);
 

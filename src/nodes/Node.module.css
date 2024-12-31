@@ -28,20 +28,10 @@
 
 .nodeContent
 {
-    padding:        var(--gap-s);
-    padding-bottom: calc(var(--gap-s) + var(--gap-xs));
-    gap:            var(--gap-m);
+    padding:        0 var(--gap-s) var(--gap-s) var(--gap-s);
+    gap:            var(--gap-s);
     
     display:        flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items:    flex-start;
 }
-
-
-/* react-flow__node.selected 
-{
-    outline: none;        /* or outline: 0 * /
-    border:  none;
-
-    box-shadow: 0 0 0 5px red
-} */

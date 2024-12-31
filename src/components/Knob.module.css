@@ -12,7 +12,7 @@
     position:       relative;
     gap:            0;
     width:          fit-content;
-    /* box-shadow:     0 0 0 1px red inset; */
+    border-radius:  var(--corner-xs);
 }
 
 
@@ -26,10 +26,11 @@
     font-size:        21px;
     color:            #303509;
     text-shadow:      0 1.5px 1px #30350944;
-    border:           1px solid #00000016;
-    box-shadow:       0 2px 3px #0002 inset;
+    box-shadow:       0 2px 3px #0002 inset,
+                      0 -1px 0px #fff4 inset;
     text-align:       center;
     border-radius:    2px;
+    margin:           2px 0 4px 0;
 }
 
 
@@ -52,6 +53,7 @@
     height:     53px;
     position:   relative;
     margin-top: calc(var(--gap-xs) + 4px);
+    margin:     5px 3px 0 3px;
 }
 
 
@@ -64,7 +66,7 @@
     top:        50%;
     transform:  translateX(-50%)
                 translateY(-50%);
-            }
+}
 
 
 .knobContainer input[type='range']
@@ -77,7 +79,6 @@
     position:         relative;
     pointer-events:   all;
     clip-path:        circle(3% at center);
-    
 }
 
 
@@ -129,9 +130,10 @@
 }
 
 
-.knobContainer .label
+.knobContainer .name
 {
-    color:       var(--color-node-text);
-    font-weight: 700;
-    margin-top:  1px;
+    color:         var(--color-node-text);
+    font-weight:   700;
+    margin-top:    2px;
+    margin-bottom: 4px;
 }

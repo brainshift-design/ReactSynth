@@ -68,8 +68,12 @@ export default function SelectKnob({
 
         if (onChangeRef.current)
         {
+            const index = Math.min(Math.max(0, Math.round(newValue)), options.length-1);
+            console.log('index =', index);
+            console.log('options[index].value =', options[index].value);
+
             onChangeRef.current({
-                target: { value: options[Math.round(newValue)].label }
+                target: { value: options[index].value }
             } as ChangeEvent<HTMLInputElement>);
         }
     },
@@ -116,9 +120,12 @@ export default function SelectKnob({
     const angleMin = Tau * -3/8;
     const angleMax = Tau *  3/8;
 
+    console.log('inputRef.current?.value =', inputRef.current?.value);
+    console.log('value =', value);
+
     const _value = parseFloat(inputRef.current?.value || value.toString());
     
-    const valueAngle = angleMin + _value / options.length * (angleMax - angleMin);
+    const valueAngle = angleMin + _value / (options.length-1) * (angleMax - angleMin);
 
     const nTicks = options.length;
 
@@ -135,7 +142,7 @@ export default function SelectKnob({
                 className = {knobStyles.display}
                 style     = {{ color: 'var(--color-node-text)' }}
                 >
-                {value}
+                {options.find(o => o.value == value)?.label}
             </h2>
 
             <div className={knobStyles.infoContainer}>
@@ -180,7 +187,7 @@ export default function SelectKnob({
 
             </div>
 
-            <h2 className={knobStyles.label}>
+            <h2 className={knobStyles.name}>
                 {label}
             </h2>
 

@@ -83,7 +83,35 @@ export default class FilterNode extends Node<FilterNodeProps>
 
                 <h1>Filter</h1>
 
+                * detune doesn't turn properly<br/>
+
                 <div className={styles.nodeContent}>
+
+                    <SelectKnob
+                        label   = 'Type'
+                        options =
+                        {[
+                            { value: 'lowpass',   label: 'LoPs' },
+                            { value: 'highpass',  label: 'HiPs' },
+                            { value: 'bandpass',  label: 'BnPs' },
+                            { value: 'lowshelf',  label: 'LoSh' },
+                            { value: 'highshelf', label: 'HiSh' },
+                            { value: 'peaking',   label: 'Peak' },
+                            { value: 'notch',     label: 'Ntch' },
+                            { value: 'allpass',   label: 'AlPs' }
+                        ]}
+                        value    = {type}
+                        onChange = {(e) => updateNode(id, { type: e.target.value })}
+                        />
+
+                    <NumberKnob 
+                        label    = 'Det ¢'
+                        min      = {-100}
+                        max      = { 100}
+                        value    = {detune}
+                        ticks    = {11}
+                        onChange = {(e) => updateNode(id, { detune: e.target.value })}
+                        />
 
                     <NumberKnob 
                         label           = 'Hz'
@@ -97,15 +125,6 @@ export default class FilterNode extends Node<FilterNodeProps>
                             console.log('e.target.value =', e.target.value),
                             updateNode(id, { frequency: Number(e.target.value) })
                         )}
-                        />
-
-                    <NumberKnob 
-                        label    = 'Det ¢'
-                        min      = {-100}
-                        max      = { 100}
-                        value    = {detune}
-                        ticks    = {11}
-                        onChange = {(e) => updateNode(id, { detune: e.target.value })}
                         />
 
                     <NumberKnob 
@@ -124,23 +143,6 @@ export default class FilterNode extends Node<FilterNodeProps>
                         value    = {gain * 100}
                         ticks    = {11}
                         onChange = {(e) => updateNode(id, { gain: Number(e.target.value) / 100 })}
-                        />
-
-                    <SelectKnob
-                        label   = 'Type'
-                        options =
-                        {[
-                            { value: 'lowpass',   label: 'LoPs' },
-                            { value: 'highpass',  label: 'HiPs' },
-                            { value: 'bandpass',  label: 'BnPs' },
-                            { value: 'lowshelf',  label: 'LoSh' },
-                            { value: 'highshelf', label: 'HiSh' },
-                            { value: 'peaking',   label: 'Peak' },
-                            { value: 'notch',     label: 'Ntch' },
-                            { value: 'allpass',   label: 'AlPs' }
-                        ]}
-                        value    = {type}
-                        onChange = {(e) => updateNode(id, { type: e.target.value })}
                         />
 
                 </div>

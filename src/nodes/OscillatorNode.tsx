@@ -72,9 +72,24 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
         
         return (
             <>
-                <h1>Osc</h1>
+                <h1>Oscillator</h1>
+
+                * wrong frequency<br/>
 
                 <div className = {styles.nodeContent}>
+
+                    <SelectKnob
+                        label   = 'Form'
+                        options =
+                        {[
+                            { value: 'sine',     label: 'Sine' },
+                            { value: 'triangle', label: 'Tri'  },
+                            { value: 'sawtooth', label: 'Saw'  },
+                            { value: 'square',   label: 'Sqr'  }
+                        ]}
+                        value    = {type}
+                        onChange = {(e) => updateNode(id, { type: e.target.value })}
+                        />
 
                     <NumberKnob 
                         label           = 'Hz'
@@ -88,19 +103,6 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
                             console.log('e.target.value =', e.target.value),
                             updateNode(id, { frequency: Number(e.target.value) })
                         )}
-                        />
-
-                    <SelectKnob
-                        label   = 'Form'
-                        options =
-                        {[
-                            { value: 'sine',     label: 'SIN'     },
-                            { value: 'triangle', label: 'TRI' },
-                            { value: 'sawtooth', label: 'SAW' },
-                            { value: 'square',   label: 'SQR'   }
-                        ]}
-                        value    = {type}
-                        onChange = {(e) => updateNode(id, { type: e.target.value })}
                         />
 
                 </div>

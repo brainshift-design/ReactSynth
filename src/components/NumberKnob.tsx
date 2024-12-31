@@ -239,7 +239,7 @@ export default function NumberKnob({
 
             </div>
 
-            <h2 className={knobStyles.label}>
+            <h2 className={knobStyles.name}>
                 {label}
             </h2>
 
