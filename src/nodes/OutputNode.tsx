@@ -1,28 +1,17 @@
-import Node, { NodeProps } from './Node';
-import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
+import styles from './Node.module.css';
+import { NodeProps } from './Node';
+import { Handle, Position } from 'reactflow';
 import { audioContext, audioIsRunning } from '../audio/audio';
 import Button from '../components/Button';
-
-import styles from './Node.module.css';
-
+import AudioNode from './AudioNode';
 
 
-export default class OutputNode extends Node<NodeProps>
+
+export default class OutputNode extends AudioNode<NodeProps>
 {
-    protected createAudioNode(): AudioNode
+    protected createAudioNode()
     {
-        return audioContext?.destination as AudioNode;
-    }
-
-
-
-    protected initAudioNode() {}
-
-
-
-    static createReactFlowNode(): ReactFlowNode 
-    {
-        return { ...super.createReactFlowNode() };
+        return audioContext?.destination as globalThis.AudioNode;
     }
 
 

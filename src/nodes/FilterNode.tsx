@@ -2,9 +2,10 @@ import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import NumberKnob from '../components/NumberKnob';
 import styles from './Node.module.css';
 import { audioContext } from '../audio/audio';
-import Node, { NodeProps } from './Node';
+import { NodeProps } from './Node';
 import { getFreqCurve } from './util';
 import SelectKnob from '../components/SelectKnob';
+import AudioNode from './AudioNode';
 
 
 
@@ -22,7 +23,7 @@ interface FilterNodeProps extends NodeProps
 
 
 
-export default class FilterNode extends Node<FilterNodeProps>
+export default class FilterNode extends AudioNode<FilterNodeProps>
 {
     static readonly minFreq = 20;
     static readonly maxFreq = 20000;
@@ -31,12 +32,12 @@ export default class FilterNode extends Node<FilterNodeProps>
 
     protected createAudioNode()
     {
-        return audioContext?.createBiquadFilter() as AudioNode;
+        return audioContext?.createBiquadFilter() as globalThis.AudioNode;
     }
 
 
 
-    protected initAudioNode()
+    protected override initAudioNode()
     {
         const { data: { frequency, detune, Q, gain, type } } = this.props;
 
@@ -54,7 +55,7 @@ export default class FilterNode extends Node<FilterNodeProps>
 
 
 
-    static createReactFlowNode(): ReactFlowNode
+    static override createReactFlowNode(): ReactFlowNode
     {
         return { 
             ...super.createReactFlowNode(),

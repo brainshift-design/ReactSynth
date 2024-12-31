@@ -1,8 +1,9 @@
+import nodeStyles from './Node.module.css';
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import { audioContext } from '../audio/audio';
-import Node, { NodeProps } from './Node';
-import styles from './Node.module.css';
+import { NodeProps } from './Node';
 import NumberKnob from '../components/NumberKnob';
+import AudioNode from './AudioNode';
 
 
 
@@ -13,7 +14,7 @@ interface GainNodeProps extends NodeProps
 
 
 
-export default class GainNode extends Node<GainNodeProps>
+export default class GainNode extends AudioNode<GainNodeProps>
 {
     protected createAudioNode()
     {
@@ -22,7 +23,7 @@ export default class GainNode extends Node<GainNodeProps>
 
 
 
-    protected initAudioNode()
+    protected override initAudioNode()
     {
         const { data: { gain } } = this.props;
 
@@ -34,7 +35,7 @@ export default class GainNode extends Node<GainNodeProps>
 
 
 
-    static createReactFlowNode(): ReactFlowNode
+    static override createReactFlowNode(): ReactFlowNode
     {
         return { 
             ...super.createReactFlowNode(),
@@ -57,7 +58,7 @@ export default class GainNode extends Node<GainNodeProps>
 
                 <h1>Gain</h1>
 
-                <div className={styles.nodeContent}>
+                <div className={nodeStyles.nodeContent}>
 
                     <NumberKnob 
                         label           = '%'

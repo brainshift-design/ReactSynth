@@ -1,10 +1,11 @@
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import styles from './Node.module.css';
 import { audioContext } from '../audio/audio';
-import Node, { NodeProps } from './Node';
+import { NodeProps } from './Node';
 import NumberKnob from '../components/NumberKnob';
-import { freqCurvePower, getFreqCurve } from './util';
+import { getFreqCurve, invFreq } from './util';
 import SelectKnob from '../components/SelectKnob';
+import AudioNode from './AudioNode';
 
 
 
@@ -19,7 +20,7 @@ interface OscillatorNodeProps extends NodeProps
 
 
 
-export default class OscillatorNode extends Node<OscillatorNodeProps>
+export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
 {
     static readonly minFreq = 20;
     static readonly maxFreq = 20000;
@@ -28,12 +29,12 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
 
     protected createAudioNode()
     {
-        return audioContext?.createOscillator() as AudioNode;
+        return audioContext?.createOscillator() as globalThis.AudioNode;
     }
 
 
 
-    protected initAudioNode()
+    protected override initAudioNode()
     {
         const { data: { frequency, type } } = this.props;
 
@@ -50,14 +51,14 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
 
 
 
-    static createReactFlowNode(): ReactFlowNode
+    static override createReactFlowNode(): ReactFlowNode
     {
         return { 
             ...super.createReactFlowNode(),
             data:     
             { 
-                frequency: getFreqCurve(440, OscillatorNode.minFreq, OscillatorNode.maxFreq, 1/freqCurvePower), 
-                type:     'sine' 
+                frequency: invFreq(440), 
+                type:      0
             },
         };
     }
@@ -85,10 +86,10 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
                             { value: 'sine',     label: 'Sine' },
                             { value: 'triangle', label: 'Tri'  },
                             { value: 'sawtooth', label: 'Saw'  },
-                            { value: 'square',   label: 'Sqr'  }
+                            { value: 'square',   label: 'Sqr'  } 
                         ]}
                         value    = {type}
-                        onChange = {(e) => updateNode(id, { type: e.target.value })}
+                        onChange = {(e) => updateNode(id, { type: Number(e.target.value) })}
                         />
 
                     <NumberKnob 
@@ -99,10 +100,7 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
                         getCurvedValue  = {(val) => getFreqCurve(val, OscillatorNode.minFreq, OscillatorNode.maxFreq, 6, v => v)}
                         getCurvedTick   = {(val) => getFreqCurve(val, 0, 1, 6, v => 1-v)}
                         ticks           = {35}
-                        onChange        = {(e) => (
-                            console.log('e.target.value =', e.target.value),
-                            updateNode(id, { frequency: Number(e.target.value) })
-                        )}
+                        onChange        = {(e) => updateNode(id, { frequency: Number(e.target.value) })}
                         />
 
                 </div>

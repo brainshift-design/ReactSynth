@@ -1,8 +1,9 @@
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import { audioContext } from '../audio/audio';
-import Node, { NodeProps } from './Node';
+import { NodeProps } from './Node';
 import styles from './Node.module.css';
 import NumberKnob from '../components/NumberKnob';
+import AudioNode from './AudioNode';
 
 
 
@@ -13,16 +14,16 @@ interface DelayNodeProps extends NodeProps
 
 
 
-export default class DelayNode extends Node<DelayNodeProps>
+export default class DelayNode extends AudioNode<DelayNodeProps>
 {
     protected createAudioNode()
     {
-        return audioContext?.createDelay() as AudioNode;
+        return audioContext?.createDelay() as globalThis.AudioNode;
     }
 
 
 
-    protected initAudioNode()
+    protected override initAudioNode()
     {
         const { data: { delayTime } } = this.props;
 
@@ -34,7 +35,7 @@ export default class DelayNode extends Node<DelayNodeProps>
 
 
 
-    static createReactFlowNode(): ReactFlowNode
+    static override createReactFlowNode(): ReactFlowNode
     {
         return { 
             ...super.createReactFlowNode(),

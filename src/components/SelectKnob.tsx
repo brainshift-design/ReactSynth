@@ -69,12 +69,13 @@ export default function SelectKnob({
         if (onChangeRef.current)
         {
             const index = Math.min(Math.max(0, Math.round(newValue)), options.length-1);
-            console.log('index =', index);
-            console.log('options[index].value =', options[index].value);
 
-            onChangeRef.current({
-                target: { value: options[index].value }
-            } as ChangeEvent<HTMLInputElement>);
+            if (index != Number(value))
+            {
+                onChangeRef.current({
+                    target: { value: index.toString() }
+                } as ChangeEvent<HTMLInputElement>);
+            }
         }
     },
     []);
@@ -103,8 +104,8 @@ export default function SelectKnob({
         {
             isDragging: true,
             startX:     e.clientX,
-            startValue: options.findIndex(i => i.value == value)
-        }
+            startValue: options.findIndex((_, index) => index == Number(value))
+        };
 
         globalThis.addEventListener('pointermove', onPointerMove);
         globalThis.addEventListener('pointerup',   onPointerUp);
@@ -120,8 +121,6 @@ export default function SelectKnob({
     const angleMin = Tau * -3/8;
     const angleMax = Tau *  3/8;
 
-    console.log('inputRef.current?.value =', inputRef.current?.value);
-    console.log('value =', value);
 
     const _value = parseFloat(inputRef.current?.value || value.toString());
     
@@ -142,7 +141,7 @@ export default function SelectKnob({
                 className = {knobStyles.display}
                 style     = {{ color: 'var(--color-node-text)' }}
                 >
-                {options.find(o => o.value == value)?.label}
+                {options.find((_, index) => index == Number(value))!.label}
             </h2>
 
             <div className={knobStyles.infoContainer}>
@@ -167,7 +166,7 @@ export default function SelectKnob({
                         type          = 'range'
                         min           = {0}
                         max           = {options.length-1}
-                        value         = {options.findIndex(i => i.value == value)} // this should reflect the linear value
+                        value         = {value}
                         ref           = {inputRef}
                         onChange      = {onChange}
                         onPointerDown = {onPointerDown}

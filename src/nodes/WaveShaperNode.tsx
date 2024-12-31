@@ -1,10 +1,11 @@
-import styles from './Node.module.css';
+import nodeStyles from './Node.module.css';
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import { audioContext } from '../audio/audio';
 import { createDistortionCurve } from './util';
-import Node, { NodeProps } from './Node';
+import { NodeProps } from './Node';
 import NumberKnob from '../components/NumberKnob';
 import SelectKnob from '../components/SelectKnob';
+import AudioNode from './AudioNode';
 
 
 
@@ -19,16 +20,16 @@ interface WaveShaperNodeProps extends NodeProps
 
 
 
-export default class WaveShaperNode extends Node<WaveShaperNodeProps>
+export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
 {
     protected createAudioNode()
     {
-        return audioContext?.createWaveShaper() as AudioNode;
+        return audioContext?.createWaveShaper() as globalThis.AudioNode;
     }
 
 
 
-    protected initAudioNode()
+    protected override initAudioNode()
     {
         const { data: { oversample } } = this.props;
 
@@ -42,7 +43,7 @@ export default class WaveShaperNode extends Node<WaveShaperNodeProps>
 
 
 
-    static createReactFlowNode(): ReactFlowNode
+    static override createReactFlowNode(): ReactFlowNode
     {
         return { 
             ...super.createReactFlowNode(),
@@ -66,9 +67,9 @@ export default class WaveShaperNode extends Node<WaveShaperNodeProps>
             <>
                 <Handle type='target' position={Position.Left} />
 
-                <h1>Shaper</h1>
+                <h1>Wave Shaper</h1>
 
-                <div className = {styles.nodeContent}>
+                <div className = {nodeStyles.nodeContent}>
 
                     <NumberKnob 
                         label    = 'Amt'
