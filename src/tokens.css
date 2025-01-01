@@ -20,12 +20,13 @@
     --min-toolbar-width:      5ex;
 
 
-    --color-node-header-text: #08f;
+    --color-node-selection:   #08f;
+    --color-node-header-text: var(--color-node-selection);
     --color-node-bg:          #f8f8f8;
     --color-node-border:      #0004;
     --color-node-text:        #444;
     --color-node-value:       #666;
 
 
-    --node-selected-style:    2px solid var(--color-node-header-text);
+    --node-selected-style:    2px solid var(--color-node-selection);
 }

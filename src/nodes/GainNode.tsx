@@ -65,12 +65,14 @@ export default class GainNode extends AudioNode<GainNodeProps>
                         max             = {200}
                         value           = {gain * 100}
                         padding         = {3}
-                        ticks           = {9}
+                        ticks           = {11}
                         tickSize        = {3}
                         tickDistance    = {27}
                         adjustTickX     = {-1}
                         adjustTickAngle = {0.05}
                         onChange        = {(e) => this.update({ gain: Number(e.target.value) / 100 })}
+                        knobColor       = '#4af'
+                        valueColor      = '#444'
                         />
 
                 </div>

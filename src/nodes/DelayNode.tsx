@@ -56,14 +56,16 @@ export default class DelayNode extends AudioNode<DelayNodeProps>
                 <div className={styles.nodeContent}>
 
                     <NumberKnob 
-                        label    = 'sec'
-                        min      = {0}
-                        max      = {1}
-                        value    = {this.props.data.delayTime}
-                        decimals = {2}
-                        padding  = {4}
-                        ticks    = {11}
-                        onChange = {(e) => this.update({ delayTime: Number(e.target.value) })}
+                        label      = 'sec'
+                        min        = {0}
+                        max        = {1}
+                        value      = {this.props.data.delayTime}
+                        decimals   = {2}
+                        padding    = {4}
+                        ticks      = {11}
+                        onChange   = {(e) => this.update({ delayTime: Number(e.target.value) })}
+                        knobColor  = '#4af'
+                        valueColor = '#444'
                         />
 
                 </div>

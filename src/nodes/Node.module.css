@@ -16,13 +16,16 @@
 
 .node h1
 {
-    font-size:  2ex;
-    color:      var(--color-node-header-text);
+    font-size:   1.8ex;
+    font-weight: 600;
 
-    margin:     0;
-    padding:    var(--gap-xs);
+    color:       var(--color-node-header-text);
 
-    text-align: center;
+    margin:      0;
+    padding:     var(--gap-xs);
+    margin-bottom: 2px;
+
+    text-align:  center;
 }
 
 

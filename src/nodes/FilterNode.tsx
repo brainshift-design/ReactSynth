@@ -107,8 +107,6 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
 
                 <h1>Filter</h1>
 
-                * detune doesn't turn properly<br/>
-
                 <div className={styles.nodeContent}>
 
                     <SelectKnob
@@ -134,8 +132,10 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                         value          = {frequency}
                         getCurvedValue = {(val) => getFreqCurve(val, FilterNode.minFreq, FilterNode.maxFreq, 6, v => v)}
                         getCurvedTick  = {(val) => getFreqCurve(val, 0, 1, 6, v => 1-v)}
-                        ticks          = {35}
+                        ticks          = {62}
                         onChange       = {(e) => this.update({ frequency: Number(e.target.value) })}
+                        knobColor      = '#4af'
+                        valueColor     = '#444'
                         />
 
                     <NumberKnob 
@@ -143,7 +143,7 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                         min      = {0}
                         max      = {30}
                         value    = {Q}
-                        ticks    = {11}
+                        ticks    = {7}
                         onChange = {(e) => this.update({ Q: Number(e.target.value) })}
                         />
 

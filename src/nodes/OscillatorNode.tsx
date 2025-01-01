@@ -79,7 +79,7 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
             data:     
             { 
                 frequency: invFreq(440), 
-                type:      2
+                type:      0
             },
         };
     }
@@ -95,9 +95,8 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
             <>
                 <h1>Oscillator</h1>
 
-                * knob doesn't update when value changes<br/>
                 * wrong frequency<br/>
-                * add highlight color to knobs, or just color, to be able to isolate knobs<br/>
+                * moving NumberKnob, then moving another NumberKnob, updates the previous one<br/>
 
                 <div className = {styles.nodeContent}>
 
@@ -106,8 +105,8 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
                         options  = {OscillatorNode.oscillatorTypes}
                         value    = {type}
                         onChange = {(e) => this.update({ type: Number(e.target.value) })}
-                        minAngle = {Tau * -1/8}
-                        maxAngle = {Tau *  1/8}
+                        minAngle = {Tau * -5/32}
+                        maxAngle = {Tau *  5/32}
                         />
 
                     <NumberKnob 
@@ -117,9 +116,10 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
                         value           = {frequency}
                         getCurvedValue  = {(val) => getFreqCurve(val, OscillatorNode.minFreq, OscillatorNode.maxFreq, 6, v => v)}
                         getCurvedTick   = {(val) => getFreqCurve(val, 0, 1, 6, v => 1-v)}
-                        ticks           = {35}
+                        ticks           = {62}
                         onChange        = {(e) => this.update({ frequency: Number(e.target.value) })}
-                        color           = 'red'
+                        knobColor       = '#4af'
+                        valueColor      = '#444'
                         />
 
                 </div>

@@ -1,6 +1,6 @@
 import knobStyles from './Knob.module.css';
 import paramStyles from './Parameter.module.css';
-import { ChangeEvent, ChangeEventHandler, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Tau } from '../util';
 
 
@@ -12,6 +12,8 @@ interface SelectKnobProps
     options:          { value: string, label: string }[];
     minAngle?:        number;
     maxAngle?:        number;
+    knobColor?:       string;
+    valueColor?:      string;
     tickSize?:        number;
     tickDistance?:    number;
     adjustTickX?:     number;
@@ -28,6 +30,8 @@ export default function SelectKnob({
     options,
     minAngle        = Tau * -3/8,
     maxAngle        = Tau *  3/8,
+    knobColor       = '#f4f3f1',
+    valueColor      = 'var(--color-node-value)',
     tickSize        = 3, 
     tickDistance    = 27,
     adjustTickX     = -1,   // these are for manual
@@ -113,7 +117,7 @@ export default function SelectKnob({
         {
             isDragging: true,
             startX:     e.clientX,
-            startValue: options.findIndex((_, index) => index == knobValue)
+            startValue: knobValue
         };
 
         globalThis.addEventListener('pointermove', onPointerMove);
@@ -121,7 +125,7 @@ export default function SelectKnob({
 
         inputRef.current?.setPointerCapture(e.pointerId);
     },
-    [value, onPointerMove, onPointerUp]);
+    [knobValue]);
 
 
     const onClick = (e: ReactPointerEvent<HTMLInputElement>) => e.preventDefault();
@@ -146,7 +150,16 @@ export default function SelectKnob({
 
 
     return (
-        <label className={`${paramStyles.parameter} ${knobStyles.knobContainer}`}>
+        <label 
+            className        = {`${paramStyles.parameter} ${knobStyles.knobContainer}`}
+            data-knob-color  = {knobColor}
+            data-value-color = {valueColor}
+            style = 
+            {{ 
+                '--knob-color':  knobColor, 
+                '--value-color': valueColor 
+            } as CSSProperties}
+            >
 
             <h2 
                 className = {knobStyles.display}

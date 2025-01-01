@@ -6,13 +6,14 @@
 
 .knobContainer
 {
-    display:        flex;
-    flex-direction: column;
-    align-items:    center;
-    position:       relative;
-    gap:            0;
-    width:          fit-content;
-    border-radius:  var(--corner-xs);
+    --knob-base-color: #f0f4f5;
+    display:           flex;
+    flex-direction:    column;
+    align-items:       center;
+    position:          relative;
+    gap:               0;
+    width:             fit-content;
+    border-radius:     var(--corner-xs);
 }
 
 
@@ -84,38 +85,70 @@
 
 .knobContainer .knob
 {
-    --knob-base-color: #f0f4f5;
-    --knob-darker-10:  color-mix(in srgb, var(--knob-base-color), black 10%);
-    --knob-darker-20:  color-mix(in srgb, var(--knob-base-color), black 20%);
-    --knob-lighter-10: color-mix(in srgb, var(--knob-base-color), white 10%);
-    --knob-lighter-20: color-mix(in srgb, var(--knob-base-color), white 20%);
+    --knob-edge-highlight: color-mix(in srgb, var(--knob-base-color), #fff 90%);
+    --knob-edge-shadow:    color-mix(in srgb, var(--knob-base-color), #000 30%);
+    --knob-edge:           color-mix(in srgb, var(--knob-base-color), #000 15%);
 
     position:      absolute;
     border-radius: 50%;
-    background:    var(--knob-base-color);
-    box-shadow:    0px 0px 4px 0px var(--knob-darker-20),
-        0px 1px 0.5px 0px white inset,
-        1px 2.5px 2.5px 0px var(--knob-darker-10) inset,
-        2px 4px 4.8px 0px var(--knob-lighter-20) inset,
-        0px 1px 2.8px 0px var(--knob-darker-10),
-        0px 3px 5.6px 0px var(--knob-darker-20),
-        0px 14px 19.9px 0px var(--knob-darker-20),
-        0px 0px 3.9px 0px var(--knob-darker-10) inset,
-        0px -1px 1px -1px black inset;
-    /* background:    #f0f4f5;
-    box-shadow:    0px 0px 4px 0px rgba(0, 0, 0, 0.11), 
-                   0px 1px 0.5px 0px #FFF inset, 
-                   1px 2.5px 2.5px 0px rgba(0, 0, 0, 0.03) inset, 
-                   2px 4px 4.8px 0px rgba(255, 255, 255, 0.68) inset, 0px 1px 2.8px 0px rgba(0, 0, 0, 0.13), 0px 3px 5.6px 0px rgba(0, 0, 0, 0.11), 0px 14px 19.9px 0px rgba(0, 0, 0, 0.15), 0px 0px 3.9px 0px rgba(0, 0, 0, 0.16) inset, 
-                   0px -1px 1px -1px #000 inset; */
+    background:    repeating-radial-gradient(
+                       circle at center,
+                       #ffffff04 0,
+                       #ffffff04 1px,
+                       #00000004 1px,
+                       #00000004 2px),
+                    conic-gradient(
+                            from 0deg,
+                            /* Each color stop slightly offset to create "streaks" */
+                            #ccc2 0deg,
+                            #aaa2 20deg,
+                            #8882 40deg,
+                            #aaa2 60deg,
+                            #ccc2 80deg,
+                            #eee2 90deg,
+                            #ccc2 100deg,
+                            #aaa2 120deg,
+                            #8882 140deg,
+                            #aaa2 160deg,
+                            #ccc2 180deg,
+                            #eee2 190deg,
+                            #ccc2 200deg,
+                            #aaa2 220deg,
+                            #8882 240deg,
+                            #aaa2 260deg,
+                            #ccc2 280deg,
+                            #eee2 290deg,
+                            #ccc2 300deg,
+                            #aaa2 320deg,
+                            #8882 340deg,
+                            #ccc2 360deg
+                        ),
+                    var(--knob-color);
+                       
+    box-shadow:    0px 1px 0.5px 0px var(--knob-edge-highlight) inset,
+                   /* 1px 2.5px 2.5px 0px rgba(0, 0, 0, 0.03) inset, */
+                   2px 4px 15px 0px #fff2 inset, 
+                   0px 0px 4px 0px rgba(0, 0, 0, 0.11), 
+                   0px 1px 2.8px 0px rgba(0, 0, 0, 0.13), 
+                   0px 3px 5.6px 0px rgba(0, 0, 0, 0.11), 
+                   0px 14px 19.9px 0px rgba(0, 0, 0, 0.15), 
+                   /* 0px 0px 3.9px 0px rgba(0, 0, 0, 0.1) inset,  */
+                   0px 0 3px 0px var(--knob-edge) inset,
+                   0px -2px 1px -1px var(--knob-edge-shadow) inset;
     user-select:   none;
     touch-action:  none;
 }
 
 
-[data-color] .knobContainer
+.knobContainer[data-knob-color]
 {
-    --knob-base-color: var(--color);
+    --knob-base-color: var(--knob-color);
+}
+
+
+.knobContainer[data-value-color]
+{
+    --knob-base-color: var(--value-color);
 }
 
 
@@ -134,7 +167,7 @@
     left:          50%;
     width:         3px;
     height:        40%;
-    background:    var(--color-node-value);
+    background:    var(--value-color);
     transform:     translate(-50%, -135%);
     border-radius: 2px;
 }

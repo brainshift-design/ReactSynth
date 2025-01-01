@@ -82,7 +82,7 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
             data:     
             { 
                 amount:     400,
-                oversample: 2
+                oversample: 0
             },
         };
     }
@@ -103,13 +103,15 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
                 <div className = {nodeStyles.nodeContent}>
 
                     <NumberKnob 
-                        label    = 'Amt'
-                        min      = {0}
-                        max      = {1000}
-                        value    = {amount}
-                        padding  = {3}
-                        ticks    = {11}
-                        onChange = {(e) => this.update({ amount: Number(e.target.value), curve: createDistortionCurve(Number(e.target.value)) })}
+                        label      = 'Amt'
+                        min        = {0}
+                        max        = {1000}
+                        value      = {amount}
+                        padding    = {3}
+                        ticks      = {11}
+                        onChange   = {(e) => this.update({ amount: Number(e.target.value), curve: createDistortionCurve(Number(e.target.value)) })}
+                        knobColor  = '#4af'
+                        valueColor = '#444'
                         />
 
                     <SelectKnob

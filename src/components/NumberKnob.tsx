@@ -1,6 +1,6 @@
 import knobStyles from './Knob.module.css';
 import paramStyles from './Parameter.module.css';
-import { ChangeEvent, ChangeEventHandler, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef } from 'react';
+import { ChangeEvent, ChangeEventHandler, CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef } from 'react';
 import { Tau } from '../util';
 
 
@@ -17,7 +17,8 @@ interface NumberKnobProps
     padding?:         number;
     padChar?:         string;
     suffix?:          string;
-    color?:           string;
+    knobColor?:       string;
+    valueColor?:      string;
     minAngle?:        number;
     maxAngle?:        number;
     ticks?:           number;
@@ -42,14 +43,15 @@ export default function NumberKnob({
     padding         = 0, 
     padChar         = ' ', 
     suffix          = '', 
-    color           = '#f0f4f5',
+    knobColor       = '#f4f3f1',
+    valueColor      = 'var(--color-node-value)',
     minAngle        = Tau * -3/8,
     maxAngle        = Tau *  3/8,
     ticks           = 15, 
     tickSize        = 3, 
     tickDistance    = 27,
-    adjustTickX     = -1, // these are for manual
-    adjustTickY     = 0, // adjustment of ticks
+    adjustTickX     = -1,   // these are for manual
+    adjustTickY     = 0,    // adjustment of ticks
     adjustTickAngle = 0.05, // because of CSS pixel grid issues
     onChange 
 }: NumberKnobProps)
@@ -179,7 +181,16 @@ export default function NumberKnob({
 
 
     return (
-        <label className = {`${paramStyles.parameter} ${knobStyles.knobContainer}`} data-color={color}>
+        <label 
+            className        = {`${paramStyles.parameter} ${knobStyles.knobContainer}`}
+            data-knob-color  = {knobColor}
+            data-value-color = {valueColor}
+            style = 
+            {{ 
+                '--knob-color':  knobColor, 
+                '--value-color': valueColor 
+            } as CSSProperties}
+            >
 
             <h2 
                 className = {knobStyles.display}
