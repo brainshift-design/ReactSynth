@@ -17,6 +17,9 @@ interface NumberKnobProps
     padding?:         number;
     padChar?:         string;
     suffix?:          string;
+    color?:           string;
+    minAngle?:        number;
+    maxAngle?:        number;
     ticks?:           number;
     tickSize?:        number;
     tickDistance?:    number;
@@ -39,6 +42,9 @@ export default function NumberKnob({
     padding         = 0, 
     padChar         = ' ', 
     suffix          = '', 
+    color           = '#f0f4f5',
+    minAngle        = Tau * -3/8,
+    maxAngle        = Tau *  3/8,
     ticks           = 15, 
     tickSize        = 3, 
     tickDistance    = 27,
@@ -140,17 +146,14 @@ export default function NumberKnob({
     const onClick = (e: ReactPointerEvent<HTMLInputElement>) => e.preventDefault();
 
 
-    const angleMin = Tau * -3/8;
-    const angleMax = Tau *  3/8;
-
     const linearValue = parseFloat(linearInputRef.current?.value || value.toString());
     const curvedValue = getCurvedValue(linearValue, minRef.current, maxRef.current);
     
-    const valueAngle = angleMin + (linearValue - min) / (max - min) * (angleMax - angleMin);
+    const valueAngle = minAngle + (linearValue - min) / (max - min) * (maxAngle - minAngle);
 
     const tickAngle = (index: number) => 
-          angleMin
-        + getCurvedTick(index / (ticks-1), 0, 1) * (angleMax - angleMin)
+          minAngle
+        + getCurvedTick(index / (ticks-1), 0, 1) * (maxAngle - minAngle)
         + adjustTickAngle;
 
 
@@ -176,7 +179,7 @@ export default function NumberKnob({
 
 
     return (
-        <label className={`${paramStyles.parameter} ${knobStyles.knobContainer}`}>
+        <label className = {`${paramStyles.parameter} ${knobStyles.knobContainer}`} data-color={color}>
 
             <h2 
                 className = {knobStyles.display}

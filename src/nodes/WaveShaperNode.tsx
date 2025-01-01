@@ -6,6 +6,7 @@ import { NodeProps } from './Node';
 import NumberKnob from '../components/NumberKnob';
 import SelectKnob from '../components/SelectKnob';
 import AudioNode from './AudioNode';
+import { Tau } from '../util';
 
 
 
@@ -14,7 +15,7 @@ interface WaveShaperNodeProps extends NodeProps
     data: 
     {
         amount:     number;
-        oversample: string;
+        oversample: number;
     }
 }
 
@@ -22,6 +23,15 @@ interface WaveShaperNodeProps extends NodeProps
 
 export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
 {
+    static readonly oversampleTypes =
+    [
+        { value: 'none', label: 'None' },
+        { value: '2x',   label: '2x'   },
+        { value: '4x',   label: '4x'   }
+    ];
+
+
+
     protected createAudioNode()
     {
         return audioContext?.createWaveShaper() as globalThis.AudioNode;
@@ -33,12 +43,34 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
     {
         const { data: { oversample } } = this.props;
 
-        const node = this.audioNode as globalThis.WaveShaperNode;
+        const audioNode = this.audioNode as globalThis.WaveShaperNode;
 
-        if (node)
+        if (audioNode)
         {
-            node.oversample = oversample as OverSampleType;
+            audioNode.oversample = WaveShaperNode.oversampleTypes[oversample].value as OverSampleType;
         }
+    }
+
+
+
+    protected getAudioNodeData(data: any) 
+    {
+        return {
+            amount:     data.amount,
+            oversample: WaveShaperNode.oversampleTypes[data.oversample].value
+        }
+    }
+
+
+
+    override updateAudioParam(key: string, value: any)
+    {
+        super.updateAudioParam(
+            key,
+            key == 'oversample'
+                ? WaveShaperNode.oversampleTypes.find((_, i) => i == value)?.value
+                : value
+        );
     }
 
 
@@ -49,8 +81,8 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
             ...super.createReactFlowNode(),
             data:     
             { 
-                amount:      400,
-                oversample: 'none' 
+                amount:     400,
+                oversample: 2
             },
         };
     }
@@ -59,8 +91,7 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
     
     renderContent()
     {
-        const { id, data: { amount, oversample } } = this.props;
-        const { updateNode } = this.context!;
+        const { data: { amount, oversample } } = this.props;
 
 
         return (
@@ -78,19 +109,16 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
                         value    = {amount}
                         padding  = {3}
                         ticks    = {11}
-                        onChange = {(e) => updateNode(id, { amount: Number(e.target.value), curve: createDistortionCurve(Number(e.target.value)) })}
+                        onChange = {(e) => this.update({ amount: Number(e.target.value), curve: createDistortionCurve(Number(e.target.value)) })}
                         />
 
                     <SelectKnob
-                        label   = 'Over'
-                        options =
-                        {[
-                            { value: 'none', label: 'None' },
-                            { value: '2x',   label: '2x'   },
-                            { value: '4x',   label: '4x'   }
-                        ]}
+                        label    = 'Over'
+                        options  = {WaveShaperNode.oversampleTypes}
                         value    = {oversample}
-                        onChange = {(e) => updateNode(id, { oversample: e.target.value })}
+                        onChange = {(e) => this.update({ oversample: Number(e.target.value) })}
+                        minAngle = {Tau * -3/32}
+                        maxAngle = {Tau *  3/32}
                         />
 
                 </div>

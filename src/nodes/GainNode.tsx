@@ -47,8 +47,7 @@ export default class GainNode extends AudioNode<GainNodeProps>
     
     renderContent()
     {
-        const { id, data: { gain } } = this.props;
-        const { updateNode } = this.context;
+        const { data: { gain } } = this.props;
         
         
         return (
@@ -71,7 +70,7 @@ export default class GainNode extends AudioNode<GainNodeProps>
                         tickDistance    = {27}
                         adjustTickX     = {-1}
                         adjustTickAngle = {0.05}
-                        onChange = {(e) => updateNode(id, { gain: Number(e.target.value) / 100 })}
+                        onChange        = {(e) => this.update({ gain: Number(e.target.value) / 100 })}
                         />
 
                 </div>

@@ -1,4 +1,5 @@
-import styles from './Node.module.css';
+import nodeStyles from './Node.module.css';
+import outputNodeStyles from './OutputNode.module.css';
 import { NodeProps } from './Node';
 import { Handle, Position } from 'reactflow';
 import { audioContext, audioIsRunning } from '../audio/audio';
@@ -26,7 +27,9 @@ export default class OutputNode extends AudioNode<NodeProps>
 
                 <h1>Output</h1>
 
-                <div className={styles.nodeContent}>
+                <div className={outputNodeStyles.speaker}></div>
+
+                <div className={nodeStyles.nodeContent}>
                     <Button
                         style   = {{ margin: 'auto'}}
                         onClick = {() => toggleAudio()}>

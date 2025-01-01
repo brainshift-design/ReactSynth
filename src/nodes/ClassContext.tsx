@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useState, Dispatch, SetStateAction, useContext, useCallback } from 'react';
 import { Edge, Node } from 'reactflow';
-import { audioContext, audioIsRunning, updateAudioNode } from '../audio/audio';
+import { audioContext, audioIsRunning } from '../audio/audio';
 
 
 
@@ -12,7 +12,7 @@ export interface ClassContextProps
     edges:       Edge[];
     setEdges:    Dispatch<SetStateAction<Edge[]>>;
 
-    updateNode:  (id: string, data: any) => void;
+    //updateNode:  (id: string, data: any) => void;
 
     isRunning:   boolean;
     toggleAudio: () => void;
@@ -31,20 +31,6 @@ export const ClassProvider = ({ children }: { children: ReactNode }) =>
     const [isRunning, setIsRunning] = useState(false);
 
 
-    const updateNode = (id: string, newData: {}) =>
-    {
-        updateAudioNode(id, newData);
-        
-        setNodes(nodes =>
-            nodes.map(node =>
-                node.id == id
-                    ? { ...node, data: { ...node.data, ...newData } }
-                    : node
-            )
-        );
-    };
-
- 
     const toggleAudio = useCallback(() => 
     {
         if (audioIsRunning()) audioContext?.suspend().then(() => setIsRunning(audioIsRunning()));
@@ -63,7 +49,7 @@ export const ClassProvider = ({ children }: { children: ReactNode }) =>
                 edges, 
                 setEdges, 
 
-                updateNode,
+                //updateNode,
 
                 isRunning,
                 toggleAudio

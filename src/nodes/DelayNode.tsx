@@ -47,8 +47,6 @@ export default class DelayNode extends AudioNode<DelayNodeProps>
     
     renderContent()
     {
-        const { updateNode } = this.context;
-
         return (
             <>
                 <Handle type='target' position={Position.Left} />
@@ -65,7 +63,7 @@ export default class DelayNode extends AudioNode<DelayNodeProps>
                         decimals = {2}
                         padding  = {4}
                         ticks    = {11}
-                        onChange = {(e) => updateNode(this.props.id, { delayTime: Number(e.target.value) })}
+                        onChange = {(e) => this.update({ delayTime: Number(e.target.value) })}
                         />
 
                 </div>

@@ -21,6 +21,21 @@ extends Component<T>
     static  contextType = ClassContext;
     declare context: ClassContextProps;
 
+    
+    // subscribers: Set<() => void> = new Set();
+
+    // subscribe(callback: () => void)
+    // {
+    //     this.subscribers.add(callback);
+    //     return () => this.subscribers.delete(callback);
+    // }
+
+    // notify()
+    // {
+    //     this.subscribers.forEach(callback => callback());
+    // }
+
+
 
     protected abstract renderContent(): JSX.Element;
 
@@ -37,6 +52,21 @@ extends Component<T>
     }
     
     
+
+    update(data: any)
+    {
+        this.context.setNodes(nodes =>
+            nodes.map(node =>
+                node.id == this.props.id
+                    ? { ...node, data: { ...node.data, ...data } }
+                    : node
+            )
+        );
+
+        //this.notify();
+    }
+
+
 
     render()
     {

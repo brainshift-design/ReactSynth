@@ -1,6 +1,6 @@
 :root
 {
-    --knob-size: 45px;
+    --knob-size:       45px;
 }
 
 
@@ -84,16 +84,38 @@
 
 .knobContainer .knob
 {
+    --knob-base-color: #f0f4f5;
+    --knob-darker-10:  color-mix(in srgb, var(--knob-base-color), black 10%);
+    --knob-darker-20:  color-mix(in srgb, var(--knob-base-color), black 20%);
+    --knob-lighter-10: color-mix(in srgb, var(--knob-base-color), white 10%);
+    --knob-lighter-20: color-mix(in srgb, var(--knob-base-color), white 20%);
+
     position:      absolute;
     border-radius: 50%;
-    background:    #f0f4f5;
+    background:    var(--knob-base-color);
+    box-shadow:    0px 0px 4px 0px var(--knob-darker-20),
+        0px 1px 0.5px 0px white inset,
+        1px 2.5px 2.5px 0px var(--knob-darker-10) inset,
+        2px 4px 4.8px 0px var(--knob-lighter-20) inset,
+        0px 1px 2.8px 0px var(--knob-darker-10),
+        0px 3px 5.6px 0px var(--knob-darker-20),
+        0px 14px 19.9px 0px var(--knob-darker-20),
+        0px 0px 3.9px 0px var(--knob-darker-10) inset,
+        0px -1px 1px -1px black inset;
+    /* background:    #f0f4f5;
     box-shadow:    0px 0px 4px 0px rgba(0, 0, 0, 0.11), 
                    0px 1px 0.5px 0px #FFF inset, 
                    1px 2.5px 2.5px 0px rgba(0, 0, 0, 0.03) inset, 
                    2px 4px 4.8px 0px rgba(255, 255, 255, 0.68) inset, 0px 1px 2.8px 0px rgba(0, 0, 0, 0.13), 0px 3px 5.6px 0px rgba(0, 0, 0, 0.11), 0px 14px 19.9px 0px rgba(0, 0, 0, 0.15), 0px 0px 3.9px 0px rgba(0, 0, 0, 0.16) inset, 
-                   0px -1px 1px -1px #000 inset;
+                   0px -1px 1px -1px #000 inset; */
     user-select:   none;
     touch-action:  none;
+}
+
+
+[data-color] .knobContainer
+{
+    --knob-base-color: var(--color);
 }
 
 

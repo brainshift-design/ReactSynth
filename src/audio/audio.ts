@@ -15,25 +15,6 @@ export function createAudioContext()
 
 
 
-export function updateAudioNode(id: string, data: { [key: string]: any })
-{
-    const node = getAudioNode(id);
-    if (!node) return;
-
-
-    for (const [key, value] of Object.entries(data))
-    {
-        const audioParam = (node as any)[key] as AudioParam;
-
-        if (audioParam instanceof AudioParam)
-            audioParam.value = value;
-        else
-            (node as any)[key] = value;
-    }
-}
-
-
-
 export function removeAudioNode(id: string)
 {
     const node = getAudioNode(id)!;

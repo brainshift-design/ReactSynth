@@ -1,6 +1,6 @@
 import knobStyles from './Knob.module.css';
 import paramStyles from './Parameter.module.css';
-import { ChangeEvent, ChangeEventHandler, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef } from 'react';
+import { ChangeEvent, ChangeEventHandler, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Tau } from '../util';
 
 
@@ -8,8 +8,10 @@ import { Tau } from '../util';
 interface SelectKnobProps
 {
     label:            string;
-    value:            string;
+    value:            number;
     options:          { value: string, label: string }[];
+    minAngle?:        number;
+    maxAngle?:        number;
     tickSize?:        number;
     tickDistance?:    number;
     adjustTickX?:     number;
@@ -24,6 +26,8 @@ export default function SelectKnob({
     label, 
     value, 
     options,
+    minAngle        = Tau * -3/8,
+    maxAngle        = Tau *  3/8,
     tickSize        = 3, 
     tickDistance    = 27,
     adjustTickX     = -1,   // these are for manual
@@ -33,7 +37,9 @@ export default function SelectKnob({
 }: SelectKnobProps)
 {
     const inputRef = useRef<HTMLInputElement>(null);
+    const [knobValue, setKnobValue] = useState(0);
 
+    
     const dragState = useRef(
     {
         isDragging: false,
@@ -58,19 +64,22 @@ export default function SelectKnob({
 
         const delta = (e.clientX - dragState.current.startX) * 0.01;
 
+        const oldValue = inputRef.current?.value;
         const newValue = Math.min(Math.max(
             0,
-            dragState.current.startValue + delta * options.length),
-            options.length);
+            Math.round(dragState.current.startValue + delta * options.length)),
+            options.length-1);
             
+
         if (inputRef.current)
             inputRef.current.value = newValue.toString();
+
 
         if (onChangeRef.current)
         {
             const index = Math.min(Math.max(0, Math.round(newValue)), options.length-1);
 
-            if (index != Number(value))
+            if (oldValue != index.toString())
             {
                 onChangeRef.current({
                     target: { value: index.toString() }
@@ -104,7 +113,7 @@ export default function SelectKnob({
         {
             isDragging: true,
             startX:     e.clientX,
-            startValue: options.findIndex((_, index) => index == Number(value))
+            startValue: options.findIndex((_, index) => index == knobValue)
         };
 
         globalThis.addEventListener('pointermove', onPointerMove);
@@ -118,19 +127,21 @@ export default function SelectKnob({
     const onClick = (e: ReactPointerEvent<HTMLInputElement>) => e.preventDefault();
 
 
-    const angleMin = Tau * -3/8;
-    const angleMax = Tau *  3/8;
+    const _value     = knobValue;
+    const valueAngle = minAngle + _value / (options.length-1) * (maxAngle - minAngle);
 
+    useEffect(() =>
+    {
+        setKnobValue(Number(inputRef.current?.value));
+    },
+    [inputRef.current?.value]);
 
-    const _value = parseFloat(inputRef.current?.value || value.toString());
-    
-    const valueAngle = angleMin + _value / (options.length-1) * (angleMax - angleMin);
 
     const nTicks = options.length;
 
     const tickAngle = (index: number) => 
-          angleMin
-        + index / (nTicks-1) * (angleMax - angleMin)
+          minAngle
+        + index / (nTicks-1) * (maxAngle - minAngle)
         + adjustTickAngle;
 
 

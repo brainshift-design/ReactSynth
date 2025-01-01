@@ -1,11 +1,12 @@
-import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import styles from './Node.module.css';
+import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import { audioContext } from '../audio/audio';
 import { NodeProps } from './Node';
 import NumberKnob from '../components/NumberKnob';
 import { getFreqCurve, invFreq } from './util';
 import SelectKnob from '../components/SelectKnob';
 import AudioNode from './AudioNode';
+import { Tau } from '../util';
 
 
 
@@ -14,7 +15,7 @@ interface OscillatorNodeProps extends NodeProps
     data: 
     {
         frequency: number;
-        type:      string;
+        type:      number;
     }
 }
 
@@ -24,6 +25,14 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
 {
     static readonly minFreq = 20;
     static readonly maxFreq = 20000;
+
+    static readonly oscillatorTypes =
+    [
+        { value: 'sine',     label: 'Sine' },
+        { value: 'triangle', label: 'Tri'  },
+        { value: 'sawtooth', label: 'Saw'  },
+        { value: 'square',   label: 'Sqr'  } 
+    ];
 
 
 
@@ -43,10 +52,22 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
         if (node)
         {
             node.frequency.value = frequency;
-            node.type            = type as OscillatorType;
+            node.type            = OscillatorNode.oscillatorTypes[type].value as OscillatorType;
 
             node.start();
         }
+    }
+
+
+
+    override updateAudioParam(key: string, value: any)
+    {
+        super.updateAudioParam(
+            key,
+            key == 'type'
+                ? OscillatorNode.oscillatorTypes.find((_, i) => i == value)?.value
+                : value
+        );
     }
 
 
@@ -58,7 +79,7 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
             data:     
             { 
                 frequency: invFreq(440), 
-                type:      0
+                type:      2
             },
         };
     }
@@ -67,29 +88,26 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
     
     renderContent()
     {
-        const { id, data: { frequency, type } } = this.props;
-        const { updateNode } = this.context;
+        const { data: { frequency, type } } = this.props;
 
         
         return (
             <>
                 <h1>Oscillator</h1>
 
+                * knob doesn't update when value changes<br/>
                 * wrong frequency<br/>
+                * add highlight color to knobs, or just color, to be able to isolate knobs<br/>
 
                 <div className = {styles.nodeContent}>
 
                     <SelectKnob
-                        label   = 'Form'
-                        options =
-                        {[
-                            { value: 'sine',     label: 'Sine' },
-                            { value: 'triangle', label: 'Tri'  },
-                            { value: 'sawtooth', label: 'Saw'  },
-                            { value: 'square',   label: 'Sqr'  } 
-                        ]}
+                        label    = 'Form'
+                        options  = {OscillatorNode.oscillatorTypes}
                         value    = {type}
-                        onChange = {(e) => updateNode(id, { type: Number(e.target.value) })}
+                        onChange = {(e) => this.update({ type: Number(e.target.value) })}
+                        minAngle = {Tau * -1/8}
+                        maxAngle = {Tau *  1/8}
                         />
 
                     <NumberKnob 
@@ -100,7 +118,8 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
                         getCurvedValue  = {(val) => getFreqCurve(val, OscillatorNode.minFreq, OscillatorNode.maxFreq, 6, v => v)}
                         getCurvedTick   = {(val) => getFreqCurve(val, 0, 1, 6, v => 1-v)}
                         ticks           = {35}
-                        onChange        = {(e) => updateNode(id, { frequency: Number(e.target.value) })}
+                        onChange        = {(e) => this.update({ frequency: Number(e.target.value) })}
+                        color           = 'red'
                         />
 
                 </div>
