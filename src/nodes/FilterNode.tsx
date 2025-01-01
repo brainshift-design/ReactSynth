@@ -117,12 +117,13 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                         />
 
                     <NumberKnob 
-                        label    = 'Det ¢'
-                        min      = {-100}
-                        max      = { 100}
-                        value    = {detune}
-                        ticks    = {11}
-                        onChange = {(e) => this.update({ detune: Number(e.target.value) })}
+                        label     = 'Det ¢'
+                        min       = {-100}
+                        max       = { 100}
+                        value     = {detune}
+                        forcePlus = {true}
+                        ticks     = {11}
+                        onChange  = {(e) => this.update({ detune: Number(e.target.value) })}
                         />
 
                     <NumberKnob 
