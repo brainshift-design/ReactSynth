@@ -1,9 +1,12 @@
-import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
-import Range from '../components/Range';
-import Select from '../components/Select';
 import styles from './Node.module.css';
+import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import { audioContext } from '../audio/audio';
-import Node, { NodeProps } from './Node';
+import { NodeProps } from './Node';
+import NumberKnob from '../components/NumberKnob';
+import { freqCurvePower, getFreqCurve, invFreq } from './util';
+import SelectKnob from '../components/SelectKnob';
+import AudioNode from './AudioNode';
+import { Tau } from '../util';
 
 
 
@@ -12,22 +15,35 @@ interface OscillatorNodeProps extends NodeProps
     data: 
     {
         frequency: number;
-        type:      string;
+        type:      number;
     }
 }
 
 
 
-export default class OscillatorNode extends Node<OscillatorNodeProps>
+export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
 {
+    static readonly minFreq = 20;
+    static readonly maxFreq = 20000;
+
+    static readonly oscillatorTypes =
+    [
+        { value: 'sine',     label: 'Sine' },
+        { value: 'triangle', label: 'Tri'  },
+        { value: 'sawtooth', label: 'Saw'  },
+        { value: 'square',   label: 'Sqr'  } 
+    ];
+
+
+
     protected createAudioNode()
     {
-        return audioContext?.createOscillator() as AudioNode;
+        return audioContext?.createOscillator() as globalThis.AudioNode;
     }
 
 
 
-    protected initAudioNode()
+    protected override initAudioNode()
     {
         const { data: { frequency, type } } = this.props;
 
@@ -36,7 +52,7 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
         if (node)
         {
             node.frequency.value = frequency;
-            node.type            = type as OscillatorType;
+            node.type            = OscillatorNode.oscillatorTypes[type].value as OscillatorType;
 
             node.start();
         }
@@ -44,14 +60,26 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
 
 
 
-    static createReactFlowNode(): ReactFlowNode
+    override updateAudioParam(key: string, value: any)
+    {
+        super.updateAudioParam(
+            key,
+            key == 'type'
+                ? OscillatorNode.oscillatorTypes.find((_, i) => i == value)?.value
+                : value
+        );
+    }
+
+
+
+    static override createReactFlowNode(): ReactFlowNode
     {
         return { 
             ...super.createReactFlowNode(),
             data:     
             { 
-                frequency: 440, 
-                type:     'sine' 
+                frequency: invFreq(440), 
+                type:      0
             },
         };
     }
@@ -60,9 +88,8 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
     
     renderContent()
     {
-        const { id, data: { frequency, type } } = this.props;
-        const { updateNode } = this.context;
-        
+        const { data: { frequency, type } } = this.props;
+
         
         return (
             <>
@@ -70,26 +97,26 @@ export default class OscillatorNode extends Node<OscillatorNodeProps>
 
                 <div className = {styles.nodeContent}>
 
-                    <Range 
-                        label    = 'Frequency'
-                        min      = {10}
-                        max      = {1000}
-                        value    = {frequency}
-                        suffix   = 'Hz'
-                        onChange = {(e) => updateNode(id, { frequency: Number(e.target.value) })}
+                    <SelectKnob
+                        label    = 'Form'
+                        options  = {OscillatorNode.oscillatorTypes}
+                        value    = {type}
+                        onChange = {(e) => this.update({ type: Number(e.target.value) })}
+                        minAngle = {Tau * -5/32}
+                        maxAngle = {Tau *  5/32}
                         />
 
-                    <Select
-                        label   = 'Waveform'
-                        options =
-                        {[
-                            { value: 'sine',     label: 'Sine'     },
-                            { value: 'triangle', label: 'Triangle' },
-                            { value: 'sawtooth', label: 'Sawtooth' },
-                            { value: 'square',   label: 'Square'   }
-                        ]}
-                        value    = {type}
-                        onChange = {(e) => updateNode(id, { type: e.target.value })}
+                    <NumberKnob 
+                        label           = 'Hz'
+                        min             = {1200}
+                        max             = {OscillatorNode.maxFreq}
+                        value           = {frequency}
+                        getCurvedValue  = {(val) => getFreqCurve(val, OscillatorNode.minFreq, OscillatorNode.maxFreq, freqCurvePower, v => v)}
+                        getCurvedTick   = {(val) => getFreqCurve(val, 0, 1, freqCurvePower, v => 1-v)}
+                        ticks           = {49}
+                        onChange        = {(e) => this.update({ frequency: Number(e.target.value) })}
+                        knobColor       = '#4af'
+                        valueColor      = '#444'
                         />
 
                 </div>

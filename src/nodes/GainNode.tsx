@@ -1,8 +1,9 @@
+import nodeStyles from './Node.module.css';
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
-import Range from '../components/Range';
 import { audioContext } from '../audio/audio';
-import Node, { NodeProps } from './Node';
-import styles from './Node.module.css';
+import { NodeProps } from './Node';
+import NumberKnob from '../components/NumberKnob';
+import AudioNode from './AudioNode';
 
 
 
@@ -13,7 +14,7 @@ interface GainNodeProps extends NodeProps
 
 
 
-export default class GainNode extends Node<GainNodeProps>
+export default class GainNode extends AudioNode<GainNodeProps>
 {
     protected createAudioNode()
     {
@@ -22,7 +23,7 @@ export default class GainNode extends Node<GainNodeProps>
 
 
 
-    protected initAudioNode()
+    protected override initAudioNode()
     {
         const { data: { gain } } = this.props;
 
@@ -34,7 +35,7 @@ export default class GainNode extends Node<GainNodeProps>
 
 
 
-    static createReactFlowNode(): ReactFlowNode
+    static override createReactFlowNode(): ReactFlowNode
     {
         return { 
             ...super.createReactFlowNode(),
@@ -46,8 +47,7 @@ export default class GainNode extends Node<GainNodeProps>
     
     renderContent()
     {
-        const { id, data: { gain } } = this.props;
-        const { updateNode } = this.context;
+        const { data: { gain } } = this.props;
         
         
         return (
@@ -57,14 +57,22 @@ export default class GainNode extends Node<GainNodeProps>
 
                 <h1>Gain</h1>
 
-                <div className={styles.nodeContent}>
+                <div className={nodeStyles.nodeContent}>
 
-                    <Range 
-                        label    = 'Gain'
-                        min      = {0}
-                        max      = {200}
-                        value    = {gain * 100} 
-                        onChange = {(e) => updateNode(id, { gain: Number(e.target.value) / 100 })}
+                    <NumberKnob 
+                        label           = '%'
+                        min             = {0}
+                        max             = {200}
+                        value           = {gain * 100}
+                        padding         = {3}
+                        ticks           = {11}
+                        tickSize        = {3}
+                        tickDistance    = {27}
+                        adjustTickX     = {-1}
+                        adjustTickAngle = {0.05}
+                        onChange        = {(e) => this.update({ gain: Number(e.target.value) / 100 })}
+                        knobColor       = '#4af'
+                        valueColor      = '#444'
                         />
 
                 </div>

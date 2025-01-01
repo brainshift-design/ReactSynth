@@ -1,8 +1,9 @@
 import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
-import Range from '../components/Range';
 import { audioContext } from '../audio/audio';
-import Node, { NodeProps } from './Node';
+import { NodeProps } from './Node';
 import styles from './Node.module.css';
+import NumberKnob from '../components/NumberKnob';
+import AudioNode from './AudioNode';
 
 
 
@@ -13,16 +14,16 @@ interface DelayNodeProps extends NodeProps
 
 
 
-export default class DelayNode extends Node<DelayNodeProps>
+export default class DelayNode extends AudioNode<DelayNodeProps>
 {
     protected createAudioNode()
     {
-        return audioContext?.createDelay() as AudioNode;
+        return audioContext?.createDelay() as globalThis.AudioNode;
     }
 
 
 
-    protected initAudioNode()
+    protected override initAudioNode()
     {
         const { data: { delayTime } } = this.props;
 
@@ -34,11 +35,11 @@ export default class DelayNode extends Node<DelayNodeProps>
 
 
 
-    static createReactFlowNode(): ReactFlowNode
+    static override createReactFlowNode(): ReactFlowNode
     {
         return { 
             ...super.createReactFlowNode(),
-            data: { delayTime: 1 } 
+            data: { delayTime: 0.5 } 
         };
     }
     
@@ -46,8 +47,6 @@ export default class DelayNode extends Node<DelayNodeProps>
     
     renderContent()
     {
-        const { updateNode } = this.context;
-
         return (
             <>
                 <Handle type='target' position={Position.Left} />
@@ -56,13 +55,17 @@ export default class DelayNode extends Node<DelayNodeProps>
 
                 <div className={styles.nodeContent}>
 
-                    <Range 
-                        label    = 'Time'
-                        min      = {0}
-                        max      = {1000}
-                        value    = {this.props.data.delayTime * 1000} 
-                        suffix   = 'ms'
-                        onChange = {(e) => updateNode(this.props.id, { delayTime: Number(e.target.value) / 1000 })}
+                    <NumberKnob 
+                        label      = 'sec'
+                        min        = {0}
+                        max        = {1}
+                        value      = {this.props.data.delayTime}
+                        decimals   = {2}
+                        padding    = {4}
+                        ticks      = {11}
+                        onChange   = {(e) => this.update({ delayTime: Number(e.target.value) })}
+                        knobColor  = '#4af'
+                        valueColor = '#444'
                         />
 
                 </div>
