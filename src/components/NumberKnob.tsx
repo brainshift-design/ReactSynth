@@ -11,6 +11,7 @@ interface NumberKnobProps
     min:              number;
     max:              number;
     value:            number;
+    forcePlus?:       boolean;
     getCurvedValue?:  (val: number, min: number, max: number) => number,
     getCurvedTick?:   (val: number, min: number, max: number) => number,
     decimals?:        number;
@@ -37,6 +38,7 @@ export default function NumberKnob({
     min, 
     max, 
     value, 
+    forcePlus       = false,
     getCurvedValue  = (val, _1, _2) => val,
     getCurvedTick   = (val, _1, _2) => val,
     decimals        = 0, 
@@ -161,7 +163,12 @@ export default function NumberKnob({
 
 
     const finalCurvedValue = curvedValue.toFixed(decimals);
-    const strValue         = finalCurvedValue.toString().padStart(padding, padChar.replace(' ', ' ')) + (suffix && ' ') + suffix;
+
+    const strValue = 
+          (forcePlus && curvedValue > 0.0000001 ? '+' : '')
+        + finalCurvedValue.toString().padStart(padding, padChar.replace(' ', ' ')) 
+        + (suffix && ' ') 
+        + suffix;
 
     const inputStep = 1 / Math.round(Math.pow(10, decimals));
 
