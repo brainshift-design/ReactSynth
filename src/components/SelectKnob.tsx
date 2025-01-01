@@ -40,8 +40,11 @@ export default function SelectKnob({
     onChange 
 }: SelectKnobProps)
 {
-    const inputRef = useRef<HTMLInputElement>(null);
-    const [knobValue, setKnobValue] = useState(0);
+    const inputRef    = useRef<HTMLInputElement>(null);
+    const onChangeRef = useRef(onChange);
+
+    const [knobValue, setKnobValue] = useState(value);
+    const [oldValue,  setOldValue ] = useState(value);
 
     
     const dragState = useRef(
@@ -52,14 +55,26 @@ export default function SelectKnob({
     });
 
 
-    const onChangeRef = useRef(onChange);
-
-
     useEffect(() =>
     {
         onChangeRef.current = onChange;
     },
     [onChange]);
+
+    
+    useEffect(() =>
+    {
+        if (   onChangeRef.current
+            && knobValue != oldValue)
+        {
+            onChangeRef.current({
+                target: { value: knobValue.toString() }
+            } as ChangeEvent<HTMLInputElement>);
+        }
+
+        setOldValue(knobValue);
+    },
+    [knobValue]);
 
 
     const onPointerMove = useCallback((e: globalThis.PointerEvent) => 
@@ -68,28 +83,12 @@ export default function SelectKnob({
 
         const delta = (e.clientX - dragState.current.startX) * 0.01;
 
-        const oldValue = inputRef.current?.value;
         const newValue = Math.min(Math.max(
             0,
             Math.round(dragState.current.startValue + delta * options.length)),
             options.length-1);
-            
 
-        if (inputRef.current)
-            inputRef.current.value = newValue.toString();
-
-
-        if (onChangeRef.current)
-        {
-            const index = Math.min(Math.max(0, Math.round(newValue)), options.length-1);
-
-            if (oldValue != index.toString())
-            {
-                onChangeRef.current({
-                    target: { value: index.toString() }
-                } as ChangeEvent<HTMLInputElement>);
-            }
-        }
+        setKnobValue(newValue);
     },
     []);
 
@@ -131,15 +130,7 @@ export default function SelectKnob({
     const onClick = (e: ReactPointerEvent<HTMLInputElement>) => e.preventDefault();
 
 
-    const _value     = knobValue;
-    const valueAngle = minAngle + _value / (options.length-1) * (maxAngle - minAngle);
-
-    useEffect(() =>
-    {
-        setKnobValue(Number(inputRef.current?.value));
-    },
-    [inputRef.current?.value]);
-
+    const valueAngle = minAngle + knobValue / (options.length-1) * (maxAngle - minAngle);
 
     const nTicks = options.length;
 

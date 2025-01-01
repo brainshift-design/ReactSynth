@@ -1,6 +1,6 @@
 import knobStyles from './Knob.module.css';
 import paramStyles from './Parameter.module.css';
-import { ChangeEvent, ChangeEventHandler, CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef } from 'react';
+import { ChangeEvent, ChangeEventHandler, CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Tau } from '../util';
 
 
@@ -56,8 +56,13 @@ export default function NumberKnob({
     onChange 
 }: NumberKnobProps)
 {
-    const linearInputRef = useRef<HTMLInputElement>(null);
-    const curvedInputRef = useRef<HTMLInputElement>(null);
+    const inputRef    = useRef<HTMLInputElement>(null);
+    const onChangeRef = useRef(onChange);
+
+    const [linearValue,    setLinearValue   ] = useState(value);
+    const [curvedValue,    setCurvedValue   ] = useState(value);
+    const [oldCurvedValue, setOldCurvedValue] = useState(value);
+
 
     const dragState = useRef(
     {
@@ -67,18 +72,33 @@ export default function NumberKnob({
     });
 
 
-    const minRef      = useRef(min);
-    const maxRef      = useRef(max);
-    const onChangeRef = useRef(onChange);
+    useEffect(() =>
+    {
+        onChangeRef.current = onChange;
+    },
+    [onChange]);
 
 
     useEffect(() =>
     {
-        minRef.current = min;
-        maxRef.current = max;
-        onChangeRef.current = onChange;
+        setCurvedValue(getCurvedValue(linearValue, min, max));
     },
-    [min, max, onChange]);
+    [linearValue]);
+
+
+    useEffect(() =>
+    {
+        if (   onChangeRef.current
+            && curvedValue != oldCurvedValue)
+        {
+            onChangeRef.current({
+                target: { value: curvedValue.toString() }
+            } as ChangeEvent<HTMLInputElement>);
+        }
+
+        setOldCurvedValue(curvedValue);
+    },
+    [curvedValue]);
 
 
     const onPointerMove = useCallback((e: globalThis.PointerEvent) => 
@@ -87,26 +107,10 @@ export default function NumberKnob({
 
         const delta = (e.clientX - dragState.current.startX) * 0.01;
 
-        const newLinearValue = Math.min(Math.max(
-            minRef.current,
-            dragState.current.startValue + delta * (maxRef.current - minRef.current)),
-            maxRef.current);
-            
-        if (linearInputRef.current)
-            linearInputRef.current.value = newLinearValue.toString();
-
-        if (curvedInputRef.current) 
-        {
-            const newCurvedValue = getCurvedValue(newLinearValue, minRef.current, maxRef.current);
-            curvedInputRef.current.value = newCurvedValue.toString();
-        }
-
-        if (onChangeRef.current)
-        {
-            onChangeRef.current({
-                target: { value: newLinearValue.toString() }
-            } as ChangeEvent<HTMLInputElement>);
-        }
+        setLinearValue(Math.min(Math.max(
+            min,
+            dragState.current.startValue + delta * (max - min)),
+            max));
     },
     []);
 
@@ -118,7 +122,7 @@ export default function NumberKnob({
         globalThis.removeEventListener('pointermove', onPointerMove);
         globalThis.removeEventListener('pointerup',   onPointerUp);
 
-        linearInputRef.current?.releasePointerCapture(e.pointerId);
+        inputRef.current?.releasePointerCapture(e.pointerId);
     },
     []);
 
@@ -134,44 +138,26 @@ export default function NumberKnob({
         {
             isDragging: true,
             startX:     e.clientX,
-            startValue: value
+            startValue: linearValue
         }
 
         globalThis.addEventListener('pointermove', onPointerMove);
         globalThis.addEventListener('pointerup',   onPointerUp);
 
-        linearInputRef.current?.setPointerCapture(e.pointerId);
+        inputRef.current?.setPointerCapture(e.pointerId);
     },
-    [value, onPointerMove, onPointerUp]);
+    [linearValue]);
 
 
     const onClick = (e: ReactPointerEvent<HTMLInputElement>) => e.preventDefault();
 
 
-    const linearValue = parseFloat(linearInputRef.current?.value || value.toString());
-    const curvedValue = getCurvedValue(linearValue, minRef.current, maxRef.current);
-    
     const valueAngle = minAngle + (linearValue - min) / (max - min) * (maxAngle - minAngle);
 
     const tickAngle = (index: number) => 
           minAngle
         + getCurvedTick(index / (ticks-1), 0, 1) * (maxAngle - minAngle)
         + adjustTickAngle;
-
-
-    const handleLinearChange = (e: ChangeEvent<HTMLInputElement>) => 
-    {
-        const newLinearValue = parseFloat(e.target.value);
-        const newCurvedValue = getCurvedValue(newLinearValue, minRef.current, maxRef.current);
-
-        if (curvedInputRef.current) 
-        {
-            curvedInputRef.current.value = newCurvedValue.toString();
-
-            const event = new Event('input', { bubbles: true });
-            curvedInputRef.current.dispatchEvent(event);
-        }
-    };
 
 
     const finalCurvedValue = curvedValue.toFixed(decimals);
@@ -223,21 +209,10 @@ export default function NumberKnob({
                         max           = {max}
                         step          = {inputStep}
                         value         = {value} // this should reflect the linear value
-                        ref           = {linearInputRef}
-                        onChange      = {handleLinearChange}
+                        ref           = {inputRef}
+                        onChange      = {onChange}
                         onPointerDown = {onPointerDown}
                         onClick       = {onClick}
-                        style         = {{ touchAction: 'none' }}
-                        />
-
-                    <input 
-                        className     = 'nodrag'
-                        type          = 'range'
-                        min           = {min}
-                        max           = {max}
-                        value         = {finalCurvedValue}
-                        ref           = {curvedInputRef}
-                        onChange      = {onChange}
                         style         = {{ touchAction: 'none' }}
                         />
 

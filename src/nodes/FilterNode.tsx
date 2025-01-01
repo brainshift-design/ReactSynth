@@ -3,7 +3,7 @@ import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import NumberKnob from '../components/NumberKnob';
 import { audioContext } from '../audio/audio';
 import { NodeProps } from './Node';
-import { getFreqCurve, invFreq } from './util';
+import { freqCurvePower, getFreqCurve, invFreq } from './util';
 import SelectKnob from '../components/SelectKnob';
 import AudioNode from './AudioNode';
 
@@ -127,12 +127,12 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
 
                     <NumberKnob 
                         label          = 'Hz'
-                        min            = {FilterNode.minFreq}
+                        min            = {1200}
                         max            = {FilterNode.maxFreq}
                         value          = {frequency}
-                        getCurvedValue = {(val) => getFreqCurve(val, FilterNode.minFreq, FilterNode.maxFreq, 6, v => v)}
-                        getCurvedTick  = {(val) => getFreqCurve(val, 0, 1, 6, v => 1-v)}
-                        ticks          = {62}
+                        getCurvedValue = {(val) => getFreqCurve(val, FilterNode.minFreq, FilterNode.maxFreq, freqCurvePower, v => v)}
+                        getCurvedTick  = {(val) => getFreqCurve(val, 0, 1, freqCurvePower, v => 1-v)}
+                        ticks          = {49}
                         onChange       = {(e) => this.update({ frequency: Number(e.target.value) })}
                         knobColor      = '#4af'
                         valueColor     = '#444'
