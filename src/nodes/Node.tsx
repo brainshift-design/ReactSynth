@@ -1,7 +1,6 @@
+import nodeStyles from './Node.module.css';
 import { Component } from "react";
 import { ClassContext, ClassContextProps } from "./ClassContext";
-import { audioNodes, createAudioContext } from "../audio/audio";
-import styles from './Node.module.css';
 import { Node as ReactFlowNode } from "reactflow";
 import { createId } from "../util";
 import { getTypeName } from "./util";
@@ -22,10 +21,21 @@ extends Component<T>
     static  contextType = ClassContext;
     declare context: ClassContextProps;
 
-    protected audioNode: AudioNode | null = null;
+    
+    // subscribers: Set<() => void> = new Set();
 
-    protected abstract createAudioNode(): AudioNode | null;
-    protected abstract initAudioNode(): void;
+    // subscribe(callback: () => void)
+    // {
+    //     this.subscribers.add(callback);
+    //     return () => this.subscribers.delete(callback);
+    // }
+
+    // notify()
+    // {
+    //     this.subscribers.forEach(callback => callback());
+    // }
+
+
 
     protected abstract renderContent(): JSX.Element;
 
@@ -43,35 +53,17 @@ extends Component<T>
     
     
 
-    componentDidMount()
+    update(data: any)
     {
-        const { id } = this.props;
+        this.context.setNodes(nodes =>
+            nodes.map(node =>
+                node.id == this.props.id
+                    ? { ...node, data: { ...node.data, ...data } }
+                    : node
+            )
+        );
 
-        createAudioContext();
-        this.audioNode = this.createAudioNode();
-
-        if (this.audioNode)
-        {
-            this.initAudioNode();
-            audioNodes.set(id, this.audioNode);
-        }
-    }
-
-
-
-    componentWillUnmount()
-    {
-        if (!this.audioNode)
-            throw new Error('Attempting to unmount a node without a valid audio node');
-
-        const { id } = this.props;
-        
-        if (  'stop' in this.audioNode 
-            && typeof (this.audioNode as any).stop === 'function')
-            (this.audioNode as any).stop();
-        
-        this.audioNode.disconnect();
-        audioNodes.delete(id);
+        //this.notify();
     }
 
 
@@ -82,8 +74,8 @@ extends Component<T>
         
         return (
             <div 
-                className = {styles.node}
-                style     = {{ outline: selected ? 'var(--node-outline-style)' : 'none' }}
+                className = {nodeStyles.node}
+                style     = {{ outline: selected ? 'var(--node-selected-style)' : 'none' }}
                 >
 
                 { this.renderContent() }

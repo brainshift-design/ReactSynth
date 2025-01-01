@@ -1,6 +1,6 @@
 import { useCallback, useContext, useState } from 'react';
 import { EdgeChange, type Node, Edge, NodeChange, applyEdgeChanges, applyNodeChanges, Connection, addEdge } from 'reactflow';
-import { updateAudioNode, removeAudioNode, connectAudioNodes, disconnectAudioNodes } from '../audio/audio';
+import { removeAudioNode, connectAudioNodes, disconnectAudioNodes } from '../audio/audio';
 import { createId } from '../util';
 import { ClassContext } from '../nodes/ClassContext';
 import { nodeTypes } from '../nodes';
@@ -84,25 +84,6 @@ export function useFlowState()
 
 
 
-    const updateNode = useCallback((id: string, data: {}) =>
-    {
-        updateAudioNode(id, data);
-
-        if (nodeContext)
-        {
-            nodeContext.setNodes(nodes =>
-                nodes.map(node =>
-                    node.id == id
-                        ? { ...node, data: { ...node.data, ...data } }
-                        : node
-                )
-            );
-        }
-    },
-    [nodeContext?.nodes]);
-
-
-
     const removeNodes = useCallback((nodes: Node[]) =>
     {
         for (const { id } of nodes)
@@ -127,7 +108,7 @@ export function useFlowState()
         onConnect,
 
         createNode: createReactFlowNode,
-        updateNode,
+        //updateNode,
         removeNodes,
         removeEdges,
 

@@ -1,9 +1,11 @@
-import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
-import Range from '../components/Range';
 import styles from './Node.module.css';
+import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
+import NumberKnob from '../components/NumberKnob';
 import { audioContext } from '../audio/audio';
-import Select from '../components/Select';
-import Node, { NodeProps } from './Node';
+import { NodeProps } from './Node';
+import { freqCurvePower, getFreqCurve, invFreq } from './util';
+import SelectKnob from '../components/SelectKnob';
+import AudioNode from './AudioNode';
 
 
 
@@ -15,22 +17,39 @@ interface FilterNodeProps extends NodeProps
         detune:    number;
         Q:         number;
         gain:      number;
-        type:      string
+        type:      number;
     }
 }
 
 
 
-export default class FilterNode extends Node<FilterNodeProps>
+export default class FilterNode extends AudioNode<FilterNodeProps>
 {
+    static readonly minFreq = 20;
+    static readonly maxFreq = 20000;
+
+    static readonly filterTypes =
+    [
+        { value: 'lowpass',   label: 'LoPs' },
+        { value: 'highpass',  label: 'HiPs' },
+        { value: 'bandpass',  label: 'BnPs' },
+        { value: 'lowshelf',  label: 'LoSh' },
+        { value: 'highshelf', label: 'HiSh' },
+        { value: 'peaking',   label: 'Peak' },
+        { value: 'notch',     label: 'Ntch' },
+        { value: 'allpass',   label: 'AlPs' }
+    ];
+
+
+
     protected createAudioNode()
     {
-        return audioContext?.createBiquadFilter() as AudioNode;
+        return audioContext?.createBiquadFilter() as globalThis.AudioNode;
     }
 
 
 
-    protected initAudioNode()
+    protected override initAudioNode()
     {
         const { data: { frequency, detune, Q, gain, type } } = this.props;
 
@@ -42,23 +61,35 @@ export default class FilterNode extends Node<FilterNodeProps>
             node.detune   .value = detune;
             node.Q        .value = Q;
             node.gain     .value = gain;
-            node.type            = type as BiquadFilterType;
+            node.type            = FilterNode.filterTypes[type].value as BiquadFilterType;
         }
     }
 
 
 
-    static createReactFlowNode(): ReactFlowNode
+    override updateAudioParam(key: string, value: any)
+    {
+        super.updateAudioParam(
+            key,
+            key == 'type'
+                ? FilterNode.filterTypes.find((_, i) => i == value)?.value
+                : value
+        );
+    }
+
+
+
+    static override createReactFlowNode(): ReactFlowNode
     {
         return { 
             ...super.createReactFlowNode(),
             data:     
             { 
-                frequency: 220,
+                frequency: invFreq(220),
                 detune:    0,
                 Q:         1,
                 gain:      1,
-                type:     'lowpass' 
+                type:      0
             },
         };
     }
@@ -67,8 +98,7 @@ export default class FilterNode extends Node<FilterNodeProps>
     
     renderContent()
     {
-        const { id, data: { frequency, detune, Q, gain, type } } = this.props;
-        const { updateNode } = this.context!;
+        const { data: { frequency, detune, Q, gain, type } } = this.props;
 
 
         return (
@@ -79,55 +109,51 @@ export default class FilterNode extends Node<FilterNodeProps>
 
                 <div className={styles.nodeContent}>
 
-                    <Range 
-                        label    = 'Frequency'
-                        min      = {10}
-                        max      = {20000}
-                        value    = {frequency}
-                        suffix   = 'Hz'
-                        onChange = {(e) => updateNode(id, { frequency: e.target.value })}
+                    <SelectKnob
+                        label    = 'Type'
+                        options  = {FilterNode.filterTypes}
+                        value    = {type}
+                        onChange = {(e) => this.update({ type: Number(e.target.value) })}
                         />
 
-                    <Range 
-                        label    = 'Detune'
+                    <NumberKnob 
+                        label    = 'Det ¢'
                         min      = {-100}
                         max      = { 100}
                         value    = {detune}
-                        suffix   = '¢'
-                        onChange = {(e) => updateNode(id, { detune: e.target.value })}
+                        ticks    = {11}
+                        onChange = {(e) => this.update({ detune: Number(e.target.value) })}
                         />
 
-                    <Range 
-                        label    = 'Quality'
+                    <NumberKnob 
+                        label          = 'Hz'
+                        min            = {1200}
+                        max            = {FilterNode.maxFreq}
+                        value          = {frequency}
+                        getCurvedValue = {(val) => getFreqCurve(val, FilterNode.minFreq, FilterNode.maxFreq, freqCurvePower, v => v)}
+                        getCurvedTick  = {(val) => getFreqCurve(val, 0, 1, freqCurvePower, v => 1-v)}
+                        ticks          = {49}
+                        onChange       = {(e) => this.update({ frequency: Number(e.target.value) })}
+                        knobColor      = '#4af'
+                        valueColor     = '#444'
+                        />
+
+                    <NumberKnob 
+                        label    = 'Q'
                         min      = {0}
                         max      = {30}
                         value    = {Q}
-                        onChange = {(e) => updateNode(id, { Q: Number(e.target.value) })}
+                        ticks    = {7}
+                        onChange = {(e) => this.update({ Q: Number(e.target.value) })}
                         />
 
-                    <Range 
-                        label    = 'Gain'
+                    <NumberKnob 
+                        label    = 'Gain %'
                         min      = {0}
                         max      = {100}
-                        value    = {gain}
-                        onChange = {(e) => updateNode(id, { gain: Number(e.target.value) })}
-                        />
-
-                    <Select
-                        label   = 'Type'
-                        options =
-                        {[
-                            { value: 'lowpass',   label: 'Low Pass'   },
-                            { value: 'highpass',  label: 'High Pass'  },
-                            { value: 'bandpass',  label: 'Band Pass'  },
-                            { value: 'lowshelf',  label: 'Low Shelf'  },
-                            { value: 'highshelf', label: 'High Shelf' },
-                            { value: 'peaking',   label: 'Peaking'    },
-                            { value: 'notch',     label: 'Notch'      },
-                            { value: 'allpass',   label: 'All Pass'   }
-                        ]}
-                        value    = {type}
-                        onChange = {(e) => updateNode(id, { type: e.target.value })}
+                        value    = {gain * 100}
+                        ticks    = {11}
+                        onChange = {(e) => this.update({ gain: Number(e.target.value) / 100 })}
                         />
 
                 </div>

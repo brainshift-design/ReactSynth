@@ -1,5 +1,10 @@
 import { Tau } from "../util";
 import { nodeTypes } from ".";
+import OscillatorNode from "./OscillatorNode";
+
+
+
+export const freqCurvePower = 4.5; // picked to make 440 be at the top
 
 
 
@@ -28,4 +33,18 @@ export function getTypeName(NodeClass: Function): string
         .find(([_, _NodeClass]) => _NodeClass == NodeClass)?.[0];
 
     return found as string;
+}
+
+
+
+export function getFreqCurve(val: number, min: number, max: number, power: number, prep: (v: number) => number = (_v: number) => _v)
+{
+    return min + prep(((val-min)/(max-min)) ** power) * (max-min);
+}
+
+
+
+export function invFreq(freq: number)
+{
+    return getFreqCurve(freq, OscillatorNode.minFreq, OscillatorNode.maxFreq, 1/freqCurvePower);    
 }
