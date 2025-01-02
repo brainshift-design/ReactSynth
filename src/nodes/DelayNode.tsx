@@ -63,7 +63,7 @@ export default class DelayNode extends AudioNode<DelayNodeProps>
                 <div className={styles.nodeContent}>
 
                     <NumberKnob 
-                        label      = 'sec'
+                        label      = '_|sec'
                         min        = {0}
                         max        = {1}
                         value      = {this.props.data.delayTime}

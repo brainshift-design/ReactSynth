@@ -21,7 +21,9 @@ export default function ToolbarButtons(): ReactElement
             <Button onClick={() => createNode('gain'      )}>Gain</Button>
             <Button onClick={() => createNode('delay'     )}>Del</Button>
             <Button onClick={() => createNode('filter'    )}>Flt</Button>
+            <Button onClick={() => createNode('compressor')}>Cmp</Button>
             <Button onClick={() => createNode('waveShaper')}>Shp</Button>
+            {/* <Button onClick={() => createNode('convolver' )}>Cnv</Button> */}
             <Button onClick={() => createNode('_output'   )}>Out</Button>
         </>
     );

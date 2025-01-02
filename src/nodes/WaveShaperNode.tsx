@@ -48,19 +48,7 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
         const audioNode = this.audioNode as globalThis.WaveShaperNode;
 
         if (audioNode)
-        {
             audioNode.oversample = WaveShaperNode.oversampleTypes[oversample].value as OverSampleType;
-        }
-    }
-
-
-
-    protected getAudioNodeData(data: any) 
-    {
-        return {
-            amount:     data.amount,
-            oversample: WaveShaperNode.oversampleTypes[data.oversample].value
-        }
     }
 
 
@@ -114,9 +102,12 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
                         min        = {0}
                         max        = {1000}
                         value      = {amount}
-                        padding    = {3}
                         ticks      = {11}
-                        onChange   = {(e) => this.update({ amount: Number(e.target.value), curve: createDistortionCurve(Number(e.target.value)) })}
+                        onChange   = {(e) => this.update(
+                            { 
+                                amount: Number(e.target.value), 
+                                curve:  createDistortionCurve(Number(e.target.value)) 
+                            })}
                         knobColor  = 'var(--color-node-highlight)'
                         valueColor = 'var(--color-node-highlight-value)'
                         />

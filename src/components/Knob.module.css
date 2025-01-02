@@ -149,7 +149,7 @@
 
 .knobContainer[data-value-color]
 {
-    --knob-base-color: var(--value-color);
+    --knob-base-color: var(--knob-value-color);
 }
 
 
@@ -168,7 +168,7 @@
     left:          50%;
     width:         3px;
     height:        40%;
-    background:    var(--value-color);
+    background:    var(--knob-value-color);
     transform:     translate(-50%, -135%);
     border-radius: 2px;
 }
@@ -192,4 +192,16 @@
     font-weight:   700;
     margin-top:    2px;
     margin-bottom: 4px;
+}
+
+
+.knobName
+{
+    font-weight: 600;
+}
+
+
+.knobUnit
+{
+    font-weight: 400;
 }

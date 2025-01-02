@@ -140,15 +140,18 @@ export default function SelectKnob({
         + adjustTickAngle;
 
 
+    const [name, unit] = label.split('|');
+
+
     return (
-        <label 
+        <div 
             className        = {`${paramStyles.parameter} ${knobStyles.knobContainer}`}
             data-knob-color  = {knobColor}
             data-value-color = {valueColor}
             style = 
             {{ 
                 '--knob-color':  knobColor, 
-                '--value-color': valueColor 
+                '--knob-value-color': valueColor 
             } as CSSProperties}
             >
 
@@ -202,9 +205,11 @@ export default function SelectKnob({
             </div>
 
             <h2 className={knobStyles.name}>
-                {label}
+                { name != '_' && <span className={knobStyles.knobName}>{name}</span> }
+                { name != '_' && unit && <span> · </span> }
+                <span className={knobStyles.knobUnit}>{unit}</span>
             </h2>
 
-        </label>
+        </div>
     );
 }

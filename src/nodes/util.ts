@@ -1,6 +1,7 @@
 import { Tau } from "../util";
 import { nodeTypes } from ".";
 import OscillatorNode from "./OscillatorNode";
+import { audioContext } from "../audio/audio";
 
 
 
@@ -47,4 +48,27 @@ export function getValueCurve(val: number, min: number, max: number, power: numb
 export function invValueCurve(freq: number)
 {
     return getValueCurve(freq, OscillatorNode.minFreq, OscillatorNode.maxFreq, 1/freqCurvePower);    
+}
+
+
+
+export function createImpulse(amount: number): AudioBuffer
+{
+    const durationSeconds = 1;
+
+    const sampleRate      = audioContext?.sampleRate;
+    const length          = durationSeconds * sampleRate!;
+ 
+    const impulseBuffer   = audioContext?.createBuffer(1, length, sampleRate!);
+
+    const channelData     = impulseBuffer?.getChannelData(0);
+
+
+    const len = amount/100 * sampleRate!;
+
+    for (let i = 0; i < len; i++)
+        channelData![i] = Math.max(0, 1 - i/(len-1));
+
+
+    return impulseBuffer!;
 }

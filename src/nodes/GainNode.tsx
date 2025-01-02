@@ -66,7 +66,7 @@ export default class GainNode extends AudioNode<GainNodeProps>
                 <div className={nodeStyles.nodeContent}>
 
                     <NumberKnob 
-                        label           = '%'
+                        label           = '_|%'
                         min             = {0}
                         max             = {200}
                         value           = {gain * 100}

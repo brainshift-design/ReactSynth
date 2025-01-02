@@ -175,15 +175,18 @@ export default function NumberKnob({
     const inputStep = 1 / Math.round(Math.pow(10, decimals));
 
 
+    let [name, unit] = label.split('|');
+
+    
     return (
-        <label 
+        <div 
             className        = {`${paramStyles.parameter} ${knobStyles.knobContainer}`}
             data-knob-color  = {knobColor}
             data-value-color = {valueColor}
             style = 
             {{ 
                 '--knob-color':  knobColor, 
-                '--value-color': valueColor 
+                '--knob-value-color': valueColor 
             } as CSSProperties}
             >
 
@@ -238,9 +241,11 @@ export default function NumberKnob({
             </div>
 
             <h2 className={knobStyles.name}>
-                {label}
+                { name != '_' && <span className={knobStyles.knobName}>{name}</span> }
+                { name != '_' && unit && <span> · </span> }
+                <span className={knobStyles.knobUnit}>{unit}</span>
             </h2>
 
-        </label>
+        </div>
     );
 }

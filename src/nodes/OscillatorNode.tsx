@@ -108,7 +108,7 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
                         />
 
                     <NumberKnob 
-                        label           = 'Hz'
+                        label           = 'Freq|Hz'
                         min             = {1200}
                         max             = {OscillatorNode.maxFreq}
                         value           = {frequency}
