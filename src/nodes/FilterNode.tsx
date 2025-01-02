@@ -3,7 +3,7 @@ import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import NumberKnob from '../components/NumberKnob';
 import { audioContext } from '../audio/audio';
 import { NodeProps } from './Node';
-import { freqCurvePower, getFreqCurve, invFreq } from './util';
+import { freqCurvePower, getValueCurve, invValueCurve } from './util';
 import SelectKnob from '../components/SelectKnob';
 import AudioNode from './AudioNode';
 
@@ -58,6 +58,18 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
         peaking:   { Q: true,  gain: true  },
         notch:     { Q: true,  gain: false },
         allpass:   { Q: true,  gain: false }
+    };
+
+    static readonly knobValueCurve: Record<string, {Q: number}> = 
+    {
+        lowpass:   { Q: 1 },
+        highpass:  { Q: 1 },
+        bandpass:  { Q: 4 },
+        lowshelf:  { Q: 1 },
+        highshelf: { Q: 1 },
+        peaking:   { Q: 1 },
+        notch:     { Q: 4 },
+        allpass:   { Q: 1 }
     };
 
 
@@ -131,9 +143,9 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
             ...super.createReactFlowNode(),
             data:     
             { 
-                frequency: invFreq(220),
+                frequency: invValueCurve(220),
                 detune:    0,
-                Q:         1,
+                Q:         0,
                 gain:      1,
                 type:      0
             },
@@ -147,6 +159,7 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
         const { data: { frequency, detune, Q, gain, type } } = this.props;
 
         const visibility = FilterNode.knobVisibility[FilterNode.filterTypes[type].value];
+        const valueCurve = FilterNode.knobValueCurve[FilterNode.filterTypes[type].value];
 
         
         return (
@@ -179,8 +192,8 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                         min            = {1200}
                         max            = {FilterNode.maxFreq}
                         value          = {frequency}
-                        getCurvedValue = {(val) => getFreqCurve(val, FilterNode.minFreq, FilterNode.maxFreq, freqCurvePower, v => v)}
-                        getCurvedTick  = {(val) => getFreqCurve(val, 0, 1, freqCurvePower, v => 1-v)}
+                        getCurvedValue = {(val) => getValueCurve(val, FilterNode.minFreq, FilterNode.maxFreq, freqCurvePower, v => v)}
+                        getCurvedTick  = {(val) => getValueCurve(val, 0, 1, freqCurvePower, v => 1-v)}
                         ticks          = {49}
                         onChange       = {(e) => this.update({ frequency: Number(e.target.value) })}
                         knobColor      = '#4af'
@@ -188,13 +201,14 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                         />
 
                     <NumberKnob 
-                        label     = 'Q'
-                        min       = {0}
-                        max       = {30}
-                        value     = {Q}
-                        showValue = {visibility.Q}
-                        ticks     = {7}
-                        onChange  = {(e) => this.update({ Q: Number(e.target.value) })}
+                        label          = 'Q'
+                        min            = {0}
+                        max            = {30}
+                        value          = {Q}
+                        showValue      = {visibility.Q}
+                        getCurvedValue = {(val) => getValueCurve(val, 0, 30, valueCurve.Q, v => v)}
+                        ticks          = {7}
+                        onChange       = {(e) => this.update({ Q: Number(e.target.value) })}
                         />
 
                     <NumberKnob 
