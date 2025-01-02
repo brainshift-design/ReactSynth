@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState, Dispatch, SetStateAction, useContext, useCallback } from 'react';
 import { Edge, Node } from 'reactflow';
-import { audioContext, audioIsRunning } from '../audio/audio';
-import { FilterType } from './FilterNode';
+import { audioContext, audioIsRunning } from './audio/audio';
+import { FilterType } from './nodes/FilterNode';
 
 
 

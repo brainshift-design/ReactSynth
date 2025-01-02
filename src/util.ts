@@ -10,6 +10,13 @@ export function roundTo(val: number, dec: number)
 
 
 
+export function nozero(val: number, epsilon = 0.0000001)
+{
+    return val == 0 ? epsilon : val;
+}
+
+
+
 export function createId(nChars = 6)
 {
     let id = '';

@@ -1,6 +1,6 @@
 import nodeStyles from './Node.module.css';
 import { Component } from "react";
-import { ClassContext, ClassContextProps } from "./ClassContext";
+import { ClassContext, ClassContextProps } from "../ClassContext";
 import { Node as ReactFlowNode } from "reactflow";
 import { createId } from "../util";
 import { getTypeName } from "./util";

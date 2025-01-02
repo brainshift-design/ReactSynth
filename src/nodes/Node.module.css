@@ -16,22 +16,22 @@
 
 .node h1
 {
-    font-size:   1.8ex;
-    font-weight: 600;
+    font-size:     1.8ex;
+    font-weight:   600;
 
-    color:       var(--color-node-header-text);
+    color:         var(--color-node-header-text);
 
-    margin:      0;
-    padding:     var(--gap-xs);
+    margin:        0;
+    padding:       var(--gap-xs);
     margin-bottom: 2px;
 
-    text-align:  center;
+    text-align:    center;
 }
 
 
 .nodeContent
 {
-    padding:        0 var(--gap-s) var(--gap-s) var(--gap-s);
+    padding:        0 var(--gap-m) var(--gap-s) var(--gap-m);
     gap:            var(--gap-s);
     
     display:        flex;
