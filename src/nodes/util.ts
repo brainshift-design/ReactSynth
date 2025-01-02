@@ -27,24 +27,24 @@ export function createDistortionCurve(amount: number)
 
 
 
-export function getTypeName(NodeClass: Function): string
+export function getTypeName(Class: Function): string
 {
     const found = Object.entries(nodeTypes)
-        .find(([_, _NodeClass]) => _NodeClass == NodeClass)?.[0];
+        .find(([_, cls]) => cls == Class);
 
-    return found as string;
+    return found?.[0] as string;
 }
 
 
 
-export function getFreqCurve(val: number, min: number, max: number, power: number, prep: (v: number) => number = (_v: number) => _v)
+export function getValueCurve(val: number, min: number, max: number, power: number, prep: (v: number) => number = (_v: number) => _v)
 {
     return min + prep(((val-min)/(max-min)) ** power) * (max-min);
 }
 
 
 
-export function invFreq(freq: number)
+export function invValueCurve(freq: number)
 {
-    return getFreqCurve(freq, OscillatorNode.minFreq, OscillatorNode.maxFreq, 1/freqCurvePower);    
+    return getValueCurve(freq, OscillatorNode.minFreq, OscillatorNode.maxFreq, 1/freqCurvePower);    
 }

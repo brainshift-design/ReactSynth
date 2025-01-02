@@ -11,6 +11,7 @@ interface NumberKnobProps
     min:              number;
     max:              number;
     value:            number;
+    showValue?:       boolean;
     forcePlus?:       boolean;
     getCurvedValue?:  (val: number, min: number, max: number) => number,
     getCurvedTick?:   (val: number, min: number, max: number) => number,
@@ -38,6 +39,7 @@ export default function NumberKnob({
     min, 
     max, 
     value, 
+    showValue       = true,
     forcePlus       = false,
     getCurvedValue  = (val, _1, _2) => val,
     getCurvedTick   = (val, _1, _2) => val,
@@ -189,7 +191,7 @@ export default function NumberKnob({
                 className = {knobStyles.display}
                 style     = {{ color: 'var(--color-node-text)' }}
                 >
-                {strValue}
+                {showValue ? strValue : ' '}
             </h2>
 
             <div className={knobStyles.infoContainer}>

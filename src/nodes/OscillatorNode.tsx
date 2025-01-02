@@ -3,7 +3,7 @@ import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
 import { audioContext } from '../audio/audio';
 import { NodeProps } from './Node';
 import NumberKnob from '../components/NumberKnob';
-import { freqCurvePower, getFreqCurve, invFreq } from './util';
+import { freqCurvePower, getValueCurve, invValueCurve } from './util';
 import SelectKnob from '../components/SelectKnob';
 import AudioNode from './AudioNode';
 import { Tau } from '../util';
@@ -78,7 +78,7 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
             ...super.createReactFlowNode(),
             data:     
             { 
-                frequency: invFreq(440), 
+                frequency: invValueCurve(440), 
                 type:      0
             },
         };
@@ -111,8 +111,8 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
                         min             = {1200}
                         max             = {OscillatorNode.maxFreq}
                         value           = {frequency}
-                        getCurvedValue  = {(val) => getFreqCurve(val, OscillatorNode.minFreq, OscillatorNode.maxFreq, freqCurvePower, v => v)}
-                        getCurvedTick   = {(val) => getFreqCurve(val, 0, 1, freqCurvePower, v => 1-v)}
+                        getCurvedValue  = {(val) => getValueCurve(val, OscillatorNode.minFreq, OscillatorNode.maxFreq, freqCurvePower, v => v)}
+                        getCurvedTick   = {(val) => getValueCurve(val, 0, 1, freqCurvePower, v => 1-v)}
                         ticks           = {49}
                         onChange        = {(e) => this.update({ frequency: Number(e.target.value) })}
                         knobColor       = '#4af'
