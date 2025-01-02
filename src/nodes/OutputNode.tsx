@@ -31,7 +31,7 @@ export default class OutputNode extends AudioNode<NodeProps>
 
                 <div className={nodeStyles.nodeContent}>
                     <Button
-                        style   = {{ margin: 'auto'}}
+                        style   = {{ margin: 'auto auto 3px auto'}}
                         onClick = {() => toggleAudio()}>
                         { 
                             audioIsRunning()

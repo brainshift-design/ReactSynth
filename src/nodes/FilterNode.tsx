@@ -23,6 +23,14 @@ interface FilterNodeProps extends NodeProps
 
 
 
+export interface FilterType 
+{ 
+    id:   string; 
+    type: number; 
+}
+
+
+
 export default class FilterNode extends AudioNode<FilterNodeProps>
 {
     static readonly minFreq = 20;
@@ -39,6 +47,44 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
         { value: 'notch',     label: 'Ntch' },
         { value: 'allpass',   label: 'AlPs' }
     ];
+
+    static readonly knobVisibility: Record<string, {Q: boolean, gain: boolean}> = 
+    {
+        lowpass:   { Q: true,  gain: false },
+        highpass:  { Q: true,  gain: false },
+        bandpass:  { Q: true,  gain: false },
+        lowshelf:  { Q: false, gain: true  },
+        highshelf: { Q: false, gain: true  },
+        peaking:   { Q: true,  gain: true  },
+        notch:     { Q: true,  gain: false },
+        allpass:   { Q: true,  gain: false }
+    };
+
+
+
+    override componentDidMount()
+    {
+        super.componentDidMount();
+
+        // add this node to context.filterTypes 
+        // to access the type value from other components
+
+        this.context.setFilterTypes([
+            ...this.context.filterTypes,
+            { id: this.id, type: this.props.data.type }
+        ]);
+    }
+
+
+
+    override componentWillUnmount()
+    {
+        super.componentWillUnmount();
+
+        this.context.setFilterTypes(
+            this.context.filterTypes.filter(type => type.id != this.id)
+        );
+    }   
 
 
 
@@ -100,7 +146,9 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
     {
         const { data: { frequency, detune, Q, gain, type } } = this.props;
 
+        const visibility = FilterNode.knobVisibility[FilterNode.filterTypes[type].value];
 
+        
         return (
             <>
                 <Handle type='target' position={Position.Left} />
@@ -140,21 +188,23 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                         />
 
                     <NumberKnob 
-                        label    = 'Q'
-                        min      = {0}
-                        max      = {30}
-                        value    = {Q}
-                        ticks    = {7}
-                        onChange = {(e) => this.update({ Q: Number(e.target.value) })}
+                        label     = 'Q'
+                        min       = {0}
+                        max       = {30}
+                        value     = {Q}
+                        showValue = {visibility.Q}
+                        ticks     = {7}
+                        onChange  = {(e) => this.update({ Q: Number(e.target.value) })}
                         />
 
                     <NumberKnob 
-                        label    = 'Gain %'
-                        min      = {0}
-                        max      = {100}
-                        value    = {gain * 100}
-                        ticks    = {11}
-                        onChange = {(e) => this.update({ gain: Number(e.target.value) / 100 })}
+                        label     = 'Gain %'
+                        min       = {0}
+                        max       = {100}
+                        value     = {gain * 100}
+                        showValue = {visibility.gain}
+                        ticks     = {11}
+                        onChange  = {(e) => this.update({ gain: Number(e.target.value) / 100 })}
                         />
 
                 </div>

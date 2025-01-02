@@ -6,6 +6,7 @@ import { createId } from "../util";
 import { getTypeName } from "./util";
 
 
+
 export interface NodeProps 
 {
     id:       string;
@@ -22,22 +23,14 @@ extends Component<T>
     declare context: ClassContextProps;
 
     
-    // subscribers: Set<() => void> = new Set();
-
-    // subscribe(callback: () => void)
-    // {
-    //     this.subscribers.add(callback);
-    //     return () => this.subscribers.delete(callback);
-    // }
-
-    // notify()
-    // {
-    //     this.subscribers.forEach(callback => callback());
-    // }
-
-
 
     protected abstract renderContent(): JSX.Element;
+
+
+
+    get id  () { return this.props.id; }
+    get type() { return getTypeName(this.constructor); }
+    get data() { return this.props.data; }
 
 
 
@@ -62,8 +55,6 @@ extends Component<T>
                     : node
             )
         );
-
-        //this.notify();
     }
 
 

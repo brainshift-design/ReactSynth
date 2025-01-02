@@ -27,12 +27,12 @@ export function createDistortionCurve(amount: number)
 
 
 
-export function getTypeName(NodeClass: Function): string
+export function getTypeName(Class: Function): string
 {
     const found = Object.entries(nodeTypes)
-        .find(([_, _NodeClass]) => _NodeClass == NodeClass)?.[0];
+        .find(([_, cls]) => cls == Class);
 
-    return found as string;
+    return found?.[0] as string;
 }
 
 

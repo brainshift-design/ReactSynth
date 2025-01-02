@@ -1,21 +1,23 @@
 import { createContext, ReactNode, useState, Dispatch, SetStateAction, useContext, useCallback } from 'react';
 import { Edge, Node } from 'reactflow';
 import { audioContext, audioIsRunning } from '../audio/audio';
+import { FilterType } from './FilterNode';
 
 
 
 export interface ClassContextProps
 {
-    nodes:       Node[];
-    setNodes:    Dispatch<SetStateAction<Node[]>>;
+    nodes:          Node[];
+    setNodes:       Dispatch<SetStateAction<Node[]>>;
  
-    edges:       Edge[];
-    setEdges:    Dispatch<SetStateAction<Edge[]>>;
+    edges:          Edge[];
+    setEdges:       Dispatch<SetStateAction<Edge[]>>;
 
-    //updateNode:  (id: string, data: any) => void;
+    isRunning:      boolean;
+    toggleAudio:    () => void;
 
-    isRunning:   boolean;
-    toggleAudio: () => void;
+    filterTypes:    FilterType[];
+    setFilterTypes: Dispatch<SetStateAction<FilterType[]>>;
 }
 
 
@@ -26,9 +28,10 @@ export const ClassContext = createContext<ClassContextProps | undefined>(undefin
 
 export const ClassProvider = ({ children }: { children: ReactNode }) =>
 {
-    const [nodes, setNodes] = useState<Node[]>([]);
-    const [edges, setEdges] = useState<Edge[]>([]);
-    const [isRunning, setIsRunning] = useState(false);
+    const [nodes, setNodes]             = useState<Node[]>([]);
+    const [edges, setEdges]             = useState<Edge[]>([]);
+    const [isRunning, setIsRunning]     = useState(false);
+    const [filterTypes, setFilterTypes] = useState<FilterType[]>([]);
 
 
     const toggleAudio = useCallback(() => 
@@ -39,7 +42,7 @@ export const ClassProvider = ({ children }: { children: ReactNode }) =>
     []);
  
  
-     return (
+    return (
         <ClassContext.Provider 
             value=
             {{ 
@@ -49,10 +52,11 @@ export const ClassProvider = ({ children }: { children: ReactNode }) =>
                 edges, 
                 setEdges, 
 
-                //updateNode,
-
                 isRunning,
-                toggleAudio
+                toggleAudio,
+
+                filterTypes,
+                setFilterTypes
             }}>
 
             {children}
