@@ -1,10 +1,11 @@
 import nodeStyles from './Node.module.css';
 import outputNodeStyles from './OutputNode.module.css';
 import { NodeProps } from './Node';
-import { Handle, Position } from 'reactflow';
+import { Position } from 'reactflow';
 import { audioContext, audioIsRunning } from '../audio/audio';
 import Button from '../components/Button';
 import AudioNode from './AudioNode';
+import InputHandle from '../components/InputHandle';
 
 
 
@@ -23,7 +24,16 @@ export default class OutputNode extends AudioNode<NodeProps>
 
         return (
             <>
-                <Handle type='target' position={Position.Left} />
+                <InputHandle 
+                    type     = 'target' 
+                    position = {Position.Left}
+                    id       = {'audio-in'} 
+                    nodeid   = {this.props.id} 
+                    style    =
+                    {{
+                        top: 'calc(50% - 14px)'
+                    }}
+                />
 
                 <h1>Output</h1>
 

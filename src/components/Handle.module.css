@@ -1,0 +1,31 @@
+:root
+{
+    --handle-inside-disconnected: radial-gradient(#000, #555);
+    --handle-inside-connected:    radial-gradient(#aaa 35%, #000 50%);
+}
+
+
+.inputHandle
+{
+    width:      10px;
+    height:     10px;
+    border:     none;
+    box-shadow: 0  0   0     1px    #bbb inset,
+                0 -1px 0.5px 0.05px #fff9,
+                0  1px 1px   0.05px #0006,
+                0  0   0     2px    #0002;
+    left:       4px;
+}
+
+
+.outputHandle
+{
+    width:      10px;
+    height:     10px;
+    border:     none;
+    box-shadow: 0  0   0     1px    #bbb inset,
+                0 -1px 0.5px 0.05px #fff9,
+                0  1px 1px   0.05px #0006,
+                0  0   0     2px    #0002;
+    right:      4px;
+}

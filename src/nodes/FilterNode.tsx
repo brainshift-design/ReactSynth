@@ -1,11 +1,13 @@
 import styles from './Node.module.css';
-import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
+import { Node as ReactFlowNode, Position } from 'reactflow';
 import NumberKnob from '../components/NumberKnob';
 import { audioContext } from '../audio/audio';
 import { NodeProps } from './Node';
 import { freqCurvePower, getValueCurve, invValueCurve } from './util';
 import SelectKnob from '../components/SelectKnob';
 import AudioNode from './AudioNode';
+import InputHandle from '../components/InputHandle';
+import OutputHandle from '../components/OutputHandle';
 
 
 
@@ -164,7 +166,12 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
         
         return (
             <>
-                <Handle type='target' position={Position.Left} />
+                <InputHandle 
+                    type     = 'target' 
+                    position = {Position.Left}
+                    id       = {'audio-in'} 
+                    nodeid   = {this.props.id} 
+                />
 
                 <h1>Filter</h1>
 
@@ -196,8 +203,8 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                         getCurvedTick  = {(val) => getValueCurve(val, 0, 1, freqCurvePower, v => 1-v)}
                         ticks          = {49}
                         onChange       = {(e) => this.update({ frequency: Number(e.target.value) })}
-                        knobColor      = '#4af'
-                        valueColor     = '#444'
+                        knobColor      = 'var(--color-node-highlight)'
+                        valueColor     = 'var(--color-node-highlight-value)'
                         />
 
                     <NumberKnob 
@@ -223,8 +230,12 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
 
                 </div>
 
-                <Handle type='source' position={Position.Right} />
-
+                <OutputHandle 
+                    type     = 'source' 
+                    position = {Position.Right} 
+                    id       = {'audio-in'} 
+                    nodeid   = {this.props.id} 
+                />
             </>
         );
     }

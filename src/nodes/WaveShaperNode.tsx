@@ -1,5 +1,5 @@
 import nodeStyles from './Node.module.css';
-import { Handle, Node as ReactFlowNode, Position } from 'reactflow';
+import { Node as ReactFlowNode, Position } from 'reactflow';
 import { audioContext } from '../audio/audio';
 import { createDistortionCurve } from './util';
 import { NodeProps } from './Node';
@@ -7,6 +7,8 @@ import NumberKnob from '../components/NumberKnob';
 import SelectKnob from '../components/SelectKnob';
 import AudioNode from './AudioNode';
 import { Tau } from '../util';
+import InputHandle from '../components/InputHandle';
+import OutputHandle from '../components/OutputHandle';
 
 
 
@@ -96,7 +98,12 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
 
         return (
             <>
-                <Handle type='target' position={Position.Left} />
+                <InputHandle 
+                    type     = 'target' 
+                    position = {Position.Left}
+                    id       = {'audio-in'} 
+                    nodeid   = {this.props.id} 
+                />
 
                 <h1>Wave Shaper</h1>
 
@@ -110,8 +117,8 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
                         padding    = {3}
                         ticks      = {11}
                         onChange   = {(e) => this.update({ amount: Number(e.target.value), curve: createDistortionCurve(Number(e.target.value)) })}
-                        knobColor  = '#4af'
-                        valueColor = '#444'
+                        knobColor  = 'var(--color-node-highlight)'
+                        valueColor = 'var(--color-node-highlight-value)'
                         />
 
                     <SelectKnob
@@ -125,7 +132,12 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
 
                 </div>
 
-                <Handle type='source' position={Position.Right} />
+                <OutputHandle 
+                    type     = 'source' 
+                    position = {Position.Right} 
+                    id       = {'audio-in'} 
+                    nodeid   = {this.props.id} 
+                />
             </>
         );
     }

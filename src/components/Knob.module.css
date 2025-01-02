@@ -85,9 +85,10 @@
 
 .knobContainer .knob
 {
-    --knob-edge-highlight: color-mix(in srgb, var(--knob-base-color), #fff 90%);
-    --knob-edge-shadow:    color-mix(in srgb, var(--knob-base-color), #000 30%);
-    --knob-edge:           color-mix(in srgb, var(--knob-base-color), #000 15%);
+    --knob-edge-highlight: oklch(from var(--knob-color) 85% 0.05 h);
+    --knob-edge-shadow:    oklch(from var(--knob-color) 50% 0.05 h);
+    --knob-edge-shadow2:   oklch(from var(--knob-color) 10% 0.05 h);
+    --knob-edge:           oklch(from var(--knob-color) 40% 0.05 h);
 
     position:      absolute;
     border-radius: 50%;
@@ -133,7 +134,8 @@
                    0px  3px  5.6px 0px rgba(0, 0, 0, 0.11), 
                    0px 14px 19.9px 0px rgba(0, 0, 0, 0.15), 
                    0px  0    3px   0px var(--knob-edge) inset,
-                   0px -2px  1px  -1px var(--knob-edge-shadow) inset;
+                   0px  0    0     1px rgb(from var(--knob-edge-shadow) r g b / 20%) inset,
+                   0px -2px  1px  -1px var(--knob-edge-shadow2) inset;
     user-select:   none;
     touch-action:  none;
 }

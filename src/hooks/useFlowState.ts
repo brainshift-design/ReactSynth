@@ -2,7 +2,7 @@ import { useCallback, useContext, useState } from 'react';
 import { EdgeChange, type Node, Edge, NodeChange, applyEdgeChanges, applyNodeChanges, Connection, addEdge } from 'reactflow';
 import { removeAudioNode, connectAudioNodes, disconnectAudioNodes } from '../audio/audio';
 import { createId } from '../util';
-import { ClassContext } from '../nodes/ClassContext';
+import { ClassContext } from '../ClassContext';
 import { nodeTypes } from '../nodes';
 
 
