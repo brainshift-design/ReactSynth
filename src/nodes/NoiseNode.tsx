@@ -21,7 +21,7 @@ export default class NoiseNode extends AudioNode<NodeProps>
 
         if (node)
         {
-            node.buffer = createNoiseBuffer(1);
+            node.buffer = createNoiseBuffer(5);
             node.loop   = true;
             
             node.start();

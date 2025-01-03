@@ -44,7 +44,7 @@ export default class ReverbNode extends AudioNode<ConvolverNodeProps>
         const newData = { ...data, [key]: value };
         const { duration, decay, metallic, reverse } = newData;
 
-        
+
         if (node)
         {
             if (!node.buffer)
@@ -159,7 +159,7 @@ function updateReverbImpulseResponse(
     const sampleRate  = buffer.sampleRate;
     const channelData = buffer.getChannelData(0);
 
-    const length      = Math.floor(sampleRate * duration);
+    const length      = Math.max(1, Math.floor(sampleRate * duration));
     const totalLength = Math.floor(sampleRate * 20);
 
 
