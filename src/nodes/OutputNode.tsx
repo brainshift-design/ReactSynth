@@ -2,14 +2,21 @@ import nodeStyles from './Node.module.css';
 import outputNodeStyles from './OutputNode.module.css';
 import { NodeProps } from './Node';
 import { Position } from 'reactflow';
-import { audioContext, audioIsRunning } from '../audio/audio';
-import Button from '../components/Button';
+import { audioContext } from '../audio/audio';
 import AudioNode from './AudioNode';
 import InputHandle from '../components/InputHandle';
+import Toggle from '../components/Toggle';
 
 
 
-export default class OutputNode extends AudioNode<NodeProps>
+interface OutputNodeProps extends NodeProps
+{
+    data: { on: boolean; }
+}
+
+
+
+export default class OutputNode extends AudioNode<OutputNodeProps>
 {
     protected createAudioNode()
     {
@@ -18,10 +25,21 @@ export default class OutputNode extends AudioNode<NodeProps>
 
 
 
-    protected renderContent()
+    override updateAudioParam(key: string, value: any)
     {
+        super.updateAudioParam(key, value);
+
+
         const { toggleAudio } = this.context;
 
+        if (key == 'on')
+            toggleAudio(value);
+    }
+
+
+
+    protected renderContent()
+    {
         return (
             <>
                 <InputHandle 
@@ -40,15 +58,11 @@ export default class OutputNode extends AudioNode<NodeProps>
                 <div className={outputNodeStyles.speaker}></div>
 
                 <div className={nodeStyles.nodeContent}>
-                    <Button
-                        style   = {{ margin: 'auto auto 3px auto'}}
-                        onClick = {() => toggleAudio()}>
-                        { 
-                            audioIsRunning()
-                                ? (<span role='img' aria-label='mute'  ><span className='material-symbols-outlined'>volume_up</span></span>) 
-                                : (<span role='img' aria-label='unmute'><span className='material-symbols-outlined'>no_sound </span></span>)
-                        }                
-                    </Button>
+                    <Toggle
+                        label    = ''
+                        value    = {false}
+                        onChange = {(e) => this.update({ on: e.target.value === 'true' })}
+                    />
                 </div>
             </>
         );

@@ -6,7 +6,7 @@ import NumberKnob from '../components/NumberKnob';
 import AudioNode from './AudioNode';
 import InputHandle from '../components/InputHandle';
 import OutputHandle from '../components/OutputHandle';
-import BooleanToggle from '../components/Toggle';
+import Toggle from '../components/Toggle';
 import { Tau } from '../util';
 
 
@@ -128,7 +128,7 @@ export default class ReverbNode extends AudioNode<ConvolverNodeProps>
                         onChange = {(e) => this.update({ metallic: Number(e.target.value) / 100 })}
                     />
 
-                    <BooleanToggle
+                    <Toggle
                         label    = 'Rev'
                         value    = {reverse}
                         onChange = {(e) => this.update({ reverse: e.target.value === 'true' })}
