@@ -30,6 +30,7 @@ export default function GraphView()
                 onEdgesChange           = {onEdgesChange}
                 onEdgesDelete           = {removeEdges}
                 onConnect               = {onConnect}
+                maxZoom={16}
                 >
                 <Background />
             </ReactFlow>

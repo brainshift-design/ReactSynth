@@ -1,10 +1,10 @@
-import toggleStyles from './BooleanToggle.module.css';
+import toggleStyles from './Toggle.module.css';
 import paramStyles from './Parameter.module.css';
-import { ChangeEvent, ChangeEventHandler, CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 
 
 
-interface BooleanToggleProps
+interface ToggleProps
 {
     label:        string;
     value:        boolean;
@@ -15,15 +15,14 @@ interface BooleanToggleProps
 
 
 
-export default function BooleanToggle({ 
+export default function Toggle({ 
     label, 
     value, 
     toggleColor = '#f4f3f1',
     valueColor  = '#08f',
     onChange 
-}: BooleanToggleProps)
+}: ToggleProps)
 {
-    //const inputRef    = useRef<HTMLInputElement>(null);
     const onChangeRef = useRef(onChange);
 
     const [toggleValue, setToggleValue] = useState(value);
@@ -48,16 +47,16 @@ export default function BooleanToggle({
     [toggleValue]);
 
 
-    const onClick = useCallback((e: ReactPointerEvent<HTMLInputElement>) => 
+    const onClick = useCallback(() => 
     {
-        setToggleValue((e.target as HTMLInputElement).checked);
+        setToggleValue(value => !value);
     },
-    [toggleValue]);
+    []);
 
 
     return (
         <div
-            className         = {`${paramStyles.parameter} ${toggleStyles.booleanToggleContainer}`}
+            className         = {`${paramStyles.parameter} ${toggleStyles.toggleContainer}`}
             data-toggle-color = {toggleColor}
             data-value-color  = {valueColor}
             style = 
@@ -67,13 +66,25 @@ export default function BooleanToggle({
             } as CSSProperties}
             >
 
-            <input 
-                type    = 'checkbox' 
-                // ref     = 'inputRef' 
-                onClick = {onClick}
-            />
+            <div 
+                className = {toggleStyles.toggle}
+                onClick   = {onClick}
+                style     =
+                {{
+                    background: toggleValue ? '#6bf' : '#0000000a'
+                }}
+                >
 
-            <div className={toggleStyles.booleanToggle}></div>
+                <div 
+                    className = {toggleStyles.thumb}
+                    style     = 
+                    {{
+                        top: toggleValue ? '0' : '45%'
+                    }}
+                        >
+                </div>
+
+            </div>
 
             <h2 className={toggleStyles.name}>
                 {label}

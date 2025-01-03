@@ -153,7 +153,7 @@ export default class CompressorNode extends AudioNode<CompressorNodeProps>
                 <OutputHandle 
                     type     = 'source' 
                     position = {Position.Right} 
-                    id       = {'audio-in'} 
+                    id       = {'audio-out'} 
                     nodeid   = {this.props.id} 
                 />
             </>

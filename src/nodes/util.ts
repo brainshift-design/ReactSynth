@@ -1,7 +1,6 @@
 import { Tau } from "../util";
 import { nodeTypes } from ".";
 import OscillatorNode from "./OscillatorNode";
-import { audioContext } from "../audio/audio";
 
 
 
@@ -48,42 +47,4 @@ export function getValueCurve(val: number, min: number, max: number, power: numb
 export function invValueCurve(freq: number)
 {
     return getValueCurve(freq, OscillatorNode.minFreq, OscillatorNode.maxFreq, 1/freqCurvePower);    
-}
-
-
-
-export function createReverbImpulseResponse(
-    duration: number, // "room size"
-    decay:    number,
-    metallic: number  = 0,
-    reverse:  boolean = false
-): AudioBuffer 
-{
-    const sampleRate  = audioContext?.sampleRate;
-    const length      = Math.floor(sampleRate! * duration);
-
-    const impulse     = audioContext?.createBuffer(1, Math.max(1, length), sampleRate!);
-    const channelData = impulse?.getChannelData(0);
-
-    const metallicModFreq = 2000;
-
-
-    for (let i = 0; i < length; i++) 
-    {
-        // optionally use the reversed index to fade in instead of out
-        const idx = reverse ? length - i : i;
-
-        // base white noise is used to affect all possible frequencies,
-        // with exponential decay
-        const base = (Math.random()*2 - 1) * (1 - idx/length)**decay;
-
-        // optionally modulate amplitude with a sine wave,
-        // which gives a subtle ringing effect
-        const mod = 1 + metallic * Math.sin((2 * Math.PI * metallicModFreq * i) / sampleRate!);
-
-        channelData![i] = base * mod;
-    }
-
-    
-    return impulse!;
 }

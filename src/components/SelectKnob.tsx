@@ -98,7 +98,7 @@ export default function SelectKnob({
         dragState.current.isDragging = false;
 
         globalThis.removeEventListener('pointermove', onPointerMove);
-        globalThis.removeEventListener('pointerup',   onPointerUp);
+        globalThis.removeEventListener('pointerup',   onPointerUp  );
 
         inputRef.current?.releasePointerCapture(e.pointerId);
     },
@@ -120,14 +120,11 @@ export default function SelectKnob({
         };
 
         globalThis.addEventListener('pointermove', onPointerMove);
-        globalThis.addEventListener('pointerup',   onPointerUp);
+        globalThis.addEventListener('pointerup',   onPointerUp  );
 
         inputRef.current?.setPointerCapture(e.pointerId);
     },
     [knobValue]);
-
-
-    const onClick = (e: ReactPointerEvent<HTMLInputElement>) => e.preventDefault();
 
 
     const valueAngle = minAngle + knobValue / (options.length-1) * (maxAngle - minAngle);
