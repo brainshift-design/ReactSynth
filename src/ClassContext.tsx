@@ -14,7 +14,7 @@ export interface ClassContextProps
     setEdges:       Dispatch<SetStateAction<Edge[]>>;
 
     isRunning:      boolean;
-    toggleAudio:    () => void;
+    toggleAudio:    (on: boolean) => void;
 
     filterTypes:    FilterType[];
     setFilterTypes: Dispatch<SetStateAction<FilterType[]>>;
@@ -34,10 +34,10 @@ export const ClassProvider = ({ children }: { children: ReactNode }) =>
     const [filterTypes, setFilterTypes] = useState<FilterType[]>([]);
 
 
-    const toggleAudio = useCallback(() => 
+    const toggleAudio = useCallback((on: boolean) => 
     {
-        if (audioIsRunning()) audioContext?.suspend().then(() => setIsRunning(audioIsRunning()));
-        else                  audioContext?.resume ().then(() => setIsRunning(audioIsRunning()));
+        if (on) audioContext?.resume ().then(() => setIsRunning(audioIsRunning()));
+        else    audioContext?.suspend().then(() => setIsRunning(audioIsRunning()));
     },
     []);
  
