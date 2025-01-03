@@ -23,6 +23,12 @@ export default function InputHandle(props: InputHandleProps)
         && edge.targetHandle == props.id
     );
   
+    const edgeSelected = context?.edges.find(edge => 
+           edge.target       === props.nodeid 
+        && edge.targetHandle === props.id
+    )?.selected;
+
+
     return (
         <Handle
             {...props}
@@ -32,7 +38,9 @@ export default function InputHandle(props: InputHandleProps)
                 ...props.style,
                 background: 
                     handleConnected 
-                        ? 'var(--handle-inside-connected)' 
+                        ? (edgeSelected
+                               ? 'var(--handle-inside-connected-selected)'
+                               : 'var(--handle-inside-connected)')
                         : 'var(--handle-inside-disconnected)'
             }}
         />
