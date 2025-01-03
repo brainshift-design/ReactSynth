@@ -42,9 +42,9 @@ export default class NoiseNode extends AudioNode<NodeProps>
                         className ={nodeStyles.checkers}
                         style     = 
                         {{
-                            width:  40,
-                            height: 40,
-                            margin: '0 10px 10px 10px'
+                            width:  32,
+                            height: 32,
+                            margin: '8px 18px 18px 18px'
                         }}>
 
                     </div>
