@@ -135,9 +135,9 @@ export default function NumberKnob({
     {
         if (e.button != 0)
             return;
-        
-        e.preventDefault();
 
+        e.preventDefault();
+        
         dragState.current =
         {
             isDragging: true,
@@ -151,9 +151,6 @@ export default function NumberKnob({
         inputRef.current?.setPointerCapture(e.pointerId);
     },
     [linearValue]);
-
-
-    const onClick = (e: ReactPointerEvent<HTMLInputElement>) => e.preventDefault();
 
 
     const valueAngle = minAngle + (linearValue - min) / (max - min) * (maxAngle - minAngle);
@@ -171,8 +168,6 @@ export default function NumberKnob({
         + finalCurvedValue.toString().padStart(padding, padChar.replace(' ', ' ')) 
         + (suffix && ' ') 
         + suffix;
-
-    const inputStep = 1 / Math.round(Math.pow(10, decimals));
 
 
     let [name, unit] = label.split('|');
@@ -214,21 +209,13 @@ export default function NumberKnob({
 
                 <div className={knobStyles.inputContainer}>
 
-                    <input 
-                        className     = 'nodrag'
-                        type          = 'range'
-                        min           = {min}
-                        max           = {max}
-                        step          = {inputStep}
-                        value         = {value} // this should reflect the linear value
+                    <div 
+                        className     = {knobStyles.knob}
                         ref           = {inputRef}
-                        onChange      = {onChange}
                         onPointerDown = {onPointerDown}
-                        onClick       = {onClick}
-                        style         = {{ touchAction: 'none' }}
-                        />
-
-                    <div className = {knobStyles.knob}></div>
+                        onChange      = {onChange}
+                        >
+                    </div>
 
                     <div 
                         className = {knobStyles.knobValue}

@@ -105,7 +105,7 @@ export default class ReverbNode extends AudioNode<ConvolverNodeProps>
 
                     <NumberKnob 
                         label      = 'Decay'
-                        min        = {0}
+                        min        = {0.1}
                         max        = {10}
                         decimals   = {1}
                         value      = {decay}

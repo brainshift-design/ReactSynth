@@ -179,20 +179,13 @@ export default function SelectKnob({
 
                 <div className={knobStyles.inputContainer}>
 
-                    <input 
-                        className     = 'nodrag'
-                        type          = 'range'
-                        min           = {0}
-                        max           = {options.length-1}
-                        value         = {value}
+                    <div 
+                        className     = {knobStyles.knob}
                         ref           = {inputRef}
-                        onChange      = {onChange}
                         onPointerDown = {onPointerDown}
-                        onClick       = {onClick}
-                        style         = {{ touchAction: 'none' }}
-                        />
-
-                    <div className = {knobStyles.knob}></div>
+                        onChange      = {onChange}
+                        >
+                    </div>
 
                     <div 
                         className = {knobStyles.knobValue}

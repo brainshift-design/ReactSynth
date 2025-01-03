@@ -1,6 +1,6 @@
-import toggleStyles from './Toggle.module.css';
+import toggleStyles from './BooleanToggle.module.css';
 import paramStyles from './Parameter.module.css';
-import { ChangeEvent, ChangeEventHandler, CSSProperties, /*PointerEvent as ReactPointerEvent,*/ useCallback, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 
 
@@ -48,16 +48,16 @@ export default function BooleanToggle({
     [toggleValue]);
 
 
-    const onClick = useCallback((/*e: ReactPointerEvent<HTMLInputElement>*/) => 
+    const onClick = useCallback((e: ReactPointerEvent<HTMLInputElement>) => 
     {
-        setToggleValue(!toggleValue);
+        setToggleValue((e.target as HTMLInputElement).checked);
     },
     [toggleValue]);
 
 
     return (
         <div
-            className         = {`${paramStyles.parameter} ${toggleStyles.toggleContainer}`}
+            className         = {`${paramStyles.parameter} ${toggleStyles.booleanToggleContainer}`}
             data-toggle-color = {toggleColor}
             data-value-color  = {valueColor}
             style = 
@@ -67,19 +67,13 @@ export default function BooleanToggle({
             } as CSSProperties}
             >
 
-            {/* <h2 
-                className = {toggleStyles.display}
-                style     = {{ color: 'var(--color-node-text)' }}
-                >
-                {showValue ? strValue : ' '}
-            </h2> */}
-
             <input 
                 type    = 'checkbox' 
-                id      = 'switch' 
                 // ref     = 'inputRef' 
                 onClick = {onClick}
             />
+
+            <div className={toggleStyles.booleanToggle}></div>
 
             <h2 className={toggleStyles.name}>
                 {label}
