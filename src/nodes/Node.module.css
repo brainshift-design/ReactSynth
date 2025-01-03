@@ -43,9 +43,10 @@
 .checkers
 {
     background:
-        linear-gradient(45deg, var(--color-node-text) 25%, transparent 25%, transparent 75%, var(--color-node-text) 75%),
-        linear-gradient(45deg, var(--color-node-text) 25%, transparent 25%, transparent 75%, var(--color-node-text) 75%);
-
+    linear-gradient(45deg, var(--color-node-text) 25%, transparent 25%, transparent 75%, var(--color-node-text) 75%),
+    linear-gradient(45deg, var(--color-node-text) 25%, transparent 25%, transparent 75%, var(--color-node-text) 75%);
+    
+    border-radius:       var(--corner-s);
     background-color:    white;
     opacity:             1;
     background-size:     8px 8px;
