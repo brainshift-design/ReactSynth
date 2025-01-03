@@ -12,7 +12,7 @@ import OutputHandle from '../components/OutputHandle';
 
 
 
-interface WaveShaperNodeProps extends NodeProps
+interface DistortionNodeProps extends NodeProps
 {
     data: 
     {
@@ -23,7 +23,7 @@ interface WaveShaperNodeProps extends NodeProps
 
 
 
-export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
+export default class DistortionNode extends AudioNode<DistortionNodeProps>
 {
     static readonly oversampleTypes =
     [
@@ -48,7 +48,7 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
         const audioNode = this.audioNode as globalThis.WaveShaperNode;
 
         if (audioNode)
-            audioNode.oversample = WaveShaperNode.oversampleTypes[oversample].value as OverSampleType;
+            audioNode.oversample = DistortionNode.oversampleTypes[oversample].value as OverSampleType;
     }
 
 
@@ -58,9 +58,15 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
         super.updateAudioParam(
             key,
             key == 'oversample'
-                ? WaveShaperNode.oversampleTypes.find((_, i) => i == value)?.value
+                ? DistortionNode.oversampleTypes.find((_, i) => i == value)?.value
                 : value
         );
+
+        const { data: { amount } } = this.props;
+        const node = this.audioNode as globalThis.WaveShaperNode;
+        
+        if (node)
+            node.curve = createDistortionCurve(amount);
     }
 
 
@@ -71,7 +77,7 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
             ...super.createReactFlowNode(),
             data:     
             { 
-                amount:     400,
+                amount:     0,
                 oversample: 0
             },
         };
@@ -93,7 +99,7 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
                     nodeid   = {this.props.id} 
                 />
 
-                <h1>Wave Shaper</h1>
+                <h1>Distortion</h1>
 
                 <div className = {nodeStyles.nodeContent}>
 
@@ -104,17 +110,16 @@ export default class WaveShaperNode extends AudioNode<WaveShaperNodeProps>
                         value      = {amount}
                         ticks      = {11}
                         onChange   = {(e) => this.update(
-                            { 
-                                amount: Number(e.target.value), 
-                                curve:  createDistortionCurve(Number(e.target.value)) 
-                            })}
+                        { 
+                            amount: Number(e.target.value)
+                        })}
                         knobColor  = 'var(--color-node-highlight)'
                         valueColor = 'var(--color-node-highlight-value)'
                         />
 
                     <SelectKnob
-                        label    = 'Over'
-                        options  = {WaveShaperNode.oversampleTypes}
+                        label    = 'OvrSmp'
+                        options  = {DistortionNode.oversampleTypes}
                         value    = {oversample}
                         onChange = {(e) => this.update({ oversample: Number(e.target.value) })}
                         minAngle = {Tau * -3/32}

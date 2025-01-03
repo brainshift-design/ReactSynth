@@ -1,6 +1,4 @@
 import { NodeTypes } from 'reactflow';
-import WaveShaperNode from './WaveShaperNode';
-import ConvolverNode from './ConvolverNode';
 import OscillatorNode from './OscillatorNode';
 import GainNode from './GainNode';
 import { createElement } from 'react';
@@ -9,6 +7,8 @@ import FilterNode from './FilterNode';
 import OutputNode from './OutputNode';
 import Wire from '../components/Wire';
 import CompressorNode from './CompressorNode';
+import ReverbNode from './ReverbNode';
+import DistortionNode from './DistortionNode';
 
 
 
@@ -18,8 +18,8 @@ export const nodeTypes =
     gain:       GainNode,
    _output:     OutputNode, // 'output' is reserved by ReactFlow
     delay:      DelayNode,
-    waveShaper: WaveShaperNode,
-    convolver:  ConvolverNode,
+    distortion: DistortionNode,
+    reverb:     ReverbNode,
     filter:     FilterNode,
     compressor: CompressorNode
 };

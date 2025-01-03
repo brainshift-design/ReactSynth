@@ -52,23 +52,38 @@ export function invValueCurve(freq: number)
 
 
 
-export function createImpulse(amount: number): AudioBuffer
+export function createReverbImpulseResponse(
+    duration: number, // "room size"
+    decay:    number,
+    metallic: number  = 0,
+    reverse:  boolean = false
+): AudioBuffer 
 {
-    const durationSeconds = 1;
+    const sampleRate  = audioContext?.sampleRate;
+    const length      = Math.floor(sampleRate! * duration);
 
-    const sampleRate      = audioContext?.sampleRate;
-    const length          = durationSeconds * sampleRate!;
- 
-    const impulseBuffer   = audioContext?.createBuffer(1, length, sampleRate!);
+    const impulse     = audioContext?.createBuffer(1, Math.max(1, length), sampleRate!);
+    const channelData = impulse?.getChannelData(0);
 
-    const channelData     = impulseBuffer?.getChannelData(0);
-
-
-    const len = amount/100 * sampleRate!;
-
-    for (let i = 0; i < len; i++)
-        channelData![i] = Math.max(0, 1 - i/(len-1));
+    const metallicModFreq = 2000;
 
 
-    return impulseBuffer!;
+    for (let i = 0; i < length; i++) 
+    {
+        // optionally use the reversed index to fade in instead of out
+        const idx = reverse ? length - i : i;
+
+        // base white noise is used to affect all possible frequencies,
+        // with exponential decay
+        const base = (Math.random()*2 - 1) * (1 - idx/length)**decay;
+
+        // optionally modulate amplitude with a sine wave,
+        // which gives a subtle ringing effect
+        const mod = 1 + metallic * Math.sin((2 * Math.PI * metallicModFreq * i) / sampleRate!);
+
+        channelData![i] = base * mod;
+    }
+
+    
+    return impulse!;
 }
