@@ -98,7 +98,7 @@ export default function SelectKnob({
         dragState.current.isDragging = false;
 
         globalThis.removeEventListener('pointermove', onPointerMove);
-        globalThis.removeEventListener('pointerup',   onPointerUp);
+        globalThis.removeEventListener('pointerup',   onPointerUp  );
 
         inputRef.current?.releasePointerCapture(e.pointerId);
     },
@@ -120,14 +120,11 @@ export default function SelectKnob({
         };
 
         globalThis.addEventListener('pointermove', onPointerMove);
-        globalThis.addEventListener('pointerup',   onPointerUp);
+        globalThis.addEventListener('pointerup',   onPointerUp  );
 
         inputRef.current?.setPointerCapture(e.pointerId);
     },
     [knobValue]);
-
-
-    const onClick = (e: ReactPointerEvent<HTMLInputElement>) => e.preventDefault();
 
 
     const valueAngle = minAngle + knobValue / (options.length-1) * (maxAngle - minAngle);
@@ -140,15 +137,18 @@ export default function SelectKnob({
         + adjustTickAngle;
 
 
+    const [name, unit] = label.split('|');
+
+
     return (
-        <label 
+        <div 
             className        = {`${paramStyles.parameter} ${knobStyles.knobContainer}`}
             data-knob-color  = {knobColor}
             data-value-color = {valueColor}
             style = 
             {{ 
                 '--knob-color':  knobColor, 
-                '--value-color': valueColor 
+                '--knob-value-color': valueColor 
             } as CSSProperties}
             >
 
@@ -176,20 +176,13 @@ export default function SelectKnob({
 
                 <div className={knobStyles.inputContainer}>
 
-                    <input 
-                        className     = 'nodrag'
-                        type          = 'range'
-                        min           = {0}
-                        max           = {options.length-1}
-                        value         = {value}
+                    <div 
+                        className     = {knobStyles.knob}
                         ref           = {inputRef}
-                        onChange      = {onChange}
                         onPointerDown = {onPointerDown}
-                        onClick       = {onClick}
-                        style         = {{ touchAction: 'none' }}
-                        />
-
-                    <div className = {knobStyles.knob}></div>
+                        onChange      = {onChange}
+                        >
+                    </div>
 
                     <div 
                         className = {knobStyles.knobValue}
@@ -202,9 +195,11 @@ export default function SelectKnob({
             </div>
 
             <h2 className={knobStyles.name}>
-                {label}
+                { name != '_' && <span className={knobStyles.knobName}>{name}</span> }
+                { name != '_' && unit && <span> · </span> }
+                <span className={knobStyles.knobUnit}>{unit}</span>
             </h2>
 
-        </label>
+        </div>
     );
 }

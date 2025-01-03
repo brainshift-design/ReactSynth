@@ -35,7 +35,6 @@
 }
 
 
-.knobContainer input[type='range'],
 .knobContainer .knob,
 .knobContainer .knobValue
 {
@@ -70,34 +69,21 @@
 }
 
 
-.knobContainer input[type='range']
-{
-    opacity:          0;
-    cursor:           pointer;
-    z-index:          2;
-    transform:        scale(24);
-    transform-origin: center;
-    position:         relative;
-    pointer-events:   all;
-    clip-path:        circle(3% at center);
-}
-
-
 .knobContainer .knob
 {
     --knob-edge-highlight: oklch(from var(--knob-color) 85% 0.05 h);
     --knob-edge-shadow:    oklch(from var(--knob-color) 50% 0.05 h);
     --knob-edge-shadow2:   oklch(from var(--knob-color) 10% 0.05 h);
     --knob-edge:           oklch(from var(--knob-color) 40% 0.05 h);
-
-    position:      absolute;
-    border-radius: 50%;
-    background:    repeating-radial-gradient(
-                       circle at center,
-                       #ffffff04 0,
-                       #ffffff04 1px,
-                       #00000004 1px,
-                       #00000004 2px),
+ 
+    position:       absolute;
+    border-radius:  50%;
+    background:     repeating-radial-gradient(
+                        circle at center,
+                        #ffffff04 0,
+                        #ffffff04 1px,
+                        #00000004 1px,
+                        #00000004 2px),
                     conic-gradient(
                         from 0deg,
                         /* Each color stop slightly offset to create "streaks" */
@@ -125,19 +111,20 @@
                         #ccc2 360deg
                     ),
                     var(--knob-color);
-                       
-    box-shadow:    0px  1px  0.5px 0px var(--knob-edge-highlight) inset,
-                   2px  4px 15px   0px #fff2 inset, 
-                   0px  0px  4px   0px rgba(0, 0, 0, 0.11), 
-                   0px  1px  1.5px 0px rgba(0, 0, 0, 0.6), 
-                   0px  1px  2.8px 0px rgba(0, 0, 0, 0.13), 
-                   0px  3px  5.6px 0px rgba(0, 0, 0, 0.11), 
-                   0px 14px 19.9px 0px rgba(0, 0, 0, 0.15), 
-                   0px  0    3px   0px var(--knob-edge) inset,
-                   0px  0    0     1px rgb(from var(--knob-edge-shadow) r g b / 20%) inset,
-                   0px -2px  1px  -1px var(--knob-edge-shadow2) inset;
-    user-select:   none;
-    touch-action:  none;
+                        
+    box-shadow:     0px  1px  0.5px 0px var(--knob-edge-highlight) inset,
+                    2px  4px 15px   0px #fff2 inset, 
+                    0px  0px  4px   0px rgba(0, 0, 0, 0.11), 
+                    0px  1px  1.5px 0px rgba(0, 0, 0, 0.6), 
+                    0px  1px  2.8px 0px rgba(0, 0, 0, 0.13), 
+                    0px  3px  5.6px 0px rgba(0, 0, 0, 0.11), 
+                    0px 14px 19.9px 0px rgba(0, 0, 0, 0.15), 
+                    0px  0    3px   0px var(--knob-edge) inset,
+                    0px  0    0     1px rgb(from var(--knob-edge-shadow) r g b / 20%) inset,
+                    0px -2px  1px  -1px var(--knob-edge-shadow2) inset;
+    user-select:    none;
+    touch-action:   none;
+    cursor:         pointer;
 }
 
 
@@ -149,7 +136,7 @@
 
 .knobContainer[data-value-color]
 {
-    --knob-base-color: var(--value-color);
+    --knob-base-color: var(--knob-value-color);
 }
 
 
@@ -157,6 +144,7 @@
 {
     position:      absolute;
     border-radius: 50%;
+    pointer-events: none;
 }
 
 
@@ -168,7 +156,7 @@
     left:          50%;
     width:         3px;
     height:        40%;
-    background:    var(--value-color);
+    background:    var(--knob-value-color);
     transform:     translate(-50%, -135%);
     border-radius: 2px;
 }
@@ -192,4 +180,16 @@
     font-weight:   700;
     margin-top:    2px;
     margin-bottom: 4px;
+}
+
+
+.knobName
+{
+    font-weight: 600;
+}
+
+
+.knobUnit
+{
+    font-weight: 400;
 }

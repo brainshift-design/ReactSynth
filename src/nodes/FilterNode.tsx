@@ -185,7 +185,7 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                         />
 
                     <NumberKnob 
-                        label     = 'Det ¢'
+                        label     = 'Det|¢'
                         min       = {-100}
                         max       = { 100}
                         value     = {detune}
@@ -195,7 +195,7 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                         />
 
                     <NumberKnob 
-                        label          = 'Hz'
+                        label          = 'Freq|Hz'
                         min            = {1200}
                         max            = {FilterNode.maxFreq}
                         value          = {frequency}
@@ -219,7 +219,7 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                         />
 
                     <NumberKnob 
-                        label     = 'Gain %'
+                        label     = 'Gain|%'
                         min       = {0}
                         max       = {100}
                         value     = {gain * 100}
@@ -233,7 +233,7 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                 <OutputHandle 
                     type     = 'source' 
                     position = {Position.Right} 
-                    id       = {'audio-in'} 
+                    id       = {'audio-out'} 
                     nodeid   = {this.props.id} 
                 />
             </>

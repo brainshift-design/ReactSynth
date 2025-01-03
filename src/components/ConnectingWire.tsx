@@ -29,7 +29,7 @@ export default function ConnectingWire(props: ConnectionLineComponentProps)
     return (
         <>
             <BaseEdge path={path} style={{ stroke: wireColor, strokeWidth: 4,       strokeLinecap: 'round' }} />
-            <BaseEdge path={path} style={{ stroke: '#0008',   strokeWidth: 1,       strokeLinecap: 'round', transform: 'translateY(1.5px)' }} />
+            <BaseEdge path={path} style={{ stroke: '#0007',   strokeWidth: 1,       strokeLinecap: 'round', transform: 'translateY(1.5px)' }} />
             <BaseEdge path={path} style={{ stroke: hiStyle,   strokeWidth: hiWidth, strokeLinecap: 'round', transform: 'translateY(-1px)' }} />
         </>
     );
