@@ -42,9 +42,9 @@ export default class ReverbNode extends AudioNode<ConvolverNodeProps>
         const node = this.audioNode as globalThis.ConvolverNode;
 
         const newData = { ...data, [key]: value };
-
         const { duration, decay, metallic, reverse } = newData;
 
+        
         if (node)
         {
             if (!node.buffer)

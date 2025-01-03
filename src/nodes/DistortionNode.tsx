@@ -1,7 +1,6 @@
 import nodeStyles from './Node.module.css';
 import { Node as ReactFlowNode, Position } from 'reactflow';
 import { audioContext } from '../audio/audio';
-import { createDistortionCurve } from './util';
 import { NodeProps } from './Node';
 import NumberKnob from '../components/NumberKnob';
 import SelectKnob from '../components/SelectKnob';
@@ -62,9 +61,14 @@ export default class DistortionNode extends AudioNode<DistortionNodeProps>
                 : value
         );
 
-        const { data: { amount } } = this.props;
+
+        const { data } = this.props;
         const node = this.audioNode as globalThis.WaveShaperNode;
         
+        const newData = { ...data, [key]: value };
+        const { amount } = newData;
+
+
         if (node)
             node.curve = createDistortionCurve(amount);
     }
@@ -137,4 +141,23 @@ export default class DistortionNode extends AudioNode<DistortionNodeProps>
             </>
         );
     }
+}
+
+
+
+export function createDistortionCurve(amount: number) 
+{
+    const k        = amount;
+
+    const nSamples = 44100;
+    const curve    = new Float32Array(nSamples);
+    const deg      = Tau/360;
+  
+    for (let i = 0; i < nSamples; i++) 
+    {
+        const x = (i*2) / nSamples - 1;
+        curve[i] = ((3+k) * 20*x*deg) / (Tau/2 + k * Math.abs(x));
+    }
+
+    return curve;
 }
