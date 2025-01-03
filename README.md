@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/1c55a6d7-6ddd-4f01-9fcb-fc723d0bd61f)
+![image](https://github.com/user-attachments/assets/fdc1cdb9-ec7a-46d0-bf33-a4536cde8eee)
 
 # ReactSynth
 
