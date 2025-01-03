@@ -23,10 +23,11 @@ export default function OutputHandle(props: OutputHandleProps)
         && edge.sourceHandle == props.id
     );
   
-    const edgeSelected = context?.edges.find(edge => 
+    const edgeSelected = context?.edges.some(edge => 
            edge.source       === props.nodeid 
         && edge.sourceHandle === props.id
-    )?.selected;
+        && edge.selected
+    );
 
 
     return (
