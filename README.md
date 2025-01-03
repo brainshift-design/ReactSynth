@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/d7dc23e8-fca8-46dd-9163-00401dc86d78)
+
 # ReactSynth
 
 ReactSynth is a small project I started to learn React and ReactFlow. It's a minimal wrapper around the WebAudio API, which I hope can eventually generate WebAudio JS code of a sound by building it with nodes.
