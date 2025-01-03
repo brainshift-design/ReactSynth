@@ -1,4 +1,4 @@
-import styles from './Node.module.css';
+import nodeStyles from './Node.module.css';
 import { Node as ReactFlowNode, Position } from 'reactflow';
 import { audioContext } from '../audio/audio';
 import { NodeProps } from './Node';
@@ -96,7 +96,7 @@ export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
             <>
                 <h1>Oscillator</h1>
 
-                <div className = {styles.nodeContent}>
+                <div className = {nodeStyles.nodeContent}>
 
                     <SelectKnob
                         label    = 'Form'

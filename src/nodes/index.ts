@@ -9,12 +9,14 @@ import Wire from '../components/Wire';
 import CompressorNode from './CompressorNode';
 import ReverbNode from './ReverbNode';
 import DistortionNode from './DistortionNode';
+import NoiseNode from './NoiseNode';
 
 
 
 export const nodeTypes = 
 {
     oscillator: OscillatorNode,
+    noise:      NoiseNode,
     gain:       GainNode,
    _output:     OutputNode, // 'output' is reserved by ReactFlow
     delay:      DelayNode,

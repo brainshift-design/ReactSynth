@@ -38,3 +38,16 @@
     flex-direction: row;
     align-items:    flex-start;
 }
+
+
+.checkers
+{
+    background:
+        linear-gradient(45deg, var(--color-node-text) 25%, transparent 25%, transparent 75%, var(--color-node-text) 75%),
+        linear-gradient(45deg, var(--color-node-text) 25%, transparent 25%, transparent 75%, var(--color-node-text) 75%);
+
+    background-color:    white;
+    opacity:             1;
+    background-size:     8px 8px;
+    background-position: 0 0, 4px 4px;
+}
