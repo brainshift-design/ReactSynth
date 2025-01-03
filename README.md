@@ -12,7 +12,7 @@ To set up the project locally, follow these steps:
 
 ```sh
 # Clone the repository
-git clone https://github.com/yourusername/reactsynth.git
+git clone https://github.com/brainshift-design/ReactSynth
 cd reactsynth
 
 # Install dependencies
