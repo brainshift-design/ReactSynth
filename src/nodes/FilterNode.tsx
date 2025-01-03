@@ -74,6 +74,18 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
         allpass:   { Q: 1 }
     };
 
+    static readonly knobTicks: Record<string, {Q: number}> = 
+    {
+        lowpass:   { Q: 11 },
+        highpass:  { Q: 11 },
+        bandpass:  { Q: 29 },
+        lowshelf:  { Q: 11 },
+        highshelf: { Q: 11 },
+        peaking:   { Q: 11 },
+        notch:     { Q: 29 },
+        allpass:   { Q: 11 }
+    };
+
 
 
     override componentDidMount()
@@ -162,6 +174,7 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
 
         const visibility = FilterNode.knobVisibility[FilterNode.filterTypes[type].value];
         const valueCurve = FilterNode.knobValueCurve[FilterNode.filterTypes[type].value];
+        const knobTicks  = FilterNode.knobTicks     [FilterNode.filterTypes[type].value];
 
         
         return (
@@ -210,11 +223,12 @@ export default class FilterNode extends AudioNode<FilterNodeProps>
                     <NumberKnob 
                         label          = 'Q'
                         min            = {0}
-                        max            = {30}
+                        max            = {100}
                         value          = {Q}
                         showValue      = {visibility.Q}
-                        getCurvedValue = {(val) => getValueCurve(val, 0, 30, valueCurve.Q, v => v)}
-                        ticks          = {7}
+                        getCurvedValue = {(val) => getValueCurve(val, 0, 100, valueCurve.Q, v => v)}
+                        getCurvedTick  = {(val) => getValueCurve(val, 0, 1, valueCurve.Q, v => 1-v)}
+                        ticks          = {knobTicks.Q}
                         onChange       = {(e) => this.update({ Q: Number(e.target.value) })}
                         />
 
