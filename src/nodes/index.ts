@@ -10,6 +10,7 @@ import CompressorNode from './CompressorNode';
 import ReverbNode from './ReverbNode';
 import DistortionNode from './DistortionNode';
 import NoiseNode from './NoiseNode';
+import EnvelopeNode from './EnvelopeNode';
 
 
 
@@ -23,7 +24,8 @@ export const nodeTypes =
     distortion: DistortionNode,
     reverb:     ReverbNode,
     filter:     FilterNode,
-    compressor: CompressorNode
+    compressor: CompressorNode,
+    envelope:   EnvelopeNode
 };
 
 
