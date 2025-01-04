@@ -66,8 +66,8 @@ extends AudioNode<FilterNodeProps>
 
     static readonly knobValueCurve: Record<string, {Q: number}> = 
     {
-        lowpass:   { Q: 1 },
-        highpass:  { Q: 1 },
+        lowpass:   { Q: 3 },
+        highpass:  { Q: 3 },
         bandpass:  { Q: 4 },
         lowshelf:  { Q: 1 },
         highshelf: { Q: 1 },
@@ -78,8 +78,8 @@ extends AudioNode<FilterNodeProps>
 
     static readonly knobTicks: Record<string, {Q: number}> = 
     {
-        lowpass:   { Q: 11 },
-        highpass:  { Q: 11 },
+        lowpass:   { Q: 29 },
+        highpass:  { Q: 29 },
         bandpass:  { Q: 29 },
         lowshelf:  { Q: 11 },
         highshelf: { Q: 11 },
