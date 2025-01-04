@@ -1,5 +1,5 @@
-import { BaseEdge, EdgeProps, getBezierPath } from "reactflow";
-import { nozero } from "../util";
+import { BaseEdge, EdgeProps, getBezierPath } from 'reactflow';
+import { nozero } from '../util';
 
 
 
@@ -31,9 +31,59 @@ export default function Wire(props: EdgeProps)
 
     return (
         <>
-            <BaseEdge path={path} style={{...style, stroke: wireColor, strokeWidth: 4,       strokeLinecap: 'round' }} />
-            <BaseEdge path={path} style={{...style, stroke: '#0007',   strokeWidth: 1,       strokeLinecap: 'round', transform: 'translateY(1.5px)' }} />
-            <BaseEdge path={path} style={{...style, stroke: hiStyle,   strokeWidth: hiWidth, strokeLinecap: 'round', transform: 'translateY(-1px)' }} />
+            <defs>
+                <filter 
+                    id     = {`dropShadow-${props.id}`} 
+                    x      = '-50%' 
+                    y      = '-50%' 
+                    width  = '200%' 
+                    height = '200%'
+                    filterUnits='userSpaceOnUse'
+                    >
+                    <feDropShadow 
+                        dx='0' 
+                        dy='1.5' 
+                        stdDeviation = '2' 
+                        floodColor   = '#0004' 
+                    />
+                </filter>
+            </defs>
+
+            <BaseEdge 
+                path={path} 
+                style=
+                {{
+                    ...style, 
+                    stroke:         wireColor, 
+                    strokeWidth:    4,       
+                    strokeLinecap: 'round',
+                    filter:        `url(#dropShadow-${props.id})`
+                }}
+            />
+
+            <BaseEdge 
+                path={path} 
+                style=
+                {{
+                    ...style, 
+                    stroke:        '#0007',   
+                    strokeWidth:    1,       
+                    strokeLinecap: 'round', 
+                    transform:     'translateY(1.5px)' 
+                }}
+            />
+
+            <BaseEdge 
+                path={path} 
+                style=
+                {{
+                    ...style, 
+                    stroke:         hiStyle,   
+                    strokeWidth:    hiWidth, 
+                    strokeLinecap: 'round', 
+                    transform:     'translateY(-1px)' 
+                }} 
+            />
         </>
     );
 }
