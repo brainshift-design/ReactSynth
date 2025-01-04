@@ -1,4 +1,5 @@
 import { nodeTypes } from ".";
+import { ConnectionType } from "./connections";
 import OscillatorNode from "./OscillatorNode";
 
 
@@ -27,4 +28,28 @@ export function getValueCurve(val: number, min: number, max: number, power: numb
 export function invValueCurve(freq: number)
 {
     return getValueCurve(freq, OscillatorNode.minFreq, OscillatorNode.maxFreq, 1/freqCurvePower);    
+}
+
+
+
+export function getHandleColor(handletype: ConnectionType)
+{
+    switch (handletype)
+    {
+        case 'audio':   return '#e4e4e4'; 
+        case 'data':    return '#fca'; 
+        case 'control': return '#c0e0ff'; 
+    }
+}
+
+
+
+export function getWireColor(handletype: ConnectionType)
+{
+    switch (handletype)
+    {
+        case 'audio':   return '#aaa'; 
+        case 'data':    return '#f44'; 
+        case 'control': return '#fc0'; 
+    }
 }

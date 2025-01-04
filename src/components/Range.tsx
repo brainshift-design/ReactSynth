@@ -1,6 +1,6 @@
 import { ChangeEventHandler } from 'react';
 
-import paramStyles from './Parameter.module.css';
+import paramStyles from '../parameters/Parameter.module.css';
 import rangeStyles from './Range.module.css';
 
 

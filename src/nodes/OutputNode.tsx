@@ -45,14 +45,12 @@ extends AudioNode<OutputNodeProps>
         return (
             <>
                 <InputHandle 
-                    type     = 'target' 
-                    position = {Position.Left}
-                    id       = {'audio-in'} 
-                    nodeid   = {this.props.id} 
-                    style    =
-                    {{
-                        top: 'calc(50% - 14px)'
-                    }}
+                    type       = 'target' 
+                    handletype = 'audio'
+                    id         = {'audio-in'} 
+                    nodeid     = {this.props.id} 
+                    position   = {Position.Left}
+                    style      = {{ top: 'calc(50% + 59px)' }}
                 />
 
                 <h1>Output</h1>

@@ -1,5 +1,6 @@
 import { BaseEdge, EdgeProps, getBezierPath } from "reactflow";
 import { nozero } from "../util";
+import { getWireColor } from "../nodes/util";
 
 
 
@@ -21,7 +22,7 @@ export default function Wire(props: EdgeProps)
     const wireColor = 
         selected 
             ? 'var(--color-wire-selected)' 
-            : 'var(--color-wire)';
+            : getWireColor('audio');
     
     const aspect  = Math.min(Math.abs(targetX - sourceX) / nozero(Math.abs(targetY - sourceY)), 1);
     const hiAlpha = 0.4 + aspect**2 * 0.3;

@@ -1,5 +1,5 @@
 import knobStyles from './Knob.module.css';
-import paramStyles from './Parameter.module.css';
+import paramStyles from '../parameters/Parameter.module.css';
 import { ChangeEvent, ChangeEventHandler, CSSProperties, PointerEvent as ReactPointerEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Tau } from '../util';
 

@@ -30,6 +30,7 @@ export default function GraphView()
                 onEdgesChange           = {onEdgesChange}
                 onEdgesDelete           = {removeEdges}
                 onConnect               = {onConnect}
+                maxZoom                 = {16}
                 minZoom                 = {0.25}
                 >
                 <Background />
@@ -37,3 +38,20 @@ export default function GraphView()
         </div>
     );
 }
+
+
+
+// function onConnect(params) 
+// {
+//     const sourceNode = nodeContext.nodes.find((node) => node.id === params.source);
+//     const targetNode = nodeContext.nodes.find((node) => node.id === params.target);
+
+//     if (sourceNode && targetNode) {
+//         const sourceParam = sourceNode.data.parameter as NumberParameter;
+//         const targetParam = targetNode.data.parameter as NumberParameter;
+
+//         if (sourceParam && targetParam) {
+//             connectControl(sourceParam, targetParam);
+//         }
+//     }
+// }

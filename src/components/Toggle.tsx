@@ -1,5 +1,5 @@
 import toggleStyles from './Toggle.module.css';
-import paramStyles from './Parameter.module.css';
+import paramStyles from '../parameters/Parameter.module.css';
 import { ChangeEvent, ChangeEventHandler, CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 
 

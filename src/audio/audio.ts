@@ -1,6 +1,9 @@
+import NumberParameter from "../parameters/NumberParameter";
+
 export let audioContext: AudioContext | null = null;
 
-export const audioNodes = new Map<string, AudioNode>();
+export const audioNodes         = new Map<string, AudioNode>();
+export const controlConnections = new Map<string, (value: number) => void>();
 
 
 
@@ -67,4 +70,37 @@ export function getAudioNode(id: string)
         return audioContext?.destination;
     else
         return audioNodes.get(id);
+}
+
+
+
+export function connectControl(source: NumberParameter, target: NumberParameter)
+{
+    if (!source || !target) return;
+
+    target.connectInput(source);
+
+    controlConnections.set(target.name, (value) => target.setValue(value));
+}
+
+
+
+export function disconnectControl(target: NumberParameter)
+{
+    controlConnections.delete(target.name);
+}
+
+
+
+export function updateControlParameters(time: number)
+{
+    controlConnections.forEach(update => update(time));
+}
+
+
+
+export function updateAutomation(time: number)
+{
+    controlConnections.forEach(update => update(time));
+    requestAnimationFrame(updateAutomation);
 }

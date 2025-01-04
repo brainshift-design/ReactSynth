@@ -125,10 +125,11 @@ extends AudioNode<OscillatorNodeProps>
                 </div>
 
                 <OutputHandle 
-                    type     = 'source' 
-                    position = {Position.Right} 
-                    id       = {'audio-in'} 
-                    nodeid   = {this.props.id} 
+                    type       = 'source' 
+                    handletype = 'audio' 
+                    id         = {'audio-out'} 
+                    position   = {Position.Right} 
+                    nodeid     = {this.props.id} 
                 />
             </>
         );

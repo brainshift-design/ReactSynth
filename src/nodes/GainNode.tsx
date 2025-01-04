@@ -57,10 +57,11 @@ extends AudioNode<GainNodeProps>
         return (
             <>
                 <InputHandle 
-                    type     = 'target' 
-                    position = {Position.Left}
-                    id       = {'audio-in'} 
-                    nodeid   = {this.props.id} 
+                    type       = 'target' 
+                    handletype = 'audio'
+                    id         = {'audio-in'} 
+                    nodeid     = {this.props.id} 
+                    position   = {Position.Left}
                 />
 
                 <h1>Gain</h1>
@@ -86,10 +87,11 @@ extends AudioNode<GainNodeProps>
                 </div>
 
                 <OutputHandle 
-                    type     = 'source' 
-                    position = {Position.Right} 
-                    id       = {'audio-out'} 
-                    nodeid   = {this.props.id} 
+                    type       = 'source' 
+                    handletype = 'audio' 
+                    id         = {'audio-out'} 
+                    position   = {Position.Right} 
+                    nodeid     = {this.props.id} 
                 />
             </>
         );
