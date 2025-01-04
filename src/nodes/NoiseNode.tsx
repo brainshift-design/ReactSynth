@@ -6,7 +6,8 @@ import OutputHandle from '../components/OutputHandle';
 
 
 
-export default class NoiseNode extends AudioNode<NodeProps>
+export default class NoiseNode 
+extends AudioNode<NodeProps>
 {
     protected createAudioNode()
     {

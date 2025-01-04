@@ -11,7 +11,8 @@ import OutputHandle from '../components/OutputHandle';
 
 
 
-interface FilterNodeProps extends NodeProps
+interface FilterNodeProps 
+extends NodeProps
 {
     data: 
     {
@@ -33,7 +34,8 @@ export interface FilterType
 
 
 
-export default class FilterNode extends AudioNode<FilterNodeProps>
+export default class FilterNode 
+extends AudioNode<FilterNodeProps>
 {
     static readonly minFreq = 20;
     static readonly maxFreq = 20000;

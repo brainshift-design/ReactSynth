@@ -5,7 +5,8 @@ import { Handle, HandleProps } from "reactflow";
 
 
 
-export interface InputHandleProps extends HandleProps
+export interface InputHandleProps 
+extends HandleProps
 {
     id:     string;
     nodeid: string;

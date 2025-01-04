@@ -3,15 +3,17 @@ import { Node as ReactFlowNode, Position } from 'reactflow';
 import { audioContext } from '../audio/audio';
 import { NodeProps } from './Node';
 import NumberKnob from '../components/NumberKnob';
-import AudioNode from './AudioNode';
+import AudioWorkerNode from './AudioWorkerNode';
 import InputHandle from '../components/InputHandle';
 import OutputHandle from '../components/OutputHandle';
 import Toggle from '../components/Toggle';
-import { Tau } from '../util';
+import ReverbNodeWorker from './ReverbNode.worker?worker';
+import { ReverbNodeWorkerResponse } from './ReverbNode.worker';
 
 
 
-interface ConvolverNodeProps extends NodeProps
+interface ConvolverNodeProps 
+extends NodeProps
 {
     data: 
     {
@@ -24,7 +26,8 @@ interface ConvolverNodeProps extends NodeProps
 
 
 
-export default class ReverbNode extends AudioNode<ConvolverNodeProps>
+export default class ReverbNode 
+extends AudioWorkerNode<ConvolverNodeProps>
 {
     protected createAudioNode()
     {
@@ -47,17 +50,48 @@ export default class ReverbNode extends AudioNode<ConvolverNodeProps>
 
         if (node)
         {
+            const sampleRate   = audioContext?.sampleRate!;
+            const bufferLength = Math.floor(sampleRate! * 20);
+            
             if (!node.buffer)
-            {
-                const sampleRate  = audioContext?.sampleRate!;
-                const totalLength = Math.floor(sampleRate! * 20);
+                node.buffer = audioContext?.createBuffer(1, bufferLength, sampleRate)!;
 
-                node.buffer = audioContext?.createBuffer(1, totalLength, sampleRate)!;
-            }
+            this.postWorkerMessage(
+            { 
+                bufferLength,
+                sampleRate,
+                duration,
+                decay,
+                metallic,
+                reverse
+            });
+        }
+    }
 
+
+
+    protected initWorker()
+    {
+        this.worker           = new ReverbNodeWorker();
+        this.worker.onmessage = this.handleWorkerMessage.bind(this);    
+    }
+
+
+
+    private handleWorkerMessage(event: MessageEvent<ReverbNodeWorkerResponse>)
+    {
+        const { requestId, channelData } = event.data;
+
+        if (requestId != this.requestId)
+            return;
+
+        const node = this.audioNode as globalThis.ConvolverNode;
+
+        if (node && node.buffer)
+        {
             const buffer = node.buffer;
-            updateReverbImpulseResponse(buffer, duration, decay, metallic, reverse);
-            node.buffer = buffer;
+            buffer.copyToChannel(channelData, 0);
+            node.buffer = buffer;            
         }
     }
 
@@ -145,41 +179,4 @@ export default class ReverbNode extends AudioNode<ConvolverNodeProps>
             </>
         );
     }
-}
-
-
-
-function updateReverbImpulseResponse(
-    buffer:   AudioBuffer,
-    duration: number,
-    decay:    number,
-    metallic: number,
-    reverse:  boolean
-) {
-    const sampleRate  = buffer.sampleRate;
-    const channelData = buffer.getChannelData(0);
-
-    const length      = Math.max(1, Math.floor(sampleRate * duration));
-    const totalLength = Math.floor(sampleRate * 20);
-
-
-    for (let i = 0; i < length; i++) 
-    {
-        // optionally reverse the index to fade in instead of out
-        const idx = reverse ? length - i : i;
-
-        // base white noise is used to affect all possible frequencies,
-        // with exponential decay
-        const base = (Math.random()*2 - 1) * (1 - idx/length)**Math.max(1, (decay**2));
-
-        // optionally modulate amplitude with a sine wave,
-        // which gives a subtle ringing effect
-        const metallicModFreq = 2000;
-        const mod = 1 + metallic * Math.sin((Tau * metallicModFreq * i) / sampleRate);
-
-        channelData[i] = base * mod;
-    }
-
-    for (let i = length; i < totalLength; i++)
-        channelData[i] = 0;
 }

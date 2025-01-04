@@ -9,14 +9,16 @@ import OutputHandle from '../components/OutputHandle';
 
 
 
-interface DelayNodeProps extends NodeProps
+interface DelayNodeProps 
+extends NodeProps
 {
     data: { delayTime: number }
 }
 
 
 
-export default class DelayNode extends AudioNode<DelayNodeProps>
+export default class DelayNode 
+extends AudioNode<DelayNodeProps>
 {
     protected createAudioNode()
     {

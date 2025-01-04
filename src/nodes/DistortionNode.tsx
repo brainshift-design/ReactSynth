@@ -11,7 +11,8 @@ import OutputHandle from '../components/OutputHandle';
 
 
 
-interface DistortionNodeProps extends NodeProps
+interface DistortionNodeProps 
+extends NodeProps
 {
     data: 
     {
@@ -22,7 +23,8 @@ interface DistortionNodeProps extends NodeProps
 
 
 
-export default class DistortionNode extends AudioNode<DistortionNodeProps>
+export default class DistortionNode 
+extends AudioNode<DistortionNodeProps>
 {
     static readonly oversampleTypes =
     [

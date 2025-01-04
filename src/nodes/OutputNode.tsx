@@ -9,14 +9,16 @@ import Toggle from '../components/Toggle';
 
 
 
-interface OutputNodeProps extends NodeProps
+interface OutputNodeProps 
+extends NodeProps
 {
     data: { on: boolean; }
 }
 
 
 
-export default class OutputNode extends AudioNode<OutputNodeProps>
+export default class OutputNode 
+extends AudioNode<OutputNodeProps>
 {
     protected createAudioNode()
     {

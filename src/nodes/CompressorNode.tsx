@@ -9,7 +9,8 @@ import OutputHandle from '../components/OutputHandle';
 
 
 
-interface CompressorNodeProps extends NodeProps
+interface CompressorNodeProps 
+extends NodeProps
 {
     data: 
     {
@@ -32,7 +33,8 @@ export interface CompressorType
 
 
 
-export default class CompressorNode extends AudioNode<CompressorNodeProps>
+export default class CompressorNode 
+extends AudioNode<CompressorNodeProps>
 {
     static readonly minFreq = 20;
     static readonly maxFreq = 20000;

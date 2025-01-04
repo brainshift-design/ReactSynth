@@ -11,7 +11,8 @@ import OutputHandle from '../components/OutputHandle';
 
 
 
-interface OscillatorNodeProps extends NodeProps
+interface OscillatorNodeProps 
+extends NodeProps
 {
     data: 
     {
@@ -22,7 +23,8 @@ interface OscillatorNodeProps extends NodeProps
 
 
 
-export default class OscillatorNode extends AudioNode<OscillatorNodeProps>
+export default class OscillatorNode 
+extends AudioNode<OscillatorNodeProps>
 {
     static readonly minFreq = 20;
     static readonly maxFreq = 20000;

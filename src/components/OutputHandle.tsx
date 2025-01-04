@@ -5,7 +5,8 @@ import { ClassContext } from '../ClassContext';
 
 
 
-export interface OutputHandleProps extends HandleProps
+export interface OutputHandleProps 
+extends HandleProps
 {
     id:     string;
     nodeid: string;

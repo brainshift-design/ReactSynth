@@ -9,14 +9,16 @@ import OutputHandle from '../components/OutputHandle';
 
 
 
-interface GainNodeProps extends NodeProps
+interface GainNodeProps 
+extends NodeProps
 {
     data: { gain: number }
 }
 
 
 
-export default class GainNode extends AudioNode<GainNodeProps>
+export default class GainNode 
+extends AudioNode<GainNodeProps>
 {
     protected createAudioNode()
     {
