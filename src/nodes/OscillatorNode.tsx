@@ -8,6 +8,7 @@ import SelectKnob from '../components/SelectKnob';
 import AudioNode from './AudioNode';
 import { Tau } from '../util';
 import OutputHandle from '../components/OutputHandle';
+import InputHandle from '../components/InputHandle';
 
 
 
@@ -96,6 +97,14 @@ extends AudioNode<OscillatorNodeProps>
         
         return (
             <>
+                <InputHandle 
+                    type       = 'target' 
+                    handletype = 'control'
+                    id         = {'control-in'} 
+                    nodeid     = {this.props.id} 
+                    position   = {Position.Left}
+                />
+
                 <h1>Oscillator</h1>
 
                 <div className = {nodeStyles.nodeContent}>
@@ -118,6 +127,7 @@ extends AudioNode<OscillatorNodeProps>
                         getCurvedTick   = {(val) => getValueCurve(val, 0, 1, freqCurvePower, v => 1-v)}
                         ticks           = {49}
                         onChange        = {(e) => this.update({ frequency: Number(e.target.value) })}
+                        sensitivity     = {0.001}
                         knobColor       = 'var(--color-node-highlight)'
                         valueColor      = 'var(--color-node-highlight-value)'
                         />

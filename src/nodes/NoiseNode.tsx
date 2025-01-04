@@ -58,6 +58,7 @@ extends AudioNode<NodeProps>
                     id         = {'audio-out'} 
                     position   = {Position.Right} 
                     nodeid     = {this.props.id} 
+                    style      = {{ top: 'calc(50% + 6px)' }}
                 />
             </>
         );

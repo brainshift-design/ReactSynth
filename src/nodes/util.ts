@@ -36,9 +36,9 @@ export function getHandleColor(handletype: ConnectionType)
 {
     switch (handletype)
     {
-        case 'audio':   return '#e4e4e4'; 
+        case 'audio':   return '#5af'; 
         case 'data':    return '#fca'; 
-        case 'control': return '#c0e0ff'; 
+        case 'control': return '#fc0'; 
     }
 }
 
@@ -48,8 +48,8 @@ export function getWireColor(handletype: ConnectionType)
 {
     switch (handletype)
     {
-        case 'audio':   return '#aaa'; 
-        case 'data':    return '#f44'; 
-        case 'control': return '#fc0'; 
+        case 'audio':   return '#2292ff';
+        case 'data':    return '#f44';
+        case 'control': return '#fc0';
     }
 }

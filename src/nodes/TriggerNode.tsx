@@ -73,6 +73,7 @@ extends Node<NodeProps, TriggerNodeState>
                     id         = {'control-out'} 
                     position   = {Position.Right} 
                     nodeid     = {this.props.id} 
+                    style      = {{ top: 'calc(50% + 7px)' }}
                 />
             </>
         );

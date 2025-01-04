@@ -3,6 +3,7 @@ import { Node as ReactFlowNode, Position } from 'reactflow';
 import NumberKnob from '../components/NumberKnob';
 import Node, { NodeProps } from './Node';
 import OutputHandle from '../components/OutputHandle';
+import InputHandle from '../components/InputHandle';
 
 
 
@@ -44,6 +45,14 @@ export default class EnvelopeNode extends Node<EnvelopeNodeProps>
 
         return (
             <>
+                <InputHandle 
+                    type       = 'target' 
+                    handletype = 'control'
+                    id         = {'control-in'} 
+                    nodeid     = {this.props.id} 
+                    position   = {Position.Left}
+                />
+
                 <h1>Envelope</h1>
 
                 <div className={styles.nodeContent}>
@@ -90,10 +99,11 @@ export default class EnvelopeNode extends Node<EnvelopeNodeProps>
                 </div>
 
                 <OutputHandle 
-                    type     = 'source' 
-                    position = {Position.Right} 
-                    id       = {'value-out'} 
-                    nodeid   = {this.props.id} 
+                    type       = 'source' 
+                    handletype = 'audio' 
+                    id         = {'audio-out'} 
+                    position   = {Position.Right} 
+                    nodeid     = {this.props.id} 
                 />
             </>
         );

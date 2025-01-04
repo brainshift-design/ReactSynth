@@ -19,6 +19,7 @@ interface NumberKnobProps
     padding?:         number;
     padChar?:         string;
     suffix?:          string;
+    sensitivity?:     number;
     knobColor?:       string;
     valueColor?:      string;
     minAngle?:        number;
@@ -47,6 +48,7 @@ export default function NumberKnob({
     padding         = 0, 
     padChar         = ' ', 
     suffix          = '', 
+    sensitivity     = 0.01,
     knobColor       = '#f4f3f1',
     valueColor      = 'var(--color-node-value)',
     minAngle        = Tau * -3/8,
@@ -109,7 +111,7 @@ export default function NumberKnob({
     {
         if (!dragState.current.isDragging) return;
 
-        const delta = (e.clientX - dragState.current.startX) * 0.01;
+        const delta = (e.clientX - dragState.current.startX) * sensitivity;
 
         setLinearValue(Math.min(Math.max(
             min,
