@@ -25,6 +25,7 @@ export default function ToolbarButtons(): ReactElement
             <Button onClick={() => createNode('filter'    )}>Flt</Button>
             <Button onClick={() => createNode('compressor')}>Cmp</Button>
             <Button onClick={() => createNode('distortion')}>Dst</Button>
+            <Button onClick={() => createNode('trigger'   )}>Trg</Button>
             <Button onClick={() => createNode('_output'   )}>Out</Button>
         </>
     );

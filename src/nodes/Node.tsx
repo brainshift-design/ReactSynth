@@ -16,8 +16,8 @@ export interface NodeProps
 
 
 
-export default abstract class Node<T extends NodeProps = NodeProps> 
-extends Component<T>
+export default abstract class Node<T extends NodeProps = NodeProps, S = {}> 
+extends Component<T, S>
 {
     static  contextType = ClassContext;
     declare context: ClassContextProps;
