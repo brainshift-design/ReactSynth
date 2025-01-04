@@ -11,6 +11,7 @@ import ReverbNode from './ReverbNode';
 import DistortionNode from './DistortionNode';
 import NoiseNode from './NoiseNode';
 import TriggerNode from './TriggerNode';
+import EnvelopeNode from './EnvelopeNode';
 
 
 
@@ -25,7 +26,8 @@ export const nodeTypes =
     reverb:     ReverbNode,
     filter:     FilterNode,
     compressor: CompressorNode,
-    trigger:    TriggerNode
+    trigger:    TriggerNode,
+    envelope:   EnvelopeNode
 };
 
 
