@@ -1,12 +1,15 @@
 import { BaseEdge, EdgeProps, getBezierPath } from "reactflow";
 import { nozero } from "../util";
-import { getWireColor } from "../nodes/util";
+import { getSelectedWireColor, getWireColor } from "../nodes/util";
+import { ConnectionType } from "../nodes/connections";
+import { getWireColors } from "./util";
 
 
 
 export default function Wire(props: EdgeProps) 
 {
     const { sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, selected, style } = props;
+
 
     const [path] = getBezierPath(
     {
@@ -19,10 +22,9 @@ export default function Wire(props: EdgeProps)
     });
 
 
-    const wireColor = 
-        selected 
-            ? 'var(--color-wire-selected)' 
-            : getWireColor('audio');
+    const { sourceHandleId, targetHandleId } = props;
+    const { wireColor, selectedColor } = getWireColors(sourceHandleId!, targetHandleId!);
+
     
     const aspect  = Math.min(Math.abs(targetX - sourceX) / nozero(Math.abs(targetY - sourceY)), 1);
     const hiAlpha = 0.4 + aspect**2 * 0.3;
@@ -49,6 +51,19 @@ export default function Wire(props: EdgeProps)
                     />
                 </filter>
             </defs>
+
+            {selected &&
+                <BaseEdge 
+                    path={path} 
+                    style=
+                    {{
+                        ...style, 
+                        stroke:         selectedColor, 
+                        strokeWidth:    16,       
+                        strokeLinecap: 'round',
+                    }}
+                />
+            }
 
             <BaseEdge 
                 path={path} 

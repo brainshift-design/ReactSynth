@@ -1,8 +1,8 @@
-import { CSSProperties, useContext } from 'react';
+import { CSSProperties, useContext, useEffect, useRef } from 'react';
 import handleStyles from './Handle.module.css';
 import { Handle, HandleProps } from "reactflow";
 import { ClassContext } from '../ClassContext';
-import { getHandleColor } from '../nodes/util';
+import { getHandleColor, getWireColor } from '../nodes/util';
 import { ConnectionType } from '../nodes/connections';
 
 
@@ -20,19 +20,23 @@ extends HandleProps
 
 export default function OutputHandle(props: OutputHandleProps)
 {
-    const context = useContext(ClassContext);
+    const context   = useContext(ClassContext);
+    const handleRef = useRef<HTMLDivElement>(null);
+
+
+    useEffect(() =>
+    {
+        if (handleRef.current)
+            handleRef.current.dataset.handletype = props.handletype;
+    },
+    [props.handletype]);
+
 
     const handleConnected = context?.edges.some((edge) => 
            edge.source       == props.nodeid 
         && edge.sourceHandle == props.id
     );
   
-    const edgeSelected = context?.edges.some(edge => 
-           edge.source       === props.nodeid 
-        && edge.sourceHandle === props.id
-        && edge.selected
-    );
-
 
     let handleColor = getHandleColor(props.handletype);
 
@@ -40,15 +44,14 @@ export default function OutputHandle(props: OutputHandleProps)
     return (
         <Handle
             {...props}
-            className={handleStyles.outputHandle}
-            style =
+            ref       = {handleRef}
+            className = {handleStyles.outputHandle}
+            style     =
             {{
                 ...props.style,
                 background: 
                     handleConnected 
-                    ? (edgeSelected
-                        ? 'var(--handle-inside-connected-selected)'
-                        : 'var(--handle-inside-connected)')
+                    ? `radial-gradient(${getWireColor(props.handletype)} 35%, #000 50%)`
                     : 'var(--handle-inside-disconnected)',
                 boxShadow: 'var(--handle-shadow), 0 0 0 7px ' + handleColor
             }}

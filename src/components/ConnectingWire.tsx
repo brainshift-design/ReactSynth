@@ -1,6 +1,6 @@
 import { BaseEdge, ConnectionLineComponentProps, getBezierPath } from "reactflow";
 import { nozero } from "../util";
-import { getWireColor } from "../nodes/util";
+import { getWireColors } from "./util";
 
 
 
@@ -19,12 +19,18 @@ export default function ConnectingWire(props: ConnectionLineComponentProps)
     });
 
 
-    const wireColor = getWireColor('audio');
+    const { fromHandle } = props;
+
+    const { wireColor } = 
+        fromHandle?.id 
+        ? getWireColors(fromHandle.id, fromHandle.id)
+        : { wireColor: '#888' };
     
-    const aspect    = Math.min(Math.abs(toX - fromX) / nozero(Math.abs(toY - fromY)), 1);
-    const hiAlpha   = 0.4 + aspect**2 * 0.3;
-    const hiWidth   = 1 + (1-aspect) * 1;
-    const hiStyle   = '#ffffff' + Math.round(hiAlpha * 0xff).toString(16).padStart(2, '0');
+    
+    const aspect  = Math.min(Math.abs(toX - fromX) / nozero(Math.abs(toY - fromY)), 1);
+    const hiAlpha = 0.4 + aspect**2 * 0.3;
+    const hiWidth = 1 + (1-aspect) * 1;
+    const hiStyle = '#ffffff' + Math.round(hiAlpha * 0xff).toString(16).padStart(2, '0');
 
 
 

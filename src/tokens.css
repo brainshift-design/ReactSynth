@@ -32,5 +32,5 @@
     --color-wire:                 #999;
     --color-wire-selected:        #2292ff;
 
-    --node-selected-style:        2px solid var(--color-node-selection);
+    --node-selected-style:        6px solid #09f8;
 }

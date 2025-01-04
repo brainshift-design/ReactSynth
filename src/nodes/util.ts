@@ -53,3 +53,15 @@ export function getWireColor(handletype: ConnectionType)
         case 'control': return '#fc0';
     }
 }
+
+
+
+export function getSelectedWireColor(handletype: ConnectionType)
+{
+    switch (handletype)
+    {
+        case 'audio':   return '#09f8';
+        case 'data':    return '#f448';
+        case 'control': return '#fc08';
+    }
+}
