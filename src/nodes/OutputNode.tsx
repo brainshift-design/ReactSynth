@@ -27,15 +27,13 @@ extends AudioNode<OutputNodeProps>
 
 
 
-    override updateAudioParam(key: string, value: any)
+    override updateAudioParam(key: string, value: boolean | number)
     {
-        super.updateAudioParam(key, value);
-
-
-        const { toggleAudio } = this.context;
-
-        if (key == 'on')
-            toggleAudio(value);
+        if (key === 'on') {
+            this.context.toggleAudio(value as boolean);
+        } else {
+            super.updateAudioParam(key, value as number);
+        }
     }
 
 

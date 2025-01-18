@@ -64,14 +64,14 @@ extends AudioNode<OscillatorNodeProps>
 
 
 
-    override updateAudioParam(key: string, value: any)
+    override updateAudioParam(key: string, value: number | string)
     {
-        super.updateAudioParam(
-            key,
-            key == 'type'
-                ? OscillatorNode.oscillatorTypes.find((_, i) => i == value)?.value
-                : value
-        );
+        if (key === 'type') {
+            const typeValue = OscillatorNode.oscillatorTypes.find((_, i) => i === Number(value))?.value ?? 'sine';
+            (this.audioNode as globalThis.OscillatorNode).type = typeValue as OscillatorType;
+        } else {
+            super.updateAudioParam(key, Number(value));
+        }
     }
 
 

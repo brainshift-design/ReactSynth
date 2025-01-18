@@ -1,7 +1,5 @@
 import { BaseEdge, EdgeProps, getBezierPath } from "reactflow";
 import { nozero } from "../util";
-import { getSelectedWireColor, getWireColor } from "../nodes/util";
-import { ConnectionType } from "../nodes/connections";
 import { getWireColors } from "./util";
 
 

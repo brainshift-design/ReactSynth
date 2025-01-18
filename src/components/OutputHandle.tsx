@@ -38,7 +38,7 @@ export default function OutputHandle(props: OutputHandleProps)
     );
   
 
-    let handleColor = getHandleColor(props.handletype);
+    const handleColor = getHandleColor(props.handletype);
 
 
     return (

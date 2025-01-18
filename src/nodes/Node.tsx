@@ -7,16 +7,16 @@ import { getTypeName } from "./util";
 
 
 
-export interface NodeProps 
+export interface NodeProps<D = Record<string, unknown>> 
 {
     id:       string;
     selected: boolean;
-    data:     any;
+    data:     D;
 }
 
 
 
-export default abstract class Node<T extends NodeProps = NodeProps, S = {}> 
+export default abstract class Node<T extends NodeProps = NodeProps, S = Record<string, unknown>> 
 extends Component<T, S>
 {
     static  contextType = ClassContext;
@@ -46,7 +46,7 @@ extends Component<T, S>
     
     
 
-    update(data: any)
+    update(data: Partial<T['data']>)
     {
         this.context.setNodes(nodes =>
             nodes.map(node =>

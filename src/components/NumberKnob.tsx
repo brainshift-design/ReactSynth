@@ -42,8 +42,8 @@ export default function NumberKnob({
     value, 
     showValue       = true,
     forcePlus       = false,
-    getCurvedValue  = (val, _1, _2) => val,
-    getCurvedTick   = (val, _1, _2) => val,
+    getCurvedValue  = (val) => val,
+    getCurvedTick   = (val) => val,
     decimals        = 0, 
     padding         = 0, 
     padChar         = ' ', 
@@ -89,7 +89,7 @@ export default function NumberKnob({
     {
         setCurvedValue(getCurvedValue(linearValue, min, max));
     },
-    [linearValue]);
+    [linearValue, getCurvedValue, min, max]);
 
 
     useEffect(() =>
@@ -104,7 +104,7 @@ export default function NumberKnob({
 
         setOldCurvedValue(curvedValue);
     },
-    [curvedValue]);
+    [curvedValue, oldCurvedValue]);
 
 
     const onPointerMove = useCallback((e: globalThis.PointerEvent) => 
@@ -118,7 +118,7 @@ export default function NumberKnob({
             dragState.current.startValue + delta * (max - min)),
             max));
     },
-    []);
+    [min, max, sensitivity]);
 
 
     const onPointerUp = useCallback((e: globalThis.PointerEvent) => 
@@ -130,7 +130,7 @@ export default function NumberKnob({
 
         inputRef.current?.releasePointerCapture(e.pointerId);
     },
-    []);
+    [onPointerMove]);
 
 
     const onPointerDown = useCallback((e: ReactPointerEvent<HTMLInputElement>) => 
@@ -152,7 +152,7 @@ export default function NumberKnob({
 
         inputRef.current?.setPointerCapture(e.pointerId);
     },
-    [linearValue]);
+    [linearValue, onPointerMove, onPointerUp]);
 
 
     const valueAngle = minAngle + (linearValue - min) / (max - min) * (maxAngle - minAngle);
@@ -172,7 +172,7 @@ export default function NumberKnob({
         + suffix;
 
 
-    let [name, unit] = label.split('|');
+    const [name, unit] = label.split('|');
 
     
     return (
@@ -231,6 +231,7 @@ export default function NumberKnob({
 
             <h2 className={knobStyles.name}>
                 { name != '_' && <span className={knobStyles.knobName}>{name}</span> }
+                {/* eslint-disable-next-line no-irregular-whitespace */}
                 { name != '_' && unit && <span> · </span> }
                 <span className={knobStyles.knobUnit}>{unit}</span>
             </h2>

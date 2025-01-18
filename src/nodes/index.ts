@@ -31,7 +31,6 @@ export const nodeTypes =
 };
 
 
-
 export const reactNodeTypes: NodeTypes = Object.fromEntries(
     Object.entries(nodeTypes).map(([type, NodeClass]) =>
     [
@@ -39,6 +38,7 @@ export const reactNodeTypes: NodeTypes = Object.fromEntries(
         (props) =>
         {
             const node = NodeClass.createReactFlowNode();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return createElement(NodeClass as any, {...props, node });
         }
     ])
