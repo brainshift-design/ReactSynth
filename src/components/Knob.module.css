@@ -1,195 +1,167 @@
-:root
-{
-    --knob-size:       45px;
+:root {
+    --knob-size: 45px;
 }
 
-
-.knobContainer
-{
+.knobContainer {
     --knob-base-color: #f0f4f5;
-    display:           flex;
-    flex-direction:    column;
-    align-items:       center;
-    position:          relative;
-    gap:               0;
-    width:             fit-content;
-    border-radius:     var(--corner-xs);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    gap: 0;
+    width: fit-content;
+    border-radius: var(--corner-xs);
 }
 
-
-.knobContainer .display
-{
-    width:            45px;
-    overflow:         hidden;
-    padding:          3px;
+.knobContainer .display {
+    width: 45px;
+    overflow: hidden;
+    padding: 3px;
     background-color: #bdcf54;
-    font-family:      VT323;
-    font-size:        21px;
-    color:            #303509;
-    text-shadow:      0 2px 1.5px #30350955;
-    box-shadow:       0 2px 3px #0002 inset,
-                      0 -1px 0px #fff4 inset;
-    text-align:       center;
-    border-radius:    2px;
-    margin:           2px 0 4px 0;
+    font-family: VT323;
+    font-size: 21px;
+    color: #303509;
+    text-shadow: 0 2px 1.5px #30350955;
+    box-shadow:
+        0 2px 3px #0002 inset,
+        0 -1px 0px #fff4 inset;
+    text-align: center;
+    border-radius: 2px;
+    margin: 2px 0 4px 0;
 }
-
 
 .knobContainer .knob,
-.knobContainer .knobValue
-{
+.knobContainer .knobValue {
     position: relative;
-    top:      0;
-    left:     0;
-    width:    var(--knob-size);
-    height:   var(--knob-size);
-    margin:   0;
+    top: 0;
+    left: 0;
+    width: var(--knob-size);
+    height: var(--knob-size);
+    margin: 0;
 }
 
-
-.knobContainer .infoContainer
-{
-    width:      60px;
-    height:     53px;
-    position:   relative;
+.knobContainer .infoContainer {
+    width: 60px;
+    height: 53px;
+    position: relative;
     margin-top: calc(var(--gap-xs) + 4px);
-    margin:     5px 3px 0 3px;
+    margin: 5px 3px 0 3px;
 }
 
-
-.knobContainer .inputContainer
-{
-    width:      var(--knob-size);
-    height:     var(--knob-size);
-    position:   absolute;
-    left:       50%;
-    top:        50%;
-    transform:  translateX(-50%)
-                translateY(-50%);
+.knobContainer .inputContainer {
+    width: var(--knob-size);
+    height: var(--knob-size);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
 }
 
-
-.knobContainer .knob
-{
+.knobContainer .knob {
     --knob-edge-highlight: oklch(from var(--knob-color) 85% 0.05 h);
-    --knob-edge-shadow:    oklch(from var(--knob-color) 50% 0.05 h);
-    --knob-edge-shadow2:   oklch(from var(--knob-color) 10% 0.05 h);
-    --knob-edge:           oklch(from var(--knob-color) 40% 0.05 h);
- 
-    position:       absolute;
-    border-radius:  50%;
-    background:     repeating-radial-gradient(
-                        circle at center,
-                        #ffffff04 0,
-                        #ffffff04 1px,
-                        #00000004 1px,
-                        #00000004 2px),
-                    conic-gradient(
-                        from 0deg,
-                        /* Each color stop slightly offset to create "streaks" */
-                        #ccc2 0deg,
-                        #aaa2 20deg,
-                        #8882 40deg,
-                        #aaa2 60deg,
-                        #ccc2 80deg,
-                        #eee2 90deg,
-                        #ccc2 100deg,
-                        #aaa2 120deg,
-                        #8882 140deg,
-                        #aaa2 160deg,
-                        #ccc2 180deg,
-                        #eee2 190deg,
-                        #ccc2 200deg,
-                        #aaa2 220deg,
-                        #8882 240deg,
-                        #aaa2 260deg,
-                        #ccc2 280deg,
-                        #eee2 290deg,
-                        #ccc2 300deg,
-                        #aaa2 320deg,
-                        #8882 340deg,
-                        #ccc2 360deg
-                    ),
-                    var(--knob-color);
-                        
-    box-shadow:     0px  1px  0.5px 0px var(--knob-edge-highlight) inset,
-                    2px  4px 15px   0px #fff2 inset, 
-                    0px  0px  4px   0px rgba(0, 0, 0, 0.11), 
-                    0px  1px  1.5px 0px rgba(0, 0, 0, 0.6), 
-                    0px  1px  2.8px 0px rgba(0, 0, 0, 0.13), 
-                    0px  3px  5.6px 0px rgba(0, 0, 0, 0.11), 
-                    0px 14px 19.9px 0px rgba(0, 0, 0, 0.15), 
-                    0px  0    3px   0px var(--knob-edge) inset,
-                    0px  0    0     1px rgb(from var(--knob-edge-shadow) r g b / 20%) inset,
-                    0px -2px  1px  -1px var(--knob-edge-shadow2) inset;
-    user-select:    none;
-    touch-action:   none;
-    cursor:         pointer;
+    --knob-edge-shadow: oklch(from var(--knob-color) 50% 0.05 h);
+    --knob-edge-shadow2: oklch(from var(--knob-color) 10% 0.05 h);
+    --knob-edge: oklch(from var(--knob-color) 40% 0.05 h);
+
+    position: absolute;
+    border-radius: 50%;
+    background: repeating-radial-gradient(
+            circle at center,
+            #ffffff04 0,
+            #ffffff04 1px,
+            #00000004 1px,
+            #00000004 2px
+        ),
+        conic-gradient(
+            from 0deg,
+            /* Each color stop slightly offset to create "streaks" */ #ccc2 0deg,
+            #aaa2 20deg,
+            #8882 40deg,
+            #aaa2 60deg,
+            #ccc2 80deg,
+            #eee2 90deg,
+            #ccc2 100deg,
+            #aaa2 120deg,
+            #8882 140deg,
+            #aaa2 160deg,
+            #ccc2 180deg,
+            #eee2 190deg,
+            #ccc2 200deg,
+            #aaa2 220deg,
+            #8882 240deg,
+            #aaa2 260deg,
+            #ccc2 280deg,
+            #eee2 290deg,
+            #ccc2 300deg,
+            #aaa2 320deg,
+            #8882 340deg,
+            #ccc2 360deg
+        ),
+        var(--knob-color);
+
+    box-shadow:
+        0px 1px 0.5px 0px var(--knob-edge-highlight) inset,
+        2px 4px 15px 0px #fff2 inset,
+        0px 0px 4px 0px rgba(0, 0, 0, 0.11),
+        0px 1px 1.5px 0px rgba(0, 0, 0, 0.6),
+        0px 1px 2.8px 0px rgba(0, 0, 0, 0.13),
+        0px 3px 5.6px 0px rgba(0, 0, 0, 0.11),
+        0px 14px 19.9px 0px rgba(0, 0, 0, 0.15),
+        0px 0 3px 0px var(--knob-edge) inset,
+        0px 0 0 1px rgb(from var(--knob-edge-shadow) r g b / 20%) inset,
+        0px -2px 1px -1px var(--knob-edge-shadow2) inset;
+    user-select: none;
+    touch-action: none;
+    cursor: pointer;
 }
 
-
-.knobContainer[data-knob-color]
-{
+.knobContainer[data-knob-color] {
     --knob-base-color: var(--knob-color);
 }
 
-
-.knobContainer[data-value-color]
-{
+.knobContainer[data-value-color] {
     --knob-base-color: var(--knob-value-color);
 }
 
-
-.knobContainer .knobValue
-{
-    position:      absolute;
+.knobContainer .knobValue {
+    position: absolute;
     border-radius: 50%;
     pointer-events: none;
 }
 
-
-.knobContainer .knobValue::after 
-{
-    content:       '';
-    position:      absolute;
-    top:           50%;
-    left:          50%;
-    width:         3px;
-    height:        40%;
-    background:    var(--knob-value-color);
-    transform:     translate(-50%, -135%);
+.knobContainer .knobValue::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3px;
+    height: 40%;
+    background: var(--knob-value-color);
+    transform: translate(-50%, -135%);
     border-radius: 2px;
 }
 
-
-.knobContainer .knobTick
-{
-    position:         absolute;
-    width:            2px;
-    left:             50%;
-    bottom:           50%;
+.knobContainer .knobTick {
+    position: absolute;
+    width: 2px;
+    left: 50%;
+    bottom: 50%;
     background-color: #888;
-    transform:        translate(-50%, -25px);
+    transform: translate(-50%, -25px);
     transform-origin: bottom center;
 }
 
-
-.knobContainer .name
-{
-    color:         var(--color-node-text);
-    font-weight:   700;
-    margin-top:    2px;
+.knobContainer .name {
+    color: var(--color-node-text);
+    font-weight: 700;
+    margin-top: 2px;
     margin-bottom: 4px;
 }
 
-
-.knobName
-{
+.knobName {
     font-weight: 600;
 }
 
-
-.knobUnit
-{
+.knobUnit {
     font-weight: 400;
 }

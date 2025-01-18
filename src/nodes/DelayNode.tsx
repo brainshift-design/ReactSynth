@@ -7,85 +7,66 @@ import AudioNode from './AudioNode';
 import InputHandle from '../components/InputHandle';
 import OutputHandle from '../components/OutputHandle';
 
-
-
-interface DelayNodeProps 
-extends NodeProps
-{
-    data: { delayTime: number }
+interface DelayNodeProps extends NodeProps {
+    data: { delayTime: number };
 }
 
-
-
-export default class DelayNode 
-extends AudioNode<DelayNodeProps>
-{
-    protected createAudioNode()
-    {
+export default class DelayNode extends AudioNode<DelayNodeProps> {
+    protected createAudioNode() {
         return audioContext?.createDelay() as globalThis.AudioNode;
     }
 
-
-
-    protected override initAudioNode()
-    {
-        const { data: { delayTime } } = this.props;
+    protected override initAudioNode() {
+        const {
+            data: { delayTime },
+        } = this.props;
 
         const delayNode = this.audioNode as globalThis.DelayNode;
 
-        if (delayNode)
-            delayNode.delayTime.value = delayTime;
+        if (delayNode) delayNode.delayTime.value = delayTime;
     }
 
-
-
-    static override createReactFlowNode(): ReactFlowNode
-    {
-        return { 
+    static override createReactFlowNode(): ReactFlowNode {
+        return {
             ...super.createReactFlowNode(),
-            data: { delayTime: 0.5 } 
+            data: { delayTime: 0.5 },
         };
     }
-    
-    
-    
-    renderContent()
-    {
+
+    renderContent() {
         return (
             <>
-                <InputHandle 
-                    type       = 'target' 
-                    handletype = 'audio'
-                    id         = {'audio-in'} 
-                    nodeid     = {this.props.id} 
-                    position   = {Position.Left}
+                <InputHandle
+                    type="target"
+                    handletype="audio"
+                    id={'audio-in'}
+                    nodeid={this.props.id}
+                    position={Position.Left}
                 />
 
                 <h1>Delay</h1>
 
                 <div className={styles.nodeContent}>
-
-                    <NumberKnob 
-                        label      = 'Dur|sec'
-                        min        = {0}
-                        max        = {1}
-                        value      = {this.props.data.delayTime}
-                        decimals   = {2}
-                        padding    = {4}
-                        ticks      = {11}
-                        onChange   = {(e) => this.update({ delayTime: Number(e.target.value) })}
-                        knobColor  = 'var(--color-node-highlight)'
-                        valueColor = 'var(--color-node-highlight-value)'
-                        />
-
+                    <NumberKnob
+                        label="Dur|sec"
+                        min={0}
+                        max={1}
+                        value={this.props.data.delayTime}
+                        decimals={2}
+                        padding={4}
+                        ticks={11}
+                        onChange={(e) => this.update({ delayTime: Number(e.target.value) })}
+                        knobColor="var(--color-node-highlight)"
+                        valueColor="var(--color-node-highlight-value)"
+                    />
                 </div>
 
-                <OutputHandle 
-                    type       = 'source' 
-                    handletype = 'audio' 
-                    id         = {'audio-out'} 
-                    position   = {Position.Right} 
-                    nodeid     = {this.props.id} 
+                <OutputHandle
+                    type="source"
+                    handletype="audio"
+                    id={'audio-out'}
+                    position={Position.Right}
+                    nodeid={this.props.id}
                 />
             </>
         );

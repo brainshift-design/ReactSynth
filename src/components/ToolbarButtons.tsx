@@ -1,33 +1,30 @@
 import { ReactElement } from 'react';
-import Button from './Button';
+import PanelButton from './PanelButton';
 import Separator from './Separator';
 import { useFlowState } from '../hooks/useFlowState';
 
-
-
-export default function ToolbarButtons(): ReactElement
-{
+export default function ToolbarButtons(): ReactElement {
     const { createNode } = useFlowState();
 
     return (
         <>
-            <Button>
-                <i className='material-icons'>menu</i>
-            </Button>
+            <PanelButton>
+                <i className="material-icons">menu</i>
+            </PanelButton>
 
-            <Separator />            
+            <Separator />
 
-            <Button onClick={() => createNode('oscillator')}>Osc</Button>
-            <Button onClick={() => createNode('noise'     )}>Nois</Button>
-            <Button onClick={() => createNode('gain'      )}>Gain</Button>
-            <Button onClick={() => createNode('delay'     )}>Del</Button>
-            <Button onClick={() => createNode('reverb'    )}>Rev</Button>
-            <Button onClick={() => createNode('filter'    )}>Flt</Button>
-            <Button onClick={() => createNode('compressor')}>Cmp</Button>
-            <Button onClick={() => createNode('distortion')}>Dst</Button>
-            <Button onClick={() => createNode('trigger'   )}>Trg</Button>
-            <Button onClick={() => createNode('envelope'  )}>Env</Button>
-            <Button onClick={() => createNode('_output'   )}>Out</Button>
+            <PanelButton onClick={() => createNode('oscillator')}>Osc</PanelButton>
+            <PanelButton onClick={() => createNode('noise')}>Nois</PanelButton>
+            <PanelButton onClick={() => createNode('gain')}>Gain</PanelButton>
+            <PanelButton onClick={() => createNode('delay')}>Del</PanelButton>
+            <PanelButton onClick={() => createNode('reverb')}>Rev</PanelButton>
+            <PanelButton onClick={() => createNode('filter')}>Flt</PanelButton>
+            <PanelButton onClick={() => createNode('compressor')}>Cmp</PanelButton>
+            <PanelButton onClick={() => createNode('distortion')}>Dst</PanelButton>
+            <PanelButton onClick={() => createNode('trigger')}>Trg</PanelButton>
+            <PanelButton onClick={() => createNode('envelope')}>Env</PanelButton>
+            <PanelButton onClick={() => createNode('_output')}>Out</PanelButton>
         </>
     );
 }

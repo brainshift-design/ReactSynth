@@ -1,12 +1,10 @@
-.parameter
-{
-    width:      100%;
+.parameter {
+    width: 100%;
 }
 
-.parameter h2
-{
-    font-size:   1.5ex;
+.parameter h2 {
+    font-size: 1.5ex;
     font-weight: 500;
-    
-    margin:      0;
+
+    margin: 0;
 }

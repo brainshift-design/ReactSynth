@@ -1,79 +1,74 @@
 import nodeStyles from './Node.module.css';
-import { NodeProps, Position } from "reactflow";
+import { NodeProps, Position } from 'reactflow';
 import OutputHandle from '../components/OutputHandle';
-import Button from '../components/Button';
+import ParamButton from '../components/ParamButton';
 import Node from './Node';
+import { Connection } from './connections';
 
-
-interface TriggerNodeState
-{
+interface TriggerNodeState {
     isPlaying: boolean;
 }
 
+interface TriggerNodeProps extends NodeProps {
+    data: {
+        controlOutput?: Connection;
+        noteOffHandler?: () => void;
+    };
+}
 
-export default class TriggerNode 
-extends Node<NodeProps, TriggerNodeState>
-{
-    constructor(props: NodeProps)
-    {
+export default class TriggerNode extends Node<TriggerNodeProps, TriggerNodeState> {
+    constructor(props: TriggerNodeProps) {
         super(props);
 
         this.state = { isPlaying: false };
 
         this.startNote = this.startNote.bind(this);
-        this.stopNote  = this.stopNote .bind(this);
+        this.stopNote = this.stopNote.bind(this);
     }
 
-
-
-    startNote()
-    {
+    startNote() {
         this.setState({ isPlaying: true });
 
-        if (this.props.data.parameter)
-            this.props.data.parameter.setValue(true);
+        const { controlOutput } = this.props.data;
+
+        if (controlOutput?.control) {
+            controlOutput.control('note-on');
+        }
     }
 
-
-
-    stopNote()
-    {
+    stopNote() {
         this.setState({ isPlaying: false });
 
-        if (this.props.data.parameter)
-            this.props.data.parameter.setValue(false);
+        const { controlOutput } = this.props.data;
+
+        if (controlOutput?.control) {
+            controlOutput.control('note-off');
+        }
     }
 
-
-
-    renderContent()
-    {
+    renderContent() {
         return (
             <>
                 <h1>Trigger</h1>
 
                 <div className={nodeStyles.nodeContent}>
-
-                    <Button 
-                        onPointerDown  = {this.startNote}
-                        onPointerUp    = {this.stopNote }
-                        onPointerLeave = {this.stopNote }
-                        style= 
-                        {{
-                            margin: '8px 18px 18px 18px'
-                        }}>
-                        ■
-                    </Button>
-
+                    <ParamButton
+                        onPointerDown={this.startNote}
+                        onPointerUp={this.stopNote}
+                        onPointerLeave={this.stopNote}
+                        style={{
+                            margin: '8px 18px 18px 18px',
+                        }}
+                    />
                 </div>
 
-                <OutputHandle 
-                    type       = 'source' 
-                    handletype = 'control' 
-                    id         = {'control-out'} 
-                    position   = {Position.Right} 
-                    nodeid     = {this.props.id} 
-                    style      = {{ top: 'calc(50% + 7px)' }}
+                <OutputHandle
+                    type="source"
+                    handletype="control"
+                    id={'control-out'}
+                    position={Position.Right}
+                    nodeid={this.props.id}
+                    style={{ top: 'calc(50% + 7px)' }}
                 />
             </>
         );

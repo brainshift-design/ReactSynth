@@ -1,6 +1,5 @@
-.range
-{
-    display:        flex;
+.range {
+    display: flex;
     flex-direction: column;
-    align-items:    flex-start;
+    align-items: flex-start;
 }

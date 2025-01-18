@@ -1,6 +1,5 @@
-.graphView
-{
+.graphView {
     flex-grow: 1;
-    height:    100vh;
-    overflow:  hidden;
+    height: 100vh;
+    overflow: hidden;
 }
