@@ -1,21 +1,20 @@
-.toolbar
-{
-    display:          flex;
-    flex-direction:   column;
+.toolbar {
+    display: flex;
+    flex-direction: column;
 
-    position:         relative;
+    position: relative;
 
-    top:              0;
-    left:             0;
+    top: 0;
+    left: 0;
 
-    width:            fit-content;
-    min-width:        var(--min-toolbar-width);
-    height:           100vh;
+    width: fit-content;
+    min-width: var(--min-toolbar-width);
+    height: 100vh;
 
     background-color: var(--color-secondary);
 
-    gap:              var(--gap-xs);
-    padding:          var(--gap-s);
-    box-sizing:       border-box; /* ensure padding is included in the width */
-    overflow:         hidden;
+    gap: var(--gap-xs);
+    padding: var(--gap-s);
+    box-sizing: border-box; /* ensure padding is included in the width */
+    overflow: hidden;
 }

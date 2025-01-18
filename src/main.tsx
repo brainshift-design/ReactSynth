@@ -1,7 +1,7 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import { ClassProvider } from './ClassContext.tsx';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App';
+import { ClassProvider } from './contexts/ClassProvider';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
